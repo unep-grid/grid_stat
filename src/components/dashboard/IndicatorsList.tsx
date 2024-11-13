@@ -6,12 +6,14 @@ interface IndicatorsListProps {
   indicators: Indicator[];
   selectedIndicator: Indicator | null;
   setSelectedIndicator: (indicator: Indicator | null) => void;
+  selectedKeywords: string[];
 }
 
 const IndicatorsList: React.FC<IndicatorsListProps> = ({
   indicators,
   selectedIndicator,
-  setSelectedIndicator
+  setSelectedIndicator,
+  selectedKeywords
 }) => {
   return (
     <div className="p-6">
@@ -22,21 +24,41 @@ const IndicatorsList: React.FC<IndicatorsListProps> = ({
         </div>
       </div>
       
-      {indicators.map((indicator, index) => (
+      {indicators.map((indicator) => (
         <div
-          key={index}
-          className={`p-4 mb-3 rounded-lg cursor-pointer transition-colors ${
+          key={indicator.id}
+          className={`indicator-card ${
             selectedIndicator?.id === indicator.id 
-              ? 'bg-blue-50'
-              : 'hover:bg-gray-50'
+              ? 'indicator-card-selected'
+              : ''
           }`}
           onClick={() => setSelectedIndicator(indicator)}
         >
           <h3 className="font-medium text-lg mb-2">{indicator.title}</h3>
+          <div className="text-sm text-gray-600 mb-2 line-clamp-2">
+            {indicator.description}
+          </div>
+          <div 
+            className="flex flex-wrap gap-2 mb-2"
+            onClick={(e) => e.stopPropagation()} // Prevent click propagation to parent
+          >
+            {indicator.keywords.map((keyword, idx) => (
+              <span 
+                key={idx}
+                className={`facet-badge ${
+                  selectedKeywords.includes(keyword) ? 'facet-badge-selected' : ''
+                }`}
+              >
+                {keyword}
+              </span>
+            ))}
+          </div>
           <div className="flex text-sm text-gray-500 space-x-4">
-            <span>{indicator.type}</span>
-            <span>{indicator.period}</span>
-            <span>{indicator.coverage}</span>
+            <span>{indicator.unit}</span>
+            <span>{new Date(indicator.date_publication).getFullYear()}</span>
+            {indicator.time_series && (
+              <span>{indicator.date_min} - {indicator.date_max}</span>
+            )}
           </div>
         </div>
       ))}

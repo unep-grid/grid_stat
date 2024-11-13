@@ -207,3 +207,51 @@ hr {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .facet-badge {
+    @apply px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition-colors;
+  }
+  
+  .facet-badge-selected {
+    @apply bg-blue-100 text-blue-700;
+  }
+
+  .topic-button {
+    @apply flex text-base items-center justify-between w-full py-2 px-3 rounded-lg text-left transition-colors;
+  }
+
+  .topic-button-selected {
+    @apply bg-blue-50 text-blue-700;
+  }
+  
+  .topic-count {
+    @apply text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full;
+  }
+
+  .search-input {
+    @apply w-full pl-8 pr-4 py-2 bg-gray-50 rounded-lg border-0 focus:ring-2 focus:ring-blue-500 transition-all;
+  }
+  
+  .indicator-card {
+    @apply p-4 mb-3 rounded-lg cursor-pointer transition-all border border-transparent hover:border-blue-200 hover:shadow-sm;
+  }
+  
+  .indicator-card-selected {
+    @apply bg-blue-50 border-blue-300;
+  }
+}
+
+/* Chart styles */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  @apply stroke-gray-200;
+}
+
+.recharts-tooltip-wrapper {
+  @apply !shadow-lg;
+}
+
+.recharts-default-tooltip {
+  @apply !bg-white !border-gray-200 !rounded-lg !shadow-none;
+}
