@@ -1,68 +1,4 @@
 // src/data/mockData.ts
-import type { Topic, Indicator } from '../components/dashboard/types';
-
-export const topics: Topic[] = [
-  {
-    title: 'Climate change',
-    count: 89,
-    subtopics: ['Water', 'Energy', 'Pollution', 'Land cover', 'Disaster Risk', 'Extractives']
-  },
-  {
-    title: 'Biodiversity',
-    count: 45,
-    subtopics: []
-  }
-];
-
-export const indicators: Indicator[] = [
-  {
-    id: 'total',
-    title: 'KYOTOGHG emissions by sector: Total excluding LULUCF',
-    period: '1992-2022',
-    coverage: '193 countries',
-    type: 'Global'
-  },
-  {
-    id: 'total_2',
-    title: 'KYOTOGHG emissions by sector: Total excluding LULUCF',
-    period: '1992-2022',
-    coverage: '193 countries',
-    type: 'Global'
-  },
-  {
-    id: 'agriculture',
-    title: 'KYOTOGHG emissions by sector: Agriculture',
-    period: '1992-2022',
-    coverage: '193 countries',
-    type: 'Global'
-  },
-  {
-    id: 'energy',
-    title: 'KYOTOGHG emissions by sector: Energy',
-    period: '1992-2022',
-    coverage: '193 countries',
-    type: 'Global'
-  },
-  {
-    id: 'waste',
-    title: 'KYOTOGHG emissions by sector: Waste',
-    period: '1992-2022',
-    coverage: '193 countries',
-    type: 'Global'
-  }
-];
-
-export const generateTimeSeriesData = () => {
-  const years = Array.from({length: 31}, (_, i) => 1992 + i);
-  return years.map(year => ({
-    year,
-    'China': Math.floor(Math.random() * 1000000) + 800000,
-    'United States': Math.floor(Math.random() * 800000) + 600000,
-    'India': Math.floor(Math.random() * 600000) + 400000,
-    'Russian Federation': Math.floor(Math.random() * 400000) + 300000,
-    'Japan': Math.floor(Math.random() * 300000) + 200000,
-  }));
-};
 
 
 export const latestNews =  [
@@ -86,3 +22,14 @@ export const latestNews =  [
   }
 ];
 
+export const generateTimeSeriesData = () => {
+  const years = Array.from({ length: 30 }, (_, i) => 1993 + i);
+  return years.map(year => ({
+    year,
+    'China': Math.floor(Math.random() * 1000000 + 500000),
+    'United States': Math.floor(Math.random() * 800000 + 400000),
+    'India': Math.floor(Math.random() * 600000 + 300000),
+    'Russian Federation': Math.floor(Math.random() * 400000 + 200000),
+    'Japan': Math.floor(Math.random() * 300000 + 150000)
+  }));
+};
