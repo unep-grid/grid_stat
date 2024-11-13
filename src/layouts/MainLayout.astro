@@ -1,0 +1,30 @@
+---
+import Navbar from '../components/Navbar.astro';
+interface Props {
+  title?: string;
+}
+
+const { title = 'GRID Stat Portal' } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+      <Navbar />
+       <main>
+      <slot />
+    </main>
+
+    <footer class="bg-white mt-auto">
+      <div class="max-w-7xl mx-auto py-12 px-4">
+        <p class="text-center text-gray-500">
+          © 2024 GHG Emissions Portal. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

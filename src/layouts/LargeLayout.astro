@@ -1,0 +1,26 @@
+---
+
+import Navbar from '../components/Navbar.astro';
+import '@/styles/global.css'
+interface Props {
+  title?: string;
+}
+
+const { title = 'GRID Stat Portal' } = Astro.props;
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <Navbar />
+   
+    <main class="w-full h-full m-0 p-0 max-w-none max-h-none">
+      <slot />
+    </main>
+  </body>
+</html>

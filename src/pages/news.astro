@@ -1,0 +1,128 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import "@/styles/global.css";
+import { latestNews } from "../data/mockData";
+import { Calendar, ArrowRight } from 'lucide-react';
+
+// Sort news by date
+const sortedNews = [...latestNews].sort((a, b) => 
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+// Format date function
+const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+---
+
+<MainLayout title="News - GRID DATA">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Latest News</h1>
+      <p class="text-xl text-gray-600">
+        Stay updated with the latest developments in climate research and policy
+      </p>
+    </header>
+
+    {/* Featured/Latest Article */}
+    <div class="mb-16">
+      <article class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="p-8">
+          <div class="flex items-center text-sm text-blue-600 mb-4">
+            <Calendar className="h-4 w-4 mr-2" />
+            <time datetime={sortedNews[0].date}>
+              {formatDate(sortedNews[0].date)}
+            </time>
+          </div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            {sortedNews[0].title}
+          </h2>
+          <p class="text-xl text-gray-600 mb-6">
+            {sortedNews[0].excerpt}
+          </p>
+          <a 
+            href={`/news/${sortedNews[0].slug}`}
+            class="inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            Read more
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </a>
+        </div>
+      </article>
+    </div>
+
+    {/* News Grid */}
+    <div class="grid gap-8">
+      {sortedNews.slice(1).map((article) => (
+        <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-3">
+              <Calendar className="h-4 w-4 mr-2" />
+              <time datetime={article.date}>
+                {formatDate(article.date)}
+              </time>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">
+              {article.title}
+            </h2>
+            <p class="text-gray-600 mb-4">
+              {article.excerpt}
+            </p>
+            <a 
+              href={`/news/${article.slug}`}
+              class="inline-flex items-center text-blue-600 hover:text-blue-800"
+            >
+              Read more
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {/* Newsletter Signup */}
+    <div class="mt-16 bg-blue-50 rounded-lg p-8">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Stay Informed
+        </h2>
+        <p class="text-gray-600 mb-6">
+          Subscribe to our newsletter to receive the latest updates on climate research and policy changes.
+        </p>
+        <form class="flex gap-4 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {/* Pagination - if needed */}
+    <div class="mt-12 flex justify-center">
+      <nav class="flex items-center space-x-2">
+        <button class="px-3 py-1 rounded border text-gray-500 hover:bg-gray-50">
+          Previous
+        </button>
+        <button class="px-3 py-1 rounded bg-blue-600 text-white">
+          1
+        </button>
+        <button class="px-3 py-1 rounded border text-gray-500 hover:bg-gray-50">
+          Next
+        </button>
+      </nav>
+    </div>
+  </div>
+</MainLayout>

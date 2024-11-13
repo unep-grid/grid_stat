@@ -1,62 +1,173 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import "@/styles/global.css";
+
+const teamMembers = [
+  {
+    name: "Ferdinand Moser",
+    role: "Principal Investigator",
+    description:
+      "Leading the research on global emissions patterns and their impact on climate systems.",
+      imageUrl: "/user_placeholder/user1.png", 
+    email: "f.moser@griddata.org",
+  },
+  {
+    name: "Franz Moser",
+    role: "Data Science Lead",
+    description:
+      "Specializing in machine learning applications for climate data analysis.",
+    imageUrl: "/user_placeholder/user2.png",
+    email: "franz.moser@griddata.org",
+  },
+  {
+    name: "Frédéric Moser",
+    role: "Environmental Policy Advisor",
+    description:
+      "Bridging the gap between scientific findings and policy implementations.",
+    imageUrl: "/user_placeholder/user3.png",
+    email: "frederic.m@griddata.org",
+  },
+  {
+    name: "Filipe Moser",
+    role: "Technical Lead",
+    description:
+      "Managing our data infrastructure and visualization platforms.",
+    imageUrl: "/user_placeholder/user4.png",
+    email: "f.moser.tech@griddata.org",
+  },
+];
+
+const milestones = [
+  {
+    year: 2020,
+    title: "Project Inception",
+    description:
+      "GRID DATA was established to address the growing need for accessible climate data.",
+  },
+  {
+    year: 2021,
+    title: "First Data Release",
+    description:
+      "Launch of our comprehensive GHG emissions database covering 193 countries.",
+  },
+  {
+    year: 2022,
+    title: "International Recognition",
+    description:
+      "Featured in major climate research publications and policy papers.",
+  },
+  {
+    year: 2023,
+    title: "Platform Enhancement",
+    description:
+      "Released our new interactive dashboard for emissions visualization.",
+  },
+];
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage="/blog-placeholder-about.jpg"
+<MainLayout
+  title="About GRID DATA"
+  description="Learn about our mission to make global emissions data accessible and actionable"
+  pubDate={new Date()}
+  heroImage="/blog-placeholder-about.jpg"
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="mb-16">
+      <h1 class="text-4xl font-bold text-gray-900 mb-6">About GRID DATA</h1>
+      <div class="prose prose-lg text-gray-600 max-w-none">
+        <p class="mb-4">
+          At GRID DATA, we believe that accessible and accurate environmental
+          data is crucial for informed decision-making in the fight against
+          climate change. Our team of dedicated researchers and data scientists
+          works tirelessly to collect, analyze, and visualize greenhouse gas
+          emissions data from around the world.
+        </p>
+      </div>
+    </section>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+    <section class="mb-16">
+      <h2 class="text-4xl font-bold mb-12">Our Team</h2>
+      <div class="space-y-6">
+        {
+          teamMembers.map((member) => (
+            <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col md:flex-row md:items-start md:space-x-8">
+                <img
+                  src={member.imageUrl}
+                  alt={member.name}
+                  class="w-48 h-48 object-cover rounded-lg mb-4 md:mb-0"
+                />
+                <div class="flex-1">
+                  <h3 class="text-2xl font-bold mb-2">{member.name}</h3>
+                  <p class="text-blue-600 mb-4">{member.role}</p>
+                  <p class="text-gray-600 mb-4">{member.description}</p>
+                  <a
+                    href={`mailto:${member.email}`}
+                    class="text-blue-600 hover:text-blue-800"
+                  >
+                    {member.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Our Journey</h2>
+      <div class="space-y-12">
+        {
+          milestones.map((milestone) => (
+            <div class="flex gap-8">
+              <div class="flex-shrink-0 w-24">
+                <span class="text-2xl font-bold text-blue-600">
+                  {milestone.year}
+                </span>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  {milestone.title}
+                </h3>
+                <p class="text-gray-600">{milestone.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
-
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+    <section>
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Contact Us</h2>
+      <div class="bg-gray-50 rounded-lg p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+              Get in Touch
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Have questions about our data or interested in collaboration? We'd
+              love to hear from you.
+            </p>
+            <a
+              href="mailto:contact@griddata.org"
+              class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            >
+              Email Us
+            </a>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Location</h3>
+            <p class="text-gray-600">
+              GRID DATA Institute<br />
+              Climate Research Campus<br />
+              1234 Environmental Way<br />
+              Genève, Switzerland
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div></MainLayout
+>
