@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import "@/styles/global.css";
+const base = import.meta.env.BASE_URL;
 
 const teamMembers = [
   {
@@ -8,7 +9,7 @@ const teamMembers = [
     role: "Principal Investigator",
     description:
       "Leading the research on global emissions patterns and their impact on climate systems.",
-      imageUrl: "/user_placeholder/user1.png", 
+    imageUrl: "/user_placeholder/user1.png",
     email: "f.moser@griddata.org",
   },
   {
@@ -35,7 +36,10 @@ const teamMembers = [
     imageUrl: "/user_placeholder/user4.png",
     email: "f.moser.tech@griddata.org",
   },
-];
+].map((i) => {
+  i.imageUrl = `${base}/${i.imageUrl}`;
+  return i;
+});
 
 const milestones = [
   {

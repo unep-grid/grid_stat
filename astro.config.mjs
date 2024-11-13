@@ -10,7 +10,8 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+ site: 'https://unep-grid.github.io',
+  base: 'grid_stat',
   integrations: [
     mdx(),
     sitemap(),

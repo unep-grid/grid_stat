@@ -1,4 +1,6 @@
 ---
+
+const base = import.meta.env.BASE_URL
 const currentPath = Astro.url.pathname;
 
 const navItems = [
@@ -14,18 +16,19 @@ interface Props {
 
 const { title = 'GRID Stat Portal' } = Astro.props;
 
+
 ---
 
 <nav class="bg-white border-b">
   <div class="max-w-[2000px] mx-auto px-4">
     <div class="flex justify-between h-14">
-      <a href="/" class="flex items-center">
+      <a href={base} class="flex items-center">
         <span class="text-blue-600 font-bold text-xl">{title}</span>
       </a>
       <div class="flex space-x-8">
         {navItems.map(item => (
            <a 
-            href={item.path}
+             href=`${base}${item.path}`
             class={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
               currentPath === item.path
                 ? 'text-blue-600'
