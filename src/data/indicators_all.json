@@ -1,0 +1,433 @@
+[
+  {
+    "id": 1,
+    "title": "Score of adoption and implementation of national DRR strategies in line with the Sendai Framework",
+    "description": "The indicator is derived from the series SG_DSR_LGRGSR and it is part of the SDG indicators 1.5.3, 11.b.1, 13.1.2. \r\nIt assesses the adoption and implementation of national disaster risk reduction (DRR) strategies in alignment with the Sendai Framework. It evaluates countries' progress towards disaster resilience and risk reduction strategies in line with SDG targets.",
+    "keywords": ["disaster risk reduction", "Sendai Framework", "resilience"],
+    "unit": "Index",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 2,
+    "title": "Number of countries that reported having a National DRR Strategy which is aligned to the Sendai Framework",
+    "description": "The indicator is derived from the series SG_DSR_SFDRR and it is part of the SDG indicators 1.5.3, 11.b.1, 13.1.2. \r\nIt tracks the number of countries reporting having a National DRR Strategy aligned with the Sendai Framework. This indicator reflects global efforts in disaster risk reduction and national policy alignment.",
+    "keywords": ["disaster risk reduction", "policy", "national strategies"],
+    "unit": "Number",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 3,
+    "title": "Number of local governments that adopt and implement local DRR strategies in line with national strategies",
+    "description": "The indicator is derived from the series SG_DSR_SILN and it is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.\r\nIt measures the number of local governments that adopt and implement local DRR strategies in alignment with national strategies under the Sendai Framework. It reflects local-level commitment to disaster resilience.",
+    "keywords": [
+      "disaster risk reduction",
+      "local governance",
+      "Sendai Framework"
+    ],
+    "unit": "Number",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 4,
+    "title": "Proportion of local governments that adopt and implement local disaster risk reduction strategies in line with national disaster risk reduction strategies",
+    "description": "The indicator is derived from the series SG_DSR_SILS and it is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.\r\nIt provides the proportion of local governments that adopt and implement local DRR strategies aligned with national strategies. It highlights the integration of disaster risk reduction at local levels globally.",
+    "keywords": ["disaster risk reduction", "local governance", "resilience"],
+    "unit": "Percentage",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 5,
+    "title": "Number of local governments",
+    "description": "The indicator is derived from the series SG_GOV_LOGV and it is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.\r\nIt records the number of local governments. It reflects the geographical distribution of local authorities involved in implementing disaster risk reduction measures as per the Sendai Framework.",
+    "keywords": ["local governance", "disaster risk reduction", "governance"],
+    "unit": "Number",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 6,
+    "title": "Number of people affected by disaster",
+    "description": "The indicator is derived from the series VC_DSR_AFFCT and it is part of the SDG indicators 1.5.1, 11.5.1, 13.1.1.\r\nIt measures the number of people affected by disasters globally. It highlights the human cost of disasters and helps monitor the effectiveness of risk reduction strategies.",
+    "keywords": ["disasters", "affected population", "risk reduction"],
+    "unit": "Number",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 1,
+        "type": "dataset",
+        "title": "Number of people affected, injured, ill, missing and / or death by disaster"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 7,
+    "title": "Direct agriculture loss attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_AGLH and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt tracks direct agricultural losses due to disasters. It provides an economic assessment of the impact of disasters on agriculture, highlighting the importance of disaster resilience in food security.",
+    "keywords": ["agriculture", "disaster impact", "economic loss"],
+    "unit": "Current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 2,
+        "type": "dataset",
+        "title": "Direct economic loss attributed to disasters by sector"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 8,
+    "title": "Direct economic loss to cultural heritage damaged or destroyed attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_CHLN and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt records the economic losses to cultural heritage caused by disasters. It provides insight into the financial toll disasters take on cultural assets globally.",
+    "keywords": ["economic loss", "cultural heritage", "disaster impact"],
+    "unit": "Millions of current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 9,
+    "title": "Direct economic loss resulting from damaged or destroyed critical infrastructure attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_CILN and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt monitors the economic losses resulting from the damage or destruction of critical infrastructure due to disasters. It underscores the need for resilient infrastructure to reduce disaster impacts.",
+    "keywords": ["economic loss", "critical infrastructure", "disaster impact"],
+    "unit": "Current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 2,
+        "type": "dataset",
+        "title": "Direct economic loss attributed to disasters by sector"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 10,
+    "title": "Number of directly affected persons attributed to disasters per 100,000 population",
+    "description": "The indicator is derived from the series VC_DSR_DAFF and it is part of the SDG indicators 1.5.1, 11.5.1, 13.1.1.\r\nIt measures the number of people affected by disasters per 100,000 population. It offers a standardized metric for assessing the impact of disasters on populations worldwide.",
+    "keywords": ["disasters", "affected population", "global health"],
+    "unit": "Per 100,000 population",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 3,
+        "type": "dataset",
+        "title": "Number of people affected, missing and / or death by disaster per 100,000 people\r\n"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 11,
+    "title": "Direct economic loss to other damaged or destroyed productive assets attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_DDPA and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt tracks the direct economic loss to productive assets damaged or destroyed by disasters. It emphasizes the financial costs of disasters and the importance of resilience in production sectors.",
+    "keywords": ["economic loss", "productive assets", "disaster impact"],
+    "unit": "Current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 2,
+        "type": "dataset",
+        "title": "Direct economic loss attributed to disasters by sector"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 12,
+    "title": "Direct economic loss attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_GDPLS and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt measures direct economic losses attributed to disasters in terms of GDP. It helps assess the broader economic impact of disasters on national economies.",
+    "keywords": ["economic loss", "GDP", "disaster impact"],
+    "unit": "Current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 2,
+        "type": "dataset",
+        "title": "Direct economic loss attributed to disasters by sector"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 13,
+    "title": "Direct economic loss in the housing sector attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_HOLH and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt records direct economic losses in the housing sector caused by disasters. It highlights the vulnerability of housing to disaster events and the economic costs of damage to homes.",
+    "keywords": ["economic loss", "housing sector", "disaster impact"],
+    "unit": "Current United States Dollars",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 2,
+        "type": "dataset",
+        "title": "Direct economic loss attributed to disasters by sector"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 14,
+    "title": "Number of injured or ill people attributed to disasters",
+    "description": "The indicator is derived from the series VC_DSR_IJILN and it is part of the SDG indicators 1.5.1, 11.5.1, 13.1.1.\r\nIt tracks the number of injured or ill people as a result of disasters. It highlights the health impacts of disasters on populations.",
+    "keywords": ["health impact", "injuries", "disasters"],
+    "unit": "Number",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 6,
+        "type": "dataset",
+        "title": "SDG Goal 13: Take urgent action to combat climate change and its impacts"
+      },
+      {
+        "id": 1,
+        "type": "dataset",
+        "title": "Number of people affected, injured, ill, missing and / or death by disaster"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      },
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      }
+    ],
+    "language": "en"
+  },
+  {
+    "id": 15,
+    "title": "Direct economic loss attributed to disasters relative to GDP",
+    "description": "The indicator is derived from the series VC_DSR_LSGP and it is part of the SDG indicators 1.5.2, 11.5.2.\r\nIt measures direct economic losses relative to GDP caused by disasters. It provides an indicator of the severity of disaster impacts on national economic performance.",
+    "keywords": ["economic loss", "GDP", "disaster impact"],
+    "unit": "Percentage",
+    "unit_multiplier": null,
+    "source": "United Nations Office for Disaster Risk Reduction (2024)",
+    "date_publication": "2024-11-11",
+    "collections": [
+      {
+        "id": 4,
+        "type": "dataset",
+        "title": "SDG Goal 1: End poverty in all its forms everywhere"
+      },
+      {
+        "id": 5,
+        "type": "dataset",
+        "title": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable"
+      }
+    ],
+    "language": "en"
+  }
+  
+]
+
