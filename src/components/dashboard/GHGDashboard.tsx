@@ -1,8 +1,8 @@
+// src/components/dashboard/GHGDashboard.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import TopicsSidebar from './TopicsSidebar';
 import IndicatorsList from './IndicatorsList';
 import DataVisualization from './DataVisualization';
-import { generateTimeSeriesData } from '../../data/mockData'; // Only keeping this until we have real time series data
 import type { Topic, Indicator } from './types';
 
 const GHGDashboard: React.FC = () => {
@@ -12,8 +12,11 @@ const GHGDashboard: React.FC = () => {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'chart' | 'table'>('chart');
   const [indicators, setIndicators] = useState<Indicator[]>([]);
+  const [indicatorData, setIndicatorData] = useState<any[]>([]);  // Store chart-ready data
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch indicators from the API
+  // Fetch indicators on initial load
   useEffect(() => {
     const fetchIndicators = async () => {
       try {
@@ -24,14 +27,51 @@ const GHGDashboard: React.FC = () => {
         console.error('Error fetching indicators:', error);
       }
     };
-    
     fetchIndicators();
   }, []);
 
-  // Derive topics from collections in indicators
+  // Fetch data when an indicator is selected
+  useEffect(() => {
+    if (!selectedIndicator) return;
+
+    const fetchIndicatorData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`https://api.unepgrid.ch/stats/v1/indicatorsData?id=eq.${selectedIndicator.id}`);
+        const data = await response.json();
+
+        // Transform data for chart
+        const transformedData = transformDataForChart(data);
+        setIndicatorData(transformedData);
+      } catch (error) {
+        setError('Failed to load data.');
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIndicatorData();
+  }, [selectedIndicator]);
+
+  // Transform data into chart-compatible format
+  const transformDataForChart = (data: any[]) => {
+    const chartData: { [year: number]: { [country: string]: number } } = {};
+
+    data.forEach(entry => {
+      const year = entry.date_start || entry.date_end;
+      const countryCode = entry.m49_code.toString();  // Use m49_code as country key
+      if (!chartData[year]) chartData[year] = { year };
+      chartData[year][countryCode] = entry.value;
+    });
+
+    return Object.values(chartData);  // Convert to array for Recharts
+  };
+
   const topics = useMemo(() => {
     const collectionsMap = new Map<number, Topic>();
-    
+
     indicators.forEach(indicator => {
       indicator.collections.forEach(collection => {
         if (!collectionsMap.has(collection.id)) {
@@ -39,7 +79,7 @@ const GHGDashboard: React.FC = () => {
             id: collection.id,
             title: collection.title,
             count: 1,
-            subtopics: [] // We could potentially derive these from the data if needed
+            subtopics: []
           });
         } else {
           const topic = collectionsMap.get(collection.id);
@@ -49,94 +89,32 @@ const GHGDashboard: React.FC = () => {
         }
       });
     });
-    
+
     return Array.from(collectionsMap.values());
   }, [indicators]);
 
-  // Filter indicators based on search term, selected topic, and keywords
   const filteredIndicators = useMemo(() => {
     return indicators.filter(indicator => {
-      const matchesSearch = searchTerm === '' || 
+      const matchesSearch = searchTerm === '' ||
         indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         indicator.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        indicator.keywords.some(keyword => 
+        indicator.keywords.some(keyword =>
           keyword.toLowerCase().includes(searchTerm.toLowerCase())
         );
-    
-      const matchesTopic = !selectedTopic || 
-        indicator.collections.some(collection => 
+
+      const matchesTopic = !selectedTopic ||
+        indicator.collections.some(collection =>
           collection.id === selectedTopic.id
         );
-    
+
       const matchesKeywords = selectedKeywords.length === 0 ||
-        selectedKeywords.every(keyword => 
+        selectedKeywords.every(keyword =>
           indicator.keywords.includes(keyword)
         );
-    
+
       return matchesSearch && matchesTopic && matchesKeywords;
     });
   }, [indicators, searchTerm, selectedTopic, selectedKeywords]);
-
-  // Calculate dynamic facet counts
-  const dynamicFacets = useMemo(() => {
-    // Get counts excluding the selected topic filter
-    const topicResults = indicators.filter(indicator => {
-      const matchesSearch = searchTerm === '' || 
-        indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        indicator.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesKeywords = selectedKeywords.length === 0 ||
-        selectedKeywords.every(keyword => 
-          indicator.keywords.includes(keyword)
-        );
-      
-      return matchesSearch && matchesKeywords;
-    });
-
-    // Calculate topic counts
-    const topicCounts = new Map<number, number>();
-    topicResults.forEach(indicator => {
-      indicator.collections.forEach(collection => {
-        topicCounts.set(
-          collection.id, 
-          (topicCounts.get(collection.id) || 0) + 1
-        );
-      });
-    });
-
-    // Get counts excluding the selected keywords filter
-    const keywordResults = indicators.filter(indicator => {
-      const matchesSearch = searchTerm === '' || 
-        indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        indicator.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesTopic = !selectedTopic || 
-        indicator.collections.some(collection => 
-          collection.id === selectedTopic.id
-        );
-      
-      return matchesSearch && matchesTopic;
-    });
-
-    // Calculate keyword counts
-    const keywordCounts = new Map<string, number>();
-    keywordResults.forEach(indicator => {
-      indicator.keywords.forEach(keyword => {
-        keywordCounts.set(
-          keyword, 
-          (keywordCounts.get(keyword) || 0) + 1
-        );
-      });
-    });
-
-    return {
-      topicCounts,
-      keywordCounts
-    };
-  }, [indicators, searchTerm, selectedTopic, selectedKeywords]);
-
-  // Keep using mock time series data for now
-  const timeSeriesData = generateTimeSeriesData();
 
   return (
     <div className="flex h-screen overflow-hidden bg-white">
@@ -150,7 +128,6 @@ const GHGDashboard: React.FC = () => {
           indicators={indicators}
           selectedKeywords={selectedKeywords}
           setSelectedKeywords={setSelectedKeywords}
-          dynamicCounts={dynamicFacets}
         />
       </div>
 
@@ -165,7 +142,9 @@ const GHGDashboard: React.FC = () => {
 
       <div className="flex-1 p-6 overflow-y-auto">
         <DataVisualization
-          data={timeSeriesData}
+          data={indicatorData}
+          loading={loading}
+          error={error}
           selectedIndicator={selectedIndicator}
           viewMode={viewMode}
           setViewMode={setViewMode}
