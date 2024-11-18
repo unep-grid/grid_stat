@@ -3,6 +3,9 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 import { RegionSelector } from './RegionSelector';
 import { getRegionName } from '@/lib/utils/regions';
 import type { IndicatorData } from '@/lib/types';
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Filter, CheckSquare, Square } from 'lucide-react';
 
 const colorPalette = [
   'hsl(var(--chart-1))',
@@ -18,6 +21,8 @@ interface DataChartProps {
 
 export function DataChart({ data }: DataChartProps) {
   const [selectedRegions, setSelectedRegions] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [open, setOpen] = useState(false);
 
   // Get unique regions and sort them
   const allRegions = useMemo(() => {
@@ -50,6 +55,16 @@ export function DataChart({ data }: DataChartProps) {
     return Array.from(yearMap.values()).sort((a, b) => a.year - b.year);
   }, [data, selectedRegions]);
 
+  const selectAll = () => {
+    setSelectedRegions([...allRegions]);
+    setOpen(false);
+  };
+
+  const selectNone = () => {
+    setSelectedRegions([]);
+    setOpen(false);
+  };
+
   if (!data.length) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -59,8 +74,47 @@ export function DataChart({ data }: DataChartProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="h-[400px]">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2 mb-4">
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Filter className="h-4 w-4 mr-2" />
+              Filter Regions
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[280px] p-0" align="start" side="bottom" sideOffset={4}>
+            <RegionSelector
+              allRegions={allRegions}
+              selectedRegions={selectedRegions}
+              setSelectedRegions={setSelectedRegions}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              onClose={() => setOpen(false)}
+            />
+          </PopoverContent>
+        </Popover>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={selectAll}
+          title="Select All Regions"
+        >
+          <CheckSquare className="h-4 w-4 mr-2" />
+          Select All
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={selectNone}
+          title="Clear Selection"
+        >
+          <Square className="h-4 w-4 mr-2" />
+          Clear
+        </Button>
+      </div>
+
+      <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -100,11 +154,6 @@ export function DataChart({ data }: DataChartProps) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <RegionSelector
-        allRegions={allRegions}
-        selectedRegions={selectedRegions}
-        setSelectedRegions={setSelectedRegions}
-      />
     </div>
   );
 }
