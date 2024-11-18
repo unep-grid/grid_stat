@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { NewsCard } from '@/components/home/NewsCard';
+
+const news = [
+  {
+    title: 'New Climate Data Indicators Released',
+    description: 'UNEP-GRID has published new indicators tracking global climate change impacts across regions.',
+    date: 'May 15, 2024',
+    category: 'Climate',
+  },
+  {
+    title: 'Sustainable Development Goals Progress',
+    description: 'Latest data shows mixed progress towards achieving the 2030 Sustainable Development Goals.',
+    date: 'May 10, 2024',
+    category: 'SDGs',
+  },
+  {
+    title: 'Disaster Risk Reduction Metrics Updated',
+    description: 'Updated metrics provide insights into global disaster preparedness and response capabilities.',
+    date: 'May 5, 2024',
+    category: 'Risk Reduction',
+  },
+  {
+    title: 'Regional Climate Analysis Tool Launched',
+    description: 'New interactive tool enables detailed analysis of climate patterns across different regions.',
+    date: 'April 28, 2024',
+    category: 'Tools',
+  },
+  {
+    title: 'Partnership with Global Research Institutions',
+    description: 'UNEP-GRID announces new partnerships to enhance data collection and analysis capabilities.',
+    date: 'April 20, 2024',
+    category: 'Partnerships',
+  }
+];
+---
+
+<Layout title="News - UNEP-GRID">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8">Latest News</h1>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {news.map((item) => (
+        <NewsCard
+          client:load
+          title={item.title}
+          description={item.description}
+          date={item.date}
+          category={item.category}
+        />
+      ))}
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { TeamMember } from '@/components/about/TeamMember';
+
+const team = [
+  {
+    name: 'Franz Moser',
+    role: 'Project Director',
+    bio: 'Leading the development of environmental data platforms with over 15 years of experience in climate science and data visualization.',
+    imageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
+  },
+  {
+    name: 'Fedor Moser',
+    role: 'Lead Data Scientist',
+    bio: 'Specializing in statistical analysis and machine learning applications for environmental data processing.',
+    imageUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop',
+  },
+  {
+    name: 'Felix Moser',
+    role: 'Senior Developer',
+    bio: 'Expert in full-stack development and geospatial data visualization, focusing on creating intuitive user interfaces.',
+    imageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+  },
+  {
+    name: 'Friedrich Moser',
+    role: 'Data Engineer',
+    bio: 'Responsible for building and maintaining robust data pipelines and ensuring data quality across the platform.',
+    imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+  },
+  {
+    name: 'Fabian Moser',
+    role: 'UX Research Lead',
+    bio: 'Conducting user research and designing accessible interfaces for environmental data visualization.',
+    imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+  },
+];
+---
+
+<Layout title="About - UNEP-GRID">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto mb-12">
+      <h1 class="text-4xl font-bold mb-4">About UNEP-GRID Data Platform</h1>
+      <p class="text-lg text-muted-foreground mb-4">
+        The UNEP-GRID Data Platform is a comprehensive solution for exploring and
+        analyzing global environmental and sustainability data. Our platform
+        provides researchers, policy makers, and the public with access to
+        critical indicators and visualization tools.
+      </p>
+      <p class="text-lg text-muted-foreground">
+        Our team combines expertise in environmental science, data analysis, and
+        software development to create a powerful platform for understanding
+        global sustainability challenges.
+      </p>
+    </div>
+
+    <section>
+      <h2 class="text-3xl font-bold mb-8">Our Team</h2>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {team.map((member) => (
+          <TeamMember
+            client:load
+            name={member.name}
+            role={member.role}
+            bio={member.bio}
+            imageUrl={member.imageUrl}
+          />
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
