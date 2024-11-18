@@ -22,6 +22,8 @@ export function Navbar() {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
+    localStorage.class_theme = newTheme;
+    console.log(localStorage.class_theme);
     document.documentElement.classList.toggle('dark');
   };
 

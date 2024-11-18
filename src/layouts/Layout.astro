@@ -4,16 +4,21 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import '@/styles/globals.css';
-import { Navbar } from '@/components/layout/Navbar';
+import "@/styles/globals.css";
+import { Navbar } from "@/components/layout/Navbar";
+import { ViewTransitions } from "astro:transitions";
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
+  <head transition:name="root" transition:animate="fade">
     <meta charset="UTF-8" />
-    <meta name="description" content="UNEP-GRID Data Platform for global sustainability and disaster risk reduction indicators" />
+    <meta
+      name="description"
+      content="UNEP-GRID Data Platform for global sustainability and disaster risk reduction indicators"
+    />
     <meta name="viewport" content="width=device-width" />
+    <ViewTransitions />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -21,5 +26,23 @@ import { Navbar } from '@/components/layout/Navbar';
   <body>
     <Navbar client:load />
     <slot />
+    <script is:inline>
+      function setDarkMode(document) {
+        let isDark = localStorage.class_theme === 'dark';
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }else{
+          document.documentElement.classList.remove('dark');
+        }
+      }
+
+      setDarkMode(document);
+
+      document.addEventListener("astro:before-swap", (event) => {
+        // Pass the incoming document to set the theme on it
+        setDarkMode(event.newDocument);
+      });
+    </script>
   </body>
 </html>
+
