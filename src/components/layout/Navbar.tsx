@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/navigation-menu';
 
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Data', href: '/data' },
-  { name: 'News', href: '/news' },
-  { name: 'About', href: '/about' },
+  { name: 'Home', href: import.meta.env.BASE_URL + '/' },
+  { name: 'Data', href: import.meta.env.BASE_URL + '/data' },
+  { name: 'News', href: import.meta.env.BASE_URL + '/news' },
+  { name: 'About', href: import.meta.env.BASE_URL + '/about' },
 ];
 
 export function Navbar() {
@@ -42,7 +42,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center pl-5">
         <div className="mr-4 flex items-center space-x-2">
-          <a href="/" className="flex items-center space-x-2">
+          <a href={import.meta.env.BASE_URL + '/'} className="flex items-center space-x-2">
             <span className="font-bold text-xl">UNEP-GRID</span>
           </a>
         </div>

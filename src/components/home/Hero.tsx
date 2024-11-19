@@ -19,7 +19,7 @@ export function Hero() {
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <Button asChild size="lg" className="px-8">
-                  <a href="/data">
+                  <a href={import.meta.env.BASE_URL + '/data'}>
                     Explore Data
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
@@ -30,7 +30,7 @@ export function Hero() {
                   size="lg"
                   className="mt-3 px-8 sm:mt-0 sm:ml-3"
                 >
-                  <a href="/about">Learn More</a>
+                  <a href={import.meta.env.BASE_URL + '/about'}>Learn More</a>
                 </Button>
               </div>
             </div>
