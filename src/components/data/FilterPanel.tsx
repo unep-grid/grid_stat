@@ -54,8 +54,8 @@ export function FilterPanel({
     filters.search || filters.categories.length > 0 || filters.keywords.length > 0;
 
   return (
-    <div className="h-full border-r bg-background p-4">
-      <div className="space-y-4">
+    <div className="flex h-full flex-col border-r bg-background">
+      <div className="border-b p-4">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -78,12 +78,12 @@ export function FilterPanel({
             </Button>
           )}
         </div>
+      </div>
 
-        <Separator />
-
-        <div>
-          <h3 className="mb-2 text-sm font-medium">Categories</h3>
-          <ScrollArea className="h-[300px] pr-4">
+      <ScrollArea className="flex-1">
+        <div className="space-y-4 p-4">
+          <div>
+            <h3 className="mb-2 text-sm font-medium">Categories</h3>
             <div className="space-y-2">
               {categories.map((category) => (
                 <Card
@@ -99,29 +99,27 @@ export function FilterPanel({
                 </Card>
               ))}
             </div>
-          </ScrollArea>
-        </div>
+          </div>
 
-        <Separator />
+          <Separator />
 
-        <div>
-          <h3 className="mb-2 text-sm font-medium">Keywords</h3>
-          <ScrollArea className="h-[200px]">
-            <div className="space-y-2">
+          <div>
+            <h3 className="mb-2 text-sm font-medium">Keywords</h3>
+            <div className="flex flex-wrap gap-2">
               {keywords.map((keyword) => (
                 <Button
                   key={keyword}
                   variant={filters.keywords.includes(keyword) ? 'default' : 'outline'}
-                  className="mr-2 h-7 rounded-full text-xs"
+                  className="h-7 rounded-full text-xs"
                   onClick={() => toggleKeyword(keyword)}
                 >
                   {keyword}
                 </Button>
               ))}
             </div>
-          </ScrollArea>
+          </div>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }
