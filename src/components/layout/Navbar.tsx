@@ -13,8 +13,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import type { Language } from '../../lib/utils/translations';
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../../lib/utils/translations';
+import type { Language } from '@/lib/utils/translations';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/lib/utils/translations';
 
 const navItems = [
   { name: 'Home', href: import.meta.env.BASE_URL + '/' },
@@ -56,7 +56,8 @@ export function Navbar() {
     if (SUPPORTED_LANGUAGES.includes(newLanguage)) {
       setLanguage(newLanguage);
       document.documentElement.lang = newLanguage;
-      console.log(`Language changed to ${newLanguage}`)
+      // Dispatch a custom event that other components can listen to
+      window.dispatchEvent(new CustomEvent('languageChange', { detail: newLanguage }));
     }
   };
 

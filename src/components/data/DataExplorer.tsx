@@ -1,11 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FilterPanel } from "./FilterPanel";
 import { IndicatorList } from "./IndicatorList";
 import { VisualizationPanel } from "./VisualizationPanel";
 import type { Indicator, IndicatorData, FilterState } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t, DEFAULT_LANGUAGE } from "@/lib/utils/translations";
-import { LanguageContext } from "@/contexts/LanguageContext";
 
 const initialFilters: FilterState = {
   search: "",
@@ -14,15 +13,27 @@ const initialFilters: FilterState = {
 };
 
 export function DataExplorer() {
-  const { language } = useContext(LanguageContext);
-  const [indicators, setIndicators] = useState<Indicator[]>([]);
-  const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(
-    null
+  const [language, setLanguage] = useState<Language>(
+     DEFAULT_LANGUAGE
   );
+  const [indicators, setIndicators] = useState<Indicator[]>([]);
+  const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
   const [indicatorData, setIndicatorData] = useState<IndicatorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
+
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = (event: CustomEvent<Language>) => {
+      setLanguage(event.detail);
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange as EventListener);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+    };
+  }, []);
 
   // Fetch indicators
   useEffect(() => {
