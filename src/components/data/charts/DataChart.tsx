@@ -41,7 +41,9 @@ export function DataChart({ data }: DataChartProps) {
     const yearMap = new Map();
     
     data.forEach(item => {
-      if (!selectedRegions.includes(item.m49_code)) return;
+      if (!selectedRegions.includes(item.m49_code)){
+        return
+      };
       
       if (!yearMap.has(item.date_start)) {
         yearMap.set(item.date_start, { year: item.date_start });
