@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
-import { FilterPanel } from './FilterPanel';
-import { IndicatorList } from './IndicatorList';
-import { VisualizationPanel } from './VisualizationPanel';
-import type { Indicator, IndicatorData, FilterState } from '@/lib/types';
-import type { Language } from '@/lib/utils/translations';
-import { t, DEFAULT_LANGUAGE } from '@/lib/utils/translations';
+import { useContext, useState, useEffect } from "react";
+import { FilterPanel } from "./FilterPanel";
+import { IndicatorList } from "./IndicatorList";
+import { VisualizationPanel } from "./VisualizationPanel";
+import type { Indicator, IndicatorData, FilterState } from "@/lib/types";
+import type { Language } from "@/lib/utils/translations";
+import { t, DEFAULT_LANGUAGE } from "@/lib/utils/translations";
+import { LanguageContext } from "@/contexts/LanguageContext";
 
 const initialFilters: FilterState = {
-  search: '',
+  search: "",
   categories: [],
   keywords: [],
 };
 
-interface DataExplorerProps {
-  language?: Language;
-}
-
-export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps) {
+export function DataExplorer() {
+  const { language } = useContext(LanguageContext);
   const [indicators, setIndicators] = useState<Indicator[]>([]);
-  const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
+  const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(
+    null
+  );
   const [indicatorData, setIndicatorData] = useState<IndicatorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,12 +28,14 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
   useEffect(() => {
     async function fetchIndicators() {
       try {
-        const response = await fetch(`https://api.unepgrid.ch/stats/v1/indicators?language=eq.${language}`);
+        const response = await fetch(
+          `https://api.unepgrid.ch/stats/v1/indicators?language=eq.${language}`
+        );
         const data = await response.json();
         setIndicators(data);
       } catch (err) {
-        setError(t('dv.failed_load_indicators', language));
-        console.error('Error fetching indicators:', err);
+        setError(t("dv.failed_load_indicators", language));
+        console.error("Error fetching indicators:", err);
       } finally {
         setLoading(false);
       }
@@ -54,7 +56,7 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
         const data = await response.json();
         setIndicatorData(data);
       } catch (err) {
-        console.error('Error fetching indicator data:', err);
+        console.error("Error fetching indicator data:", err);
       }
     }
 
@@ -62,7 +64,10 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
   }, [selectedIndicator]);
 
   // Calculate remaining counts for categories and keywords
-  const calculateFilteredCounts = (indicators: Indicator[], currentFilters: FilterState) => {
+  const calculateFilteredCounts = (
+    indicators: Indicator[],
+    currentFilters: FilterState
+  ) => {
     const categoryCount: Record<string, number> = {};
     const keywordCount: Record<string, number> = {};
 
@@ -70,20 +75,28 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
       // Check if indicator matches current filters excluding the category being counted
       const matchesSearch =
         !currentFilters.search ||
-        indicator.title.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
-        indicator.description.toLowerCase().includes(currentFilters.search.toLowerCase());
+        indicator.title
+          .toLowerCase()
+          .includes(currentFilters.search.toLowerCase()) ||
+        indicator.description
+          .toLowerCase()
+          .includes(currentFilters.search.toLowerCase());
 
       const matchesKeywords =
         currentFilters.keywords.length === 0 ||
         currentFilters.keywords.some((keyword) =>
-          indicator.keywords.some((k) => k.toLowerCase().includes(keyword.toLowerCase()))
+          indicator.keywords.some((k) =>
+            k.toLowerCase().includes(keyword.toLowerCase())
+          )
         );
 
       // Count categories
       indicator.collections.forEach((collection) => {
         const categoryTitle = collection.title;
         // When counting for a category, exclude it from the filter check
-        const otherCategories = currentFilters.categories.filter((c) => c !== categoryTitle);
+        const otherCategories = currentFilters.categories.filter(
+          (c) => c !== categoryTitle
+        );
         const matchesOtherCategories =
           otherCategories.length === 0 ||
           indicator.collections.some((col) =>
@@ -91,24 +104,32 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
           );
 
         if (matchesSearch && matchesKeywords && matchesOtherCategories) {
-          categoryCount[categoryTitle] = (categoryCount[categoryTitle] || 0) + 1;
+          categoryCount[categoryTitle] =
+            (categoryCount[categoryTitle] || 0) + 1;
         }
       });
 
       // Count keywords
-      if (matchesSearch && (currentFilters.categories.length === 0 ||
-        currentFilters.categories.some((category) =>
-          indicator.collections.some((collection) =>
-            collection.title.toLowerCase().includes(category.toLowerCase())
-          )
-        ))) {
+      if (
+        matchesSearch &&
+        (currentFilters.categories.length === 0 ||
+          currentFilters.categories.some((category) =>
+            indicator.collections.some((collection) =>
+              collection.title.toLowerCase().includes(category.toLowerCase())
+            )
+          ))
+      ) {
         indicator.keywords.forEach((keyword) => {
           // When counting for a keyword, exclude it from the filter check
-          const otherKeywords = currentFilters.keywords.filter((k) => k !== keyword);
+          const otherKeywords = currentFilters.keywords.filter(
+            (k) => k !== keyword
+          );
           const matchesOtherKeywords =
             otherKeywords.length === 0 ||
             otherKeywords.some((k) =>
-              indicator.keywords.some((ik) => ik.toLowerCase().includes(k.toLowerCase()))
+              indicator.keywords.some((ik) =>
+                ik.toLowerCase().includes(k.toLowerCase())
+              )
             );
 
           if (matchesOtherKeywords) {
@@ -126,7 +147,9 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
     const matchesSearch =
       !filters.search ||
       indicator.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-      indicator.description.toLowerCase().includes(filters.search.toLowerCase());
+      indicator.description
+        .toLowerCase()
+        .includes(filters.search.toLowerCase());
 
     const matchesCategories =
       filters.categories.length === 0 ||
@@ -139,7 +162,9 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
     const matchesKeywords =
       filters.keywords.length === 0 ||
       filters.keywords.some((keyword) =>
-        indicator.keywords.some((k) => k.toLowerCase().includes(keyword.toLowerCase()))
+        indicator.keywords.some((k) =>
+          k.toLowerCase().includes(keyword.toLowerCase())
+        )
       );
 
     return matchesSearch && matchesCategories && matchesKeywords;
@@ -158,7 +183,10 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
     new Set(indicators.flatMap((indicator) => indicator.keywords))
   );
 
-  const { categoryCount, keywordCount } = calculateFilteredCounts(indicators, filters);
+  const { categoryCount, keywordCount } = calculateFilteredCounts(
+    indicators,
+    filters
+  );
 
   return (
     <div className="flex h-[calc(100vh-4rem)]">
@@ -186,10 +214,10 @@ export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps)
       </div>
 
       <div className="flex-1">
-        <VisualizationPanel 
+        <VisualizationPanel
           language={language}
-          indicator={selectedIndicator} 
-          data={indicatorData} 
+          indicator={selectedIndicator}
+          data={indicatorData}
         />
       </div>
     </div>

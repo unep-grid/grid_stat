@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X, Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from '@/components/ui/navigation-menu';
+} from '../ui/navigation-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import type { Language } from '@/lib/utils/translations';
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, t } from '@/lib/utils/translations';
+} from '../ui/dropdown-menu';
+import type { Language } from '../../lib/utils/translations';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../../lib/utils/translations';
 
 const navItems = [
   { name: 'Home', href: import.meta.env.BASE_URL + '/' },
@@ -23,20 +23,21 @@ const navItems = [
   { name: 'About', href: import.meta.env.BASE_URL + '/about' },
 ];
 
-interface NavbarProps {
-  language: Language;
-  onLanguageChange: (lang: Language) => void;
-}
-
-export function Navbar({ language, onLanguageChange }: NavbarProps) {
+export function Navbar() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isOpen, setIsOpen] = useState(false);
+  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
 
-  // Initialize theme from localStorage
+  // Initialize theme and language from localStorage/document
   useEffect(() => {
     const savedTheme = localStorage.getItem('class_theme') as 'light' | 'dark';
+    const currentLang = document.documentElement.lang as Language;
+    
     if (savedTheme) {
       setTheme(savedTheme);
+    }
+    if (currentLang && SUPPORTED_LANGUAGES.includes(currentLang)) {
+      setLanguage(currentLang);
     }
   }, []);
 
@@ -48,6 +49,14 @@ export function Navbar({ language, onLanguageChange }: NavbarProps) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    if (SUPPORTED_LANGUAGES.includes(newLanguage)) {
+      setLanguage(newLanguage);
+      document.documentElement.lang = newLanguage;
+      console.log(`Language changed to ${newLanguage}`)
     }
   };
 
@@ -90,7 +99,7 @@ export function Navbar({ language, onLanguageChange }: NavbarProps) {
             {SUPPORTED_LANGUAGES.map((lang) => (
               <DropdownMenuItem
                 key={lang}
-                onClick={() => onLanguageChange(lang)}
+                onClick={() => handleLanguageChange(lang)}
                 className={language === lang ? 'bg-accent' : ''}
               >
                 {lang.toUpperCase()}
