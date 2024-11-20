@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FilterPanel } from './FilterPanel';
 import { IndicatorList } from './IndicatorList';
 import { VisualizationPanel } from './VisualizationPanel';
-import type { Indicator, IndicatorData, FilterState } from '@/lib/types';
+import type { Indicator, IndicatorData, FilterState } from '../../lib/types';
 
 const initialFilters: FilterState = {
   search: '',
@@ -55,6 +55,66 @@ export function DataExplorer() {
     fetchIndicatorData();
   }, [selectedIndicator]);
 
+  // Calculate remaining counts for categories and keywords
+  const calculateFilteredCounts = (indicators: Indicator[], currentFilters: FilterState) => {
+    const categoryCount: Record<string, number> = {};
+    const keywordCount: Record<string, number> = {};
+
+    indicators.forEach((indicator) => {
+      // Check if indicator matches current filters excluding the category being counted
+      const matchesSearch =
+        !currentFilters.search ||
+        indicator.title.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
+        indicator.description.toLowerCase().includes(currentFilters.search.toLowerCase());
+
+      const matchesKeywords =
+        currentFilters.keywords.length === 0 ||
+        currentFilters.keywords.some((keyword) =>
+          indicator.keywords.some((k) => k.toLowerCase().includes(keyword.toLowerCase()))
+        );
+
+      // Count categories
+      indicator.collections.forEach((collection) => {
+        const categoryTitle = collection.title;
+        // When counting for a category, exclude it from the filter check
+        const otherCategories = currentFilters.categories.filter((c) => c !== categoryTitle);
+        const matchesOtherCategories =
+          otherCategories.length === 0 ||
+          indicator.collections.some((col) =>
+            otherCategories.includes(col.title)
+          );
+
+        if (matchesSearch && matchesKeywords && matchesOtherCategories) {
+          categoryCount[categoryTitle] = (categoryCount[categoryTitle] || 0) + 1;
+        }
+      });
+
+      // Count keywords
+      if (matchesSearch && (currentFilters.categories.length === 0 ||
+        currentFilters.categories.some((category) =>
+          indicator.collections.some((collection) =>
+            collection.title.toLowerCase().includes(category.toLowerCase())
+          )
+        ))) {
+        indicator.keywords.forEach((keyword) => {
+          // When counting for a keyword, exclude it from the filter check
+          const otherKeywords = currentFilters.keywords.filter((k) => k !== keyword);
+          const matchesOtherKeywords =
+            otherKeywords.length === 0 ||
+            otherKeywords.some((k) =>
+              indicator.keywords.some((ik) => ik.toLowerCase().includes(k.toLowerCase()))
+            );
+
+          if (matchesOtherKeywords) {
+            keywordCount[keyword] = (keywordCount[keyword] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    return { categoryCount, keywordCount };
+  };
+
   // Filter indicators based on search and filters
   const filteredIndicators = indicators.filter((indicator) => {
     const matchesSearch =
@@ -92,6 +152,8 @@ export function DataExplorer() {
     new Set(indicators.flatMap((indicator) => indicator.keywords))
   );
 
+  const { categoryCount, keywordCount } = calculateFilteredCounts(indicators, filters);
+
   return (
     <div className="flex h-[calc(100vh-4rem)]">
       <div className="w-64 flex-none">
@@ -100,6 +162,8 @@ export function DataExplorer() {
           keywords={keywords}
           filters={filters}
           onFilterChange={setFilters}
+          categoryCount={categoryCount}
+          keywordCount={keywordCount}
         />
       </div>
 

@@ -5,13 +5,16 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Card } from '@/components/ui/card';
-import type { FilterState } from '@/lib/types';
+import { Badge } from '@/components/ui/badge';
+import type { FilterState } from '../../lib/types';
 
 interface FilterPanelProps {
   categories: string[];
   keywords: string[];
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
+  categoryCount: Record<string, number>;
+  keywordCount: Record<string, number>;
 }
 
 export function FilterPanel({
@@ -19,6 +22,8 @@ export function FilterPanel({
   keywords,
   filters,
   onFilterChange,
+  categoryCount,
+  keywordCount,
 }: FilterPanelProps) {
   const [searchInput, setSearchInput] = useState(filters.search);
 
@@ -85,19 +90,30 @@ export function FilterPanel({
           <div>
             <h3 className="mb-2 text-sm font-medium">Categories</h3>
             <div className="space-y-2">
-              {categories.map((category) => (
-                <Card
-                  key={category}
-                  className={`cursor-pointer p-2 transition-colors ${
-                    filters.categories.includes(category)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-muted'
-                  }`}
-                  onClick={() => toggleCategory(category)}
-                >
-                  <p className="text-sm">{category}</p>
-                </Card>
-              ))}
+              {categories.map((category) => {
+                const count = categoryCount[category] || 0;
+                const isDisabled = count === 0 && !filters.categories.includes(category);
+                return (
+                  <Card
+                    key={category}
+                    className={`cursor-pointer p-2 transition-colors ${
+                      filters.categories.includes(category)
+                        ? 'bg-primary text-primary-foreground'
+                        : isDisabled
+                        ? 'opacity-50 hover:bg-muted/50'
+                        : 'hover:bg-muted'
+                    }`}
+                    onClick={() => !isDisabled && toggleCategory(category)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm">{category}</p>
+                      <Badge variant="secondary" className="ml-2">
+                        {count}
+                      </Badge>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
 
@@ -106,16 +122,28 @@ export function FilterPanel({
           <div>
             <h3 className="mb-2 text-sm font-medium">Keywords</h3>
             <div className="flex flex-wrap gap-2">
-              {keywords.map((keyword) => (
-                <Button
-                  key={keyword}
-                  variant={filters.keywords.includes(keyword) ? 'default' : 'outline'}
-                  className="h-7 rounded-full text-xs"
-                  onClick={() => toggleKeyword(keyword)}
-                >
-                  {keyword}
-                </Button>
-              ))}
+              {keywords.map((keyword) => {
+                const count = keywordCount[keyword] || 0;
+                const isDisabled = count === 0 && !filters.keywords.includes(keyword);
+                return (
+                  <Button
+                    key={keyword}
+                    variant={filters.keywords.includes(keyword) ? 'default' : 'outline'}
+                    className={`h-7 rounded-full text-xs ${
+                      isDisabled ? 'opacity-50 cursor-default' : ''
+                    }`}
+                    onClick={() => !isDisabled && toggleKeyword(keyword)}
+                  >
+                    {keyword}
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 h-4 rounded-full px-1 text-[10px]"
+                    >
+                      {count}
+                    </Badge>
+                  </Button>
+                );
+              })}
             </div>
           </div>
         </div>
