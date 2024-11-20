@@ -7,8 +7,11 @@ import { Separator } from '@/components/ui/separator';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { FilterState } from '../../lib/types';
+import type { Language } from '@/lib/utils/translations';
+import { t } from '@/lib/utils/translations';
 
 interface FilterPanelProps {
+  language: Language;
   categories: string[];
   keywords: string[];
   filters: FilterState;
@@ -18,6 +21,7 @@ interface FilterPanelProps {
 }
 
 export function FilterPanel({
+  language,
   categories,
   keywords,
   filters,
@@ -65,7 +69,7 @@ export function FilterPanel({
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search indicators..."
+              placeholder={t('dv.search_indicators', language)}
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-8"
@@ -77,7 +81,7 @@ export function FilterPanel({
               size="icon"
               onClick={resetFilters}
               className="shrink-0"
-              title="Reset filters"
+              title={t('dv.reset_filters', language)}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -88,7 +92,7 @@ export function FilterPanel({
       <ScrollArea className="flex-1">
         <div className="space-y-4 p-4">
           <div>
-            <h3 className="mb-2 text-sm font-medium">Categories</h3>
+            <h3 className="mb-2 text-sm font-medium">{t('dv.categories', language)}</h3>
             <div className="space-y-2">
               {categories.map((category) => {
                 const count = categoryCount[category] || 0;
@@ -120,7 +124,7 @@ export function FilterPanel({
           <Separator />
 
           <div>
-            <h3 className="mb-2 text-sm font-medium">Keywords</h3>
+            <h3 className="mb-2 text-sm font-medium">{t('dv.keywords', language)}</h3>
             <div className="flex flex-wrap gap-2">
               {keywords.map((keyword) => {
                 const count = keywordCount[keyword] || 0;

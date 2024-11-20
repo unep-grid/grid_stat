@@ -3,8 +3,10 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 import { RegionSelector } from './RegionSelector';
 import { getRegionName } from '@/lib/utils/regions';
 import type { IndicatorData } from '@/lib/types';
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import type { Language } from '@/lib/utils/translations';
+import { t } from '@/lib/utils/translations';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Filter, CheckSquare, Square } from 'lucide-react';
 
 const colorPalette = [
@@ -17,9 +19,10 @@ const colorPalette = [
 
 interface DataChartProps {
   data: IndicatorData[];
+  language: Language;
 }
 
-export function DataChart({ data }: DataChartProps) {
+export function DataChart({ data, language }: DataChartProps) {
   const [selectedRegions, setSelectedRegions] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -70,7 +73,7 @@ export function DataChart({ data }: DataChartProps) {
   if (!data.length) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground">No data available</p>
+        <p className="text-muted-foreground">{t('dv.no_data', language)}</p>
       </div>
     );
   }
@@ -82,11 +85,12 @@ export function DataChart({ data }: DataChartProps) {
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4 mr-2" />
-              Filter Regions
+              {t('dv.filter_regions', language)}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[280px] p-0" align="start" side="bottom" sideOffset={4}>
             <RegionSelector
+              language={language}
               allRegions={allRegions}
               selectedRegions={selectedRegions}
               setSelectedRegions={setSelectedRegions}
@@ -100,19 +104,19 @@ export function DataChart({ data }: DataChartProps) {
           variant="outline" 
           size="sm"
           onClick={selectAll}
-          title="Select All Regions"
+          title={t('dv.select_all_regions', language)}
         >
           <CheckSquare className="h-4 w-4 mr-2" />
-          Select All
+          {t('dv.select_all', language)}
         </Button>
         <Button 
           variant="outline" 
           size="sm"
           onClick={selectNone}
-          title="Clear Selection"
+          title={t('dv.clear_selection', language)}
         >
           <Square className="h-4 w-4 mr-2" />
-          Clear
+          {t('dv.clear', language)}
         </Button>
       </div>
 

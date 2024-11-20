@@ -4,9 +4,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import "@/styles/globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { ViewTransitions } from "astro:transitions";
+import '@/styles/globals.css';
+import { LanguageProvider } from '@/components/layout/LanguageProvider';
+import { ViewTransitions } from 'astro:transitions';
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -25,8 +25,9 @@ const base = import.meta.env.BASE_URL;
     <title>{title}</title>
   </head>
   <body>
-    <Navbar client:load />
-    <slot />
+    <LanguageProvider client:load>
+      <slot />
+    </LanguageProvider>
     <script is:inline>
       const setDarkMode = (document) => {
         const theme = localStorage.getItem('class_theme');

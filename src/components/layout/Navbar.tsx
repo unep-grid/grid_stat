@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -7,6 +7,14 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import type { Language } from '@/lib/utils/translations';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, t } from '@/lib/utils/translations';
 
 const navItems = [
   { name: 'Home', href: import.meta.env.BASE_URL + '/' },
@@ -15,11 +23,16 @@ const navItems = [
   { name: 'About', href: import.meta.env.BASE_URL + '/about' },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  language: Language;
+  onLanguageChange: (lang: Language) => void;
+}
+
+export function Navbar({ language, onLanguageChange }: NavbarProps) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isOpen, setIsOpen] = useState(false);
 
-  // Initialize theme from localStorage on component mount
+  // Initialize theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem('class_theme') as 'light' | 'dark';
     if (savedTheme) {
@@ -64,6 +77,27 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
+
+        {/* Language Selector */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="mr-2">
+              <Globe className="h-5 w-5" />
+              <span className="ml-2 text-sm">{language.toUpperCase()}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {SUPPORTED_LANGUAGES.map((lang) => (
+              <DropdownMenuItem
+                key={lang}
+                onClick={() => onLanguageChange(lang)}
+                className={language === lang ? 'bg-accent' : ''}
+              >
+                {lang.toUpperCase()}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         {/* Theme Toggle */}
         <Button

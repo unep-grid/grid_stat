@@ -1,14 +1,17 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { Indicator } from '@/lib/types';
+import type { Language } from '@/lib/utils/translations';
+import { t } from '@/lib/utils/translations';
 
 interface IndicatorCardProps {
   indicator: Indicator;
   isSelected: boolean;
   onClick: () => void;
+  language: Language;
 }
 
-export function IndicatorCard({ indicator, isSelected, onClick }: IndicatorCardProps) {
+export function IndicatorCard({ indicator, isSelected, onClick, language }: IndicatorCardProps) {
   return (
     <Card
       className={`cursor-pointer transition-all hover:shadow-md ${
@@ -22,7 +25,7 @@ export function IndicatorCard({ indicator, isSelected, onClick }: IndicatorCardP
             {indicator.category}
           </Badge>
           <span className="text-xs text-muted-foreground">
-            Updated: {indicator.last_updated}
+            {t('dv.updated', language)}: {indicator.last_updated}
           </span>
         </div>
         <CardTitle className="text-lg">{indicator.title}</CardTitle>

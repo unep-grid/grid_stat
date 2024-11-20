@@ -5,6 +5,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { getRegionName } from '@/lib/utils/regions';
 import { Search, X } from 'lucide-react';
+import type { Language } from '@/lib/utils/translations';
+import { t } from '@/lib/utils/translations';
 
 interface RegionSelectorProps {
   allRegions: number[];
@@ -13,6 +15,7 @@ interface RegionSelectorProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   onClose: () => void;
+  language: Language;
 }
 
 export function RegionSelector({ 
@@ -21,7 +24,8 @@ export function RegionSelector({
   setSelectedRegions,
   searchQuery,
   setSearchQuery,
-  onClose
+  onClose,
+  language
 }: RegionSelectorProps) {
   const toggleRegion = (region: number) => {
     setSelectedRegions(
@@ -43,7 +47,7 @@ export function RegionSelector({
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search regions..."
+            placeholder={t('dv.search_regions', language)}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-8 h-8"
@@ -73,7 +77,7 @@ export function RegionSelector({
           ))}
           {filteredRegions.length === 0 && (
             <div className="px-1 py-0.5 text-xs text-muted-foreground">
-              No regions found
+              {t('dv.no_regions_found', language)}
             </div>
           )}
         </div>
@@ -86,7 +90,7 @@ export function RegionSelector({
           className="w-full h-7 text-xs"
         >
           <X className="h-3 w-3 mr-1" />
-          Close
+          {t('dv.close', language)}
         </Button>
       </div>
     </div>

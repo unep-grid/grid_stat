@@ -1,0 +1,39 @@
+{
+  "main": {
+    "hello": { "en": "Hello", "fr": "Bonjour" },
+    "language": { "en": "Language", "fr": "Langue" },
+    "choose_language": { "en": "Choose language", "fr": "Choisir la langue" }
+  },
+  "dv": {
+    "table": { "en": "Table", "fr": "Tableau" },
+    "chart": { "en": "Chart", "fr": "Graphique" },
+    "filter": { "en": "Filter", "fr": "Filtrer" },
+    "search": { "en": "Search", "fr": "Rechercher" },
+    "indicators": { "en": "Indicators", "fr": "Indicateurs" },
+    "visualization": { "en": "Visualization", "fr": "Visualisation" },
+    "select_region": { "en": "Select Region", "fr": "Sélectionner une région" },
+    "select_indicator": { "en": "Select Indicator", "fr": "Sélectionner un indicateur" },
+    "no_data": { "en": "No data available", "fr": "Aucune donnée disponible" },
+    "loading": { "en": "Loading...", "fr": "Chargement..." },
+    "search_indicators": { "en": "Search indicators...", "fr": "Rechercher des indicateurs..." },
+    "reset_filters": { "en": "Reset filters", "fr": "Réinitialiser les filtres" },
+    "categories": { "en": "Categories", "fr": "Catégories" },
+    "keywords": { "en": "Keywords", "fr": "Mots-clés" },
+    "results": { "en": "results", "fr": "résultats" },
+    "failed_load_indicators": { "en": "Failed to load indicators", "fr": "Échec du chargement des indicateurs" },
+    "updated": { "en": "Updated", "fr": "Mis à jour" },
+    "select_indicator_view": { "en": "Select an indicator to view data", "fr": "Sélectionnez un indicateur pour voir les données" },
+    "download": { "en": "Download", "fr": "Télécharger" },
+    "filter_regions": { "en": "Filter Regions", "fr": "Filtrer les régions" },
+    "select_all": { "en": "Select All", "fr": "Tout sélectionner" },
+    "clear": { "en": "Clear", "fr": "Effacer" },
+    "select_all_regions": { "en": "Select All Regions", "fr": "Sélectionner toutes les régions" },
+    "clear_selection": { "en": "Clear Selection", "fr": "Effacer la sélection" },
+    "search_regions": { "en": "Search regions...", "fr": "Rechercher des régions..." },
+    "no_regions_found": { "en": "No regions found", "fr": "Aucune région trouvée" },
+    "close": { "en": "Close", "fr": "Fermer" },
+    "year": { "en": "Year", "fr": "Année" },
+    "value": { "en": "Value", "fr": "Valeur" },
+    "region": { "en": "Region", "fr": "Région" }
+  }
+}

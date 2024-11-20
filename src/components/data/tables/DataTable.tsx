@@ -1,5 +1,7 @@
 import { getRegionName } from '@/lib/utils/regions';
 import type { IndicatorData } from '@/lib/types';
+import type { Language } from '@/lib/utils/translations';
+import { t } from '@/lib/utils/translations';
 import {
   Table,
   TableBody,
@@ -7,22 +9,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 interface DataTableProps {
   data: IndicatorData[];
+  language: Language;
 }
 
-export function DataTable({ data }: DataTableProps) {
+export function DataTable({ data, language }: DataTableProps) {
   return (
     <div className="h-full flex flex-col">
       <div className="border rounded-md h-full flex flex-col">
         <Table>
           <TableHeader className="bg-background">
             <TableRow>
-              <TableHead className="sticky top-0 bg-background z-10">Year</TableHead>
-              <TableHead className="sticky top-0 bg-background z-10">Value</TableHead>
-              <TableHead className="sticky top-0 bg-background z-10">Region</TableHead>
+              <TableHead className="sticky top-0 bg-background z-10">{t('dv.year', language)}</TableHead>
+              <TableHead className="sticky top-0 bg-background z-10">{t('dv.value', language)}</TableHead>
+              <TableHead className="sticky top-0 bg-background z-10">{t('dv.region', language)}</TableHead>
             </TableRow>
           </TableHeader>
         </Table>

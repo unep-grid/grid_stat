@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { FilterPanel } from './FilterPanel';
 import { IndicatorList } from './IndicatorList';
 import { VisualizationPanel } from './VisualizationPanel';
-import type { Indicator, IndicatorData, FilterState } from '../../lib/types';
+import type { Indicator, IndicatorData, FilterState } from '@/lib/types';
+import type { Language } from '@/lib/utils/translations';
+import { t, DEFAULT_LANGUAGE } from '@/lib/utils/translations';
 
 const initialFilters: FilterState = {
   search: '',
@@ -10,7 +12,11 @@ const initialFilters: FilterState = {
   keywords: [],
 };
 
-export function DataExplorer() {
+interface DataExplorerProps {
+  language?: Language;
+}
+
+export function DataExplorer({ language = DEFAULT_LANGUAGE }: DataExplorerProps) {
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
   const [indicatorData, setIndicatorData] = useState<IndicatorData[]>([]);
@@ -22,11 +28,11 @@ export function DataExplorer() {
   useEffect(() => {
     async function fetchIndicators() {
       try {
-        const response = await fetch('https://api.unepgrid.ch/stats/v1/indicators?language=eq.en');
+        const response = await fetch(`https://api.unepgrid.ch/stats/v1/indicators?language=eq.${language}`);
         const data = await response.json();
         setIndicators(data);
       } catch (err) {
-        setError('Failed to load indicators');
+        setError(t('dv.failed_load_indicators', language));
         console.error('Error fetching indicators:', err);
       } finally {
         setLoading(false);
@@ -34,7 +40,7 @@ export function DataExplorer() {
     }
 
     fetchIndicators();
-  }, []);
+  }, [language]);
 
   // Fetch indicator data when selection changes
   useEffect(() => {
@@ -158,6 +164,7 @@ export function DataExplorer() {
     <div className="flex h-[calc(100vh-4rem)]">
       <div className="w-64 flex-none">
         <FilterPanel
+          language={language}
           categories={categories}
           keywords={keywords}
           filters={filters}
@@ -169,6 +176,7 @@ export function DataExplorer() {
 
       <div className="w-96 flex-none border-r">
         <IndicatorList
+          language={language}
           indicators={filteredIndicators}
           selectedIndicator={selectedIndicator}
           onSelectIndicator={setSelectedIndicator}
@@ -178,7 +186,11 @@ export function DataExplorer() {
       </div>
 
       <div className="flex-1">
-        <VisualizationPanel indicator={selectedIndicator} data={indicatorData} />
+        <VisualizationPanel 
+          language={language}
+          indicator={selectedIndicator} 
+          data={indicatorData} 
+        />
       </div>
     </div>
   );
