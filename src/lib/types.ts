@@ -5,7 +5,7 @@ export interface Indicator {
   keywords: string[];
   category: string;
   source: string;
-  last_updated: string;
+  date_publication: string;
   collections: Array<{
     title: string;
   }>;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu, X, Globe } from 'lucide-react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   NavigationMenu,
@@ -7,14 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '../ui/navigation-menu';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import type { Language } from '@/lib/utils/translations';
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/lib/utils/translations';
+import { LanguageSelector } from './LanguageSelector';
 
 const navItems = [
   { name: 'Home', href: import.meta.env.BASE_URL + '/' },
@@ -26,18 +19,12 @@ const navItems = [
 export function Navbar() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isOpen, setIsOpen] = useState(false);
-  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
 
-  // Initialize theme and language from localStorage/document
+  // Initialize theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem('class_theme') as 'light' | 'dark';
-    const currentLang = document.documentElement.lang as Language;
-    
     if (savedTheme) {
       setTheme(savedTheme);
-    }
-    if (currentLang && SUPPORTED_LANGUAGES.includes(currentLang)) {
-      setLanguage(currentLang);
     }
   }, []);
 
@@ -49,15 +36,6 @@ export function Navbar() {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
-    }
-  };
-
-  const handleLanguageChange = (newLanguage: Language) => {
-    if (SUPPORTED_LANGUAGES.includes(newLanguage)) {
-      setLanguage(newLanguage);
-      document.documentElement.lang = newLanguage;
-      // Dispatch a custom event that other components can listen to
-      window.dispatchEvent(new CustomEvent('languageChange', { detail: newLanguage }));
     }
   };
 
@@ -89,25 +67,7 @@ export function Navbar() {
         </div>
 
         {/* Language Selector */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="mr-2">
-              <Globe className="h-5 w-5" />
-              <span className="ml-2 text-sm">{language.toUpperCase()}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {SUPPORTED_LANGUAGES.map((lang) => (
-              <DropdownMenuItem
-                key={lang}
-                onClick={() => handleLanguageChange(lang)}
-                className={language === lang ? 'bg-accent' : ''}
-              >
-                {lang.toUpperCase()}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <LanguageSelector />
 
         {/* Theme Toggle */}
         <Button

@@ -25,7 +25,7 @@ export function IndicatorCard({ indicator, isSelected, onClick, language }: Indi
             {indicator.category}
           </Badge>
           <span className="text-xs text-muted-foreground">
-            {t('dv.updated', language)}: {indicator.last_updated}
+            {t('dv.updated', language)}: {indicator.date_publication}
           </span>
         </div>
         <CardTitle className="text-lg">{indicator.title}</CardTitle>
