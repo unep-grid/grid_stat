@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { FilterPanel } from "./FilterPanel";
 import { IndicatorList } from "./IndicatorList";
 import { VisualizationPanel } from "./VisualizationPanel";
-import type { Indicator, IndicatorData, FilterState } from "@/lib/types";
-import type { Language } from "@/lib/utils/translations";
-import { t, DEFAULT_LANGUAGE } from "@/lib/utils/translations";
+import type { Indicator, IndicatorData, FilterState } from "../../lib/types";
+import type { Language } from "../../lib/utils/translations";
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "../../lib/utils/translations";
+import { t } from "../../lib/utils/translations";
 
 const initialFilters: FilterState = {
   search: "",
@@ -12,16 +13,26 @@ const initialFilters: FilterState = {
   keywords: [],
 };
 
+const getInitialLanguage = (): Language => {
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
+  
+  const storedLang = window.localStorage?.getItem('language') as Language;
+  return storedLang && SUPPORTED_LANGUAGES.includes(storedLang) ? storedLang : DEFAULT_LANGUAGE;
+};
+
 export function DataExplorer() {
-  const [language, setLanguage] = useState<Language>(
-     DEFAULT_LANGUAGE
-  );
+  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
   const [indicatorData, setIndicatorData] = useState<IndicatorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
+
+  // Initialize language from localStorage on client-side
+  useEffect(() => {
+    setLanguage(getInitialLanguage());
+  }, []);
 
   // Listen for language changes
   useEffect(() => {

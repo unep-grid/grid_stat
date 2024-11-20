@@ -10,20 +10,28 @@ import {
 import type { Language } from '../../lib/utils/translations';
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../../lib/utils/translations';
 
+const getStoredLanguage = (): Language => {
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
+  
+  const storedLang = window.localStorage?.getItem('language') as Language;
+  return storedLang && SUPPORTED_LANGUAGES.includes(storedLang) ? storedLang : DEFAULT_LANGUAGE;
+};
+
 export function LanguageSelector() {
   const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
 
   useEffect(() => {
-    const currentLang = document.documentElement.lang as Language;
-    if (currentLang && SUPPORTED_LANGUAGES.includes(currentLang)) {
-      setLanguage(currentLang);
-    }
+    const currentLang = getStoredLanguage();
+    setLanguage(currentLang);
+    // Dispatch initial language event for other components
+    window.dispatchEvent(new CustomEvent('languageChange', { detail: currentLang }));
   }, []);
 
   const handleLanguageChange = (newLanguage: Language) => {
     if (SUPPORTED_LANGUAGES.includes(newLanguage)) {
       setLanguage(newLanguage);
       document.documentElement.lang = newLanguage;
+      localStorage.setItem('language', newLanguage);
       window.dispatchEvent(new CustomEvent('languageChange', { detail: newLanguage }));
     }
   };
