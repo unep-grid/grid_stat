@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { getRegionName } from "@/lib/utils/regions";
 import type { IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
@@ -12,6 +12,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+  type SortingState,
+  createColumnHelper,
+} from "@tanstack/react-table";
 
 interface DataTableProps {
   data: IndicatorData[];
@@ -58,13 +66,9 @@ const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
 };
 
 export function DataTable({ data, language }: DataTableProps) {
-  const [sortConfig, setSortConfig] = useState<{
-    key: keyof ProcessedData;
-    direction: 'asc' | 'desc';
-  }>({
-    key: 'latestValue',
-    direction: 'desc'
-  });
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: 'latestValue', desc: true }
+  ]);
 
   const processedData = useMemo(() => {
     const regionMap = new Map<number, ProcessedData>();
@@ -109,34 +113,71 @@ export function DataTable({ data, language }: DataTableProps) {
       region.historicalValues = sorted.map(item => item.value);
     });
 
-    processedArray.sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortConfig.direction === 'asc' 
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-      
-      return sortConfig.direction === 'asc'
-        ? (aValue as number) - (bValue as number)
-        : (bValue as number) - (aValue as number);
-    });
-
     return processedArray;
-  }, [data, sortConfig]);
+  }, [data]);
 
-  const handleSort = (key: keyof ProcessedData) => {
-    setSortConfig(current => ({
-      key,
-      direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc'
-    }));
-  };
+  const columnHelper = createColumnHelper<ProcessedData>();
 
-  const getSortIcon = (key: keyof ProcessedData) => {
-    if (sortConfig.key !== key) return <ChevronsUpDown className="h-4 w-4" />;
-    return sortConfig.direction === 'asc' 
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('regionName', {
+        header: () => t('dv.region', language),
+        cell: info => (
+          <div className="truncate" title={info.getValue()}>
+            {info.getValue()}
+          </div>
+        ),
+        size: 200,
+      }),
+      columnHelper.accessor('minYear', {
+        header: 'Min Year',
+        cell: info => info.getValue(),
+        size: 100,
+      }),
+      columnHelper.accessor('latestYear', {
+        header: 'Latest Year',
+        cell: info => info.getValue(),
+        size: 100,
+      }),
+      columnHelper.accessor('minValue', {
+        header: 'Min Value',
+        cell: info => info.getValue().toLocaleString(),
+        size: 120,
+      }),
+      columnHelper.accessor('latestValue', {
+        header: 'Latest Value',
+        cell: info => info.getValue().toLocaleString(),
+        size: 120,
+      }),
+      columnHelper.accessor('maxValue', {
+        header: 'Max Value',
+        cell: info => info.getValue().toLocaleString(),
+        size: 120,
+      }),
+      columnHelper.accessor('historicalValues', {
+        header: '',
+        cell: info => <Sparkline data={info.getValue()} />,
+        size: 80,
+        enableSorting: false,
+      }),
+    ],
+    [language]
+  );
+
+  const table = useReactTable({
+    data: processedData,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  const getSortIcon = (isSorted: false | 'asc' | 'desc') => {
+    if (!isSorted) return <ChevronsUpDown className="h-4 w-4" />;
+    return isSorted === 'asc' 
       ? <ChevronUp className="h-4 w-4" />
       : <ChevronDown className="h-4 w-4" />;
   };
@@ -147,84 +188,54 @@ export function DataTable({ data, language }: DataTableProps) {
         <Table>
           <TableHeader className="bg-background">
             <TableRow className="border-b">
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 border-r w-[200px]"
-                onClick={() => handleSort('regionName')}
-              >
-                <div className="flex items-center gap-2">
-                  {t('dv.region', language)}
-                  {getSortIcon('regionName')}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[100px]"
-                onClick={() => handleSort('minYear')}
-              >
-                <div className="flex items-center justify-end gap-2">
-                  Min Year
-                  {getSortIcon('minYear')}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[100px]"
-                onClick={() => handleSort('latestYear')}
-              >
-                <div className="flex items-center justify-end gap-2">
-                  Latest Year
-                  {getSortIcon('latestYear')}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
-                onClick={() => handleSort('minValue')}
-              >
-                <div className="flex items-center justify-end gap-2">
-                  Min Value
-                  {getSortIcon('minValue')}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
-                onClick={() => handleSort('latestValue')}
-              >
-                <div className="flex items-center justify-end gap-2">
-                  Latest Value
-                  {getSortIcon('latestValue')}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
-                onClick={() => handleSort('maxValue')}
-              >
-                <div className="flex items-center justify-end gap-2">
-                  Max Value
-                  {getSortIcon('maxValue')}
-                </div>
-              </TableHead>
-              <TableHead className="sticky top-0 bg-background z-10 w-[80px]" />
+              {table.getFlatHeaders().map(header => {
+                const isNumeric = header.id !== 'regionName' && header.id !== 'historicalValues';
+                return (
+                  <TableHead
+                    key={header.id}
+                    className={`sticky top-0 bg-background z-10 ${
+                      header.column.getCanSort() ? 'cursor-pointer hover:bg-gray-50' : ''
+                    } border-r`}
+                    style={{ 
+                      width: header.column.getSize(),
+                      minWidth: header.column.getSize(),
+                      maxWidth: header.column.getSize()
+                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div className={`flex items-center gap-2 ${isNumeric ? 'justify-end' : 'justify-start'}`}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.column.getCanSort() && getSortIcon(header.column.getIsSorted())}
+                    </div>
+                  </TableHead>
+                );
+              })}
             </TableRow>
           </TableHeader>
         </Table>
         <div className="flex-1 overflow-auto">
           <Table>
             <TableBody>
-              {processedData.map((row) => (
-                <TableRow key={row.regionCode} className="border-b">
-                  <TableCell className="border-r w-[200px]">
-                    <div className="truncate" title={row.regionName}>
-                      {row.regionName}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right border-r w-[100px]">{row.minYear}</TableCell>
-                  <TableCell className="text-right border-r w-[100px]">{row.latestYear}</TableCell>
-                  <TableCell className="text-right border-r w-[120px]">{row.minValue.toLocaleString()}</TableCell>
-                  <TableCell className="font-medium text-right border-r w-[120px]">
-                    {row.latestValue.toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right border-r w-[120px]">{row.maxValue.toLocaleString()}</TableCell>
-                  <TableCell className="w-[80px]">
-                    <Sparkline data={row.historicalValues} />
-                  </TableCell>
+              {table.getRowModel().rows.map(row => (
+                <TableRow key={row.id} className="border-b">
+                  {row.getVisibleCells().map(cell => {
+                    const isNumeric = cell.column.id !== 'regionName' && cell.column.id !== 'historicalValues';
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className={`border-r ${
+                          cell.column.id === 'latestValue' ? 'font-medium' : ''
+                        } ${isNumeric ? 'text-right' : 'text-left'}`}
+                        style={{ 
+                          width: cell.column.getSize(),
+                          minWidth: cell.column.getSize(),
+                          maxWidth: cell.column.getSize()
+                        }}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))}
             </TableBody>
