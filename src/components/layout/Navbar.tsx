@@ -59,7 +59,7 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center pl-5">
+      <div className="flex h-16 items-center px-4 w-full">
         <div className="mr-4 flex items-center logo">
           <a
             href={import.meta.env.BASE_URL + "/"}
@@ -126,7 +126,7 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="absolute top-16 left-0 right-0 bg-background border-b md:hidden">
-            <div className="container py-4">
+            <div className="py-4">
               {navItems.map((item) => {
                 const active = isActive(item.href);
                 return (
