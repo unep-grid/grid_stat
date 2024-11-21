@@ -224,8 +224,8 @@ export function DataExplorer() {
   );
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
-      <div className="w-64 flex-none">
+    <div className="flex h-[calc(100vh-4rem)] w-full">
+      <div className="w-64 flex-none overflow-y-auto border-r">
         <FilterPanel
           language={language}
           categories={categories}
@@ -237,7 +237,7 @@ export function DataExplorer() {
         />
       </div>
 
-      <div className="w-96 flex-none border-r">
+      <div className="w-96 flex-none overflow-y-auto border-r">
         <IndicatorList
           language={language}
           indicators={filteredIndicators}
@@ -248,7 +248,7 @@ export function DataExplorer() {
         />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <VisualizationPanel
           language={language}
           indicator={selectedIndicator}

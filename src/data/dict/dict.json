@@ -133,6 +133,46 @@
     "region": {
       "en": "Region",
       "fr": "Région"
+    },
+    "metadata": {
+      "en": "Metadata",
+      "fr": "Métadonnées"
+    },
+    "map": {
+      "en": "Map",
+      "fr": "Carte"
+    },
+    "metadata_description": {
+      "en": "Description",
+      "fr": "Description"
+    },
+    "metadata_collections": {
+      "en": "Collections",
+      "fr": "Collections"
+    },
+    "metadata_keywords": {
+      "en": "Keywords",
+      "fr": "Mots-clés"
+    },
+    "map_coming_soon": {
+      "en": "Map visualization coming soon",
+      "fr": "Visualisation cartographique à venir"
+    },
+    "download_title": {
+      "en": "Download Data",
+      "fr": "Télécharger les données"
+    },
+    "download_description": {
+      "en": "Download the data in your preferred format",
+      "fr": "Téléchargez les données dans le format de votre choix"
+    },
+    "download_csv": {
+      "en": "Download as CSV",
+      "fr": "Télécharger en CSV"
+    },
+    "download_json": {
+      "en": "Download as JSON",
+      "fr": "Télécharger en JSON"
     }
   }
 }
