@@ -69,7 +69,6 @@ export function DataTable({ data, language }: DataTableProps) {
   const processedData = useMemo(() => {
     const regionMap = new Map<number, ProcessedData>();
 
-    // Process data for each region
     data.forEach((item) => {
       if (!regionMap.has(item.m49_code)) {
         regionMap.set(item.m49_code, {
@@ -89,26 +88,20 @@ export function DataTable({ data, language }: DataTableProps) {
         region.historicalValues.push(item.value);
         region.historicalYears.push(item.date_start);
         
-        // Update latest year and value
         if (item.date_start > region.latestYear) {
           region.latestYear = item.date_start;
           region.latestValue = item.value;
         }
         
-        // Update min/max years
         region.minYear = Math.min(region.minYear, item.date_start);
         region.maxYear = Math.max(region.maxYear, item.date_start);
-        
-        // Update min/max values
         region.minValue = Math.min(region.minValue, item.value);
         region.maxValue = Math.max(region.maxValue, item.value);
       }
     });
 
-    // Convert map to array and sort values
     let processedArray = Array.from(regionMap.values());
     processedArray.forEach(region => {
-      // Sort historical values by year for sparkline
       const sorted = region.historicalYears
         .map((year, i) => ({ year, value: region.historicalValues[i] }))
         .sort((a, b) => a.year - b.year);
@@ -116,7 +109,6 @@ export function DataTable({ data, language }: DataTableProps) {
       region.historicalValues = sorted.map(item => item.value);
     });
 
-    // Apply sorting
     processedArray.sort((a, b) => {
       const aValue = a[sortConfig.key];
       const bValue = b[sortConfig.key];
@@ -156,7 +148,7 @@ export function DataTable({ data, language }: DataTableProps) {
           <TableHeader className="bg-background">
             <TableRow className="border-b">
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-left border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 border-r w-[200px]"
                 onClick={() => handleSort('regionName')}
               >
                 <div className="flex items-center gap-2">
@@ -165,7 +157,7 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[100px]"
                 onClick={() => handleSort('minYear')}
               >
                 <div className="flex items-center justify-end gap-2">
@@ -174,7 +166,7 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[100px]"
                 onClick={() => handleSort('latestYear')}
               >
                 <div className="flex items-center justify-end gap-2">
@@ -183,7 +175,7 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
                 onClick={() => handleSort('minValue')}
               >
                 <div className="flex items-center justify-end gap-2">
@@ -192,7 +184,7 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
                 onClick={() => handleSort('latestValue')}
               >
                 <div className="flex items-center justify-end gap-2">
@@ -201,7 +193,7 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r w-[120px]"
                 onClick={() => handleSort('maxValue')}
               >
                 <div className="flex items-center justify-end gap-2">
@@ -218,14 +210,18 @@ export function DataTable({ data, language }: DataTableProps) {
             <TableBody>
               {processedData.map((row) => (
                 <TableRow key={row.regionCode} className="border-b">
-                  <TableCell className="text-left border-r">{row.regionName}</TableCell>
-                  <TableCell className="text-right border-r">{row.minYear}</TableCell>
-                  <TableCell className="text-right border-r">{row.latestYear}</TableCell>
-                  <TableCell className="text-right border-r">{row.minValue.toLocaleString()}</TableCell>
-                  <TableCell className="font-medium text-right border-r">
+                  <TableCell className="border-r w-[200px]">
+                    <div className="truncate" title={row.regionName}>
+                      {row.regionName}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right border-r w-[100px]">{row.minYear}</TableCell>
+                  <TableCell className="text-right border-r w-[100px]">{row.latestYear}</TableCell>
+                  <TableCell className="text-right border-r w-[120px]">{row.minValue.toLocaleString()}</TableCell>
+                  <TableCell className="font-medium text-right border-r w-[120px]">
                     {row.latestValue.toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right border-r">{row.maxValue.toLocaleString()}</TableCell>
+                  <TableCell className="text-right border-r w-[120px]">{row.maxValue.toLocaleString()}</TableCell>
                   <TableCell className="w-[80px]">
                     <Sparkline data={row.historicalValues} />
                   </TableCell>
