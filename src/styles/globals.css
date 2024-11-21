@@ -63,4 +63,31 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Style SVG paths to use foreground color except for the green path */
+
+  @keyframes shine {
+    0% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.5) drop-shadow(0 0 5px rgba(143, 209, 105, 0.7));
+    }
+    100% {
+      filter: brightness(1);
+    }
+  }
+
+
+  .logo svg path:not(.secondary) {
+    fill: hsl(var(--foreground));
+  }
+  .logo svg path.secondary {
+    fill: #8fd169;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+  .logo:hover svg path.secondary {
+    animation: shine 2s ease-in-out infinite;
+
+  }
 }
