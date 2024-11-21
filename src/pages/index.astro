@@ -1,49 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Hero } from '@/components/home/Hero';
-import { NewsCard } from '@/components/home/NewsCard';
-
-const mockNews = [
-  {
-    title: 'New Climate Data Indicators Released',
-    description: 'UNEP-GRID has published new indicators tracking global climate change impacts across regions.',
-    date: 'May 15, 2024',
-    category: 'Climate',
-  },
-  {
-    title: 'Sustainable Development Goals Progress',
-    description: 'Latest data shows mixed progress towards achieving the 2030 Sustainable Development Goals.',
-    date: 'May 10, 2024',
-    category: 'SDGs',
-  },
-  {
-    title: 'Disaster Risk Reduction Metrics Updated',
-    description: 'Updated metrics provide insights into global disaster preparedness and response capabilities.',
-    date: 'May 5, 2024',
-    category: 'Risk Reduction',
-  },
-];
+import { Hero } from '../components/home/Hero';
 ---
 
 <Layout title="UNEP-GRID Data Platform">
   <main class="min-h-screen">
     <Hero client:load />
-    
-    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-      <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold mb-8">Latest Updates</h2>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {mockNews.map((news) => (
-            <NewsCard
-              client:load
-              title={news.title}
-              description={news.description}
-              date={news.date}
-              category={news.category}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
   </main>
 </Layout>
