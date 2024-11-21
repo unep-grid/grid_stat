@@ -1,0 +1,26 @@
+Project: GHG Portal
+Stack: Astro + React + TS + Tailwind + shadcn/ui
+Deploy: github workflow + github page -> unep-grid.github.io/grid_stat
+
+Key paths:
+@ -> ./src/*
+
+Structure:
+/src/
+  /components/
+    /about - Team info
+    /data - Explorer, charts, tables
+    /home - Hero, news
+    /layout - nav, ...
+    /ui - shadcn components
+  /pages/ - about, data, home, news routes
+  /lib/ - utils, types
+  /data/ - dictionaries
+
+Config:
+- React JSX enabled
+- Base styles disabled in Tailwind
+- MDX for content
+- i18n ready
+
+Purpose: GHG data visualization portal with multilingual support
