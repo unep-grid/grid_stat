@@ -34,6 +34,19 @@ export function DataExplorer() {
     setLanguage(getInitialLanguage());
   }, []);
 
+  // Check URL search parameter on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const searchParam = params.get('search');
+    
+    if (searchParam) {
+      setFilters(prev => ({
+        ...prev,
+        search: searchParam
+      }));
+    }
+  }, []);
+
   // Listen for language changes
   useEffect(() => {
     const handleLanguageChange = (event: CustomEvent<Language>) => {
