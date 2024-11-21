@@ -12,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface DataTableProps {
   data: IndicatorData[];
@@ -22,9 +21,14 @@ interface DataTableProps {
 interface ProcessedData {
   regionCode: number;
   regionName: string;
-  mostRecentYear: number;
-  mostRecentValue: number;
+  latestYear: number;
+  latestValue: number;
+  minYear: number;
+  maxYear: number;
+  minValue: number;
+  maxValue: number;
   historicalValues: number[];
+  historicalYears: number[];
 }
 
 const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
@@ -58,7 +62,7 @@ export function DataTable({ data, language }: DataTableProps) {
     key: keyof ProcessedData;
     direction: 'asc' | 'desc';
   }>({
-    key: 'mostRecentValue',
+    key: 'latestValue',
     direction: 'desc'
   });
 
@@ -71,24 +75,45 @@ export function DataTable({ data, language }: DataTableProps) {
         regionMap.set(item.m49_code, {
           regionCode: item.m49_code,
           regionName: getRegionName(item.m49_code),
-          mostRecentYear: item.date_start,
-          mostRecentValue: item.value,
-          historicalValues: [item.value]
+          latestYear: item.date_start,
+          latestValue: item.value,
+          minYear: item.date_start,
+          maxYear: item.date_start,
+          minValue: item.value,
+          maxValue: item.value,
+          historicalValues: [item.value],
+          historicalYears: [item.date_start]
         });
       } else {
         const region = regionMap.get(item.m49_code)!;
         region.historicalValues.push(item.value);
-        if (item.date_start > region.mostRecentYear) {
-          region.mostRecentYear = item.date_start;
-          region.mostRecentValue = item.value;
+        region.historicalYears.push(item.date_start);
+        
+        // Update latest year and value
+        if (item.date_start > region.latestYear) {
+          region.latestYear = item.date_start;
+          region.latestValue = item.value;
         }
+        
+        // Update min/max years
+        region.minYear = Math.min(region.minYear, item.date_start);
+        region.maxYear = Math.max(region.maxYear, item.date_start);
+        
+        // Update min/max values
+        region.minValue = Math.min(region.minValue, item.value);
+        region.maxValue = Math.max(region.maxValue, item.value);
       }
     });
 
     // Convert map to array and sort values
     let processedArray = Array.from(regionMap.values());
     processedArray.forEach(region => {
-      region.historicalValues.sort((a, b) => a - b);
+      // Sort historical values by year for sparkline
+      const sorted = region.historicalYears
+        .map((year, i) => ({ year, value: region.historicalValues[i] }))
+        .sort((a, b) => a.year - b.year);
+      
+      region.historicalValues = sorted.map(item => item.value);
     });
 
     // Apply sorting
@@ -129,9 +154,9 @@ export function DataTable({ data, language }: DataTableProps) {
       <div className="border rounded-md h-full flex flex-col">
         <Table>
           <TableHeader className="bg-background">
-            <TableRow>
+            <TableRow className="border-b">
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50"
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-left border-r"
                 onClick={() => handleSort('regionName')}
               >
                 <div className="flex items-center gap-2">
@@ -140,21 +165,48 @@ export function DataTable({ data, language }: DataTableProps) {
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50"
-                onClick={() => handleSort('mostRecentYear')}
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                onClick={() => handleSort('minYear')}
               >
-                <div className="flex items-center gap-2">
-                  {t('dv.year', language)}
-                  {getSortIcon('mostRecentYear')}
+                <div className="flex items-center justify-end gap-2">
+                  Min Year
+                  {getSortIcon('minYear')}
                 </div>
               </TableHead>
               <TableHead 
-                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50"
-                onClick={() => handleSort('mostRecentValue')}
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                onClick={() => handleSort('latestYear')}
               >
-                <div className="flex items-center gap-2">
-                  {t('dv.value', language)}
-                  {getSortIcon('mostRecentValue')}
+                <div className="flex items-center justify-end gap-2">
+                  Latest Year
+                  {getSortIcon('latestYear')}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                onClick={() => handleSort('minValue')}
+              >
+                <div className="flex items-center justify-end gap-2">
+                  Min Value
+                  {getSortIcon('minValue')}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                onClick={() => handleSort('latestValue')}
+              >
+                <div className="flex items-center justify-end gap-2">
+                  Latest Value
+                  {getSortIcon('latestValue')}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="sticky top-0 bg-background z-10 cursor-pointer hover:bg-gray-50 text-right border-r"
+                onClick={() => handleSort('maxValue')}
+              >
+                <div className="flex items-center justify-end gap-2">
+                  Max Value
+                  {getSortIcon('maxValue')}
                 </div>
               </TableHead>
               <TableHead className="sticky top-0 bg-background z-10 w-[80px]" />
@@ -165,12 +217,15 @@ export function DataTable({ data, language }: DataTableProps) {
           <Table>
             <TableBody>
               {processedData.map((row) => (
-                <TableRow key={row.regionCode}>
-                  <TableCell>{row.regionName}</TableCell>
-                  <TableCell>{row.mostRecentYear}</TableCell>
-                  <TableCell className="font-medium">
-                    {row.mostRecentValue.toLocaleString()}
+                <TableRow key={row.regionCode} className="border-b">
+                  <TableCell className="text-left border-r">{row.regionName}</TableCell>
+                  <TableCell className="text-right border-r">{row.minYear}</TableCell>
+                  <TableCell className="text-right border-r">{row.latestYear}</TableCell>
+                  <TableCell className="text-right border-r">{row.minValue.toLocaleString()}</TableCell>
+                  <TableCell className="font-medium text-right border-r">
+                    {row.latestValue.toLocaleString()}
                   </TableCell>
+                  <TableCell className="text-right border-r">{row.maxValue.toLocaleString()}</TableCell>
                   <TableCell className="w-[80px]">
                     <Sparkline data={row.historicalValues} />
                   </TableCell>
