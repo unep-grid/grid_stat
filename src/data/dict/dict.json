@@ -54,6 +54,14 @@
       "en": "Loading...",
       "fr": "Chargement..."
     },
+    "loading_map": {
+      "en": "Loading map...",
+      "fr": "Chargement de la carte..."
+    },
+    "map_error": {
+      "en": "Error loading map",
+      "fr": "Erreur lors du chargement de la carte"
+    },
     "search_indicators": {
       "en": "Search indicators...",
       "fr": "Rechercher des indicateurs..."
