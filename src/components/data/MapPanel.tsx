@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import { feature } from "topojson-client";
 import { unM49 } from "../../lib/utils/regions";
+import { Slider } from "../ui/slider";
 
 interface MapPanelProps {
   data: IndicatorData[];
@@ -34,6 +35,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const worldDataRef = useRef<WorldTopology | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Get available years from data
+  const years = useMemo(() => {
+    const uniqueYears = [...new Set(data.map((d) => d.date_start))].sort();
+    return uniqueYears;
+  }, [data]);
+
+  // Initialize with latest year
+  const [selectedYear, setSelectedYear] = useState<number>(
+    years[years.length - 1] || 0
+  );
+
   const docStyle = getComputedStyle(document.documentElement);
   const color1 = `hsl(${docStyle
     .getPropertyValue("--foreground")
@@ -46,10 +58,35 @@ export function MapPanel({ data, language }: MapPanelProps) {
     .split(" ")
     .join(",")})`;
 
+  // Calculate global min/max across all years
+  const globalExtent = useMemo(() => {
+    const allValues = data.map((d) => d.value);
+    return d3.extent(allValues) as [number, number];
+  }, [data]);
+
+  // Create color scale using global extent
+  const colorScale = useMemo(() => {
+    if (globalExtent[0] === undefined || globalExtent[1] === undefined || data.length === 0) {
+      return () => color2;
+    }
+
+    const scale = d3
+      .scaleLinear()
+      .domain(globalExtent)
+      .range([0.2, 0.8]); // Use a range between 0.2 and 0.8 to avoid too dark/light colors
+
+    const colorInterpolator = (t: number) => {
+      return d3.interpolateHsl(color2, color1)(t);
+    };
+
+    return (value: number) => colorInterpolator(scale(value));
+  }, [globalExtent, color1, color2, data]);
+
   // Convert M49 codes to ISO3166 and prepare data for visualization
   const countryData = useMemo(() => {
     const dataMap = new Map();
-    data.forEach((d) => {
+    const yearData = data.filter((d) => d.date_start === selectedYear);
+    yearData.forEach((d) => {
       const m49Code = d.m49_code.toString().padStart(3, "0");
       const region = unM49.find((r) => r.code === m49Code);
       if (region?.iso3166) {
@@ -60,26 +97,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       }
     });
     return dataMap;
-  }, [data]);
-
-  // Create color scale using theme colors with improved interpolation
-  const { colorScale, extent } = useMemo(() => {
-    const values = Array.from(countryData.values()).map((d) => d.value);
-    const ext = d3.extent(values) as [number, number];
-
-    // Handle empty or invalid data
-    if (!ext[0] || !ext[1]) {
-      ext[0] = 0;
-      ext[1] = 100;
-    }
-
-    const scale = d3
-      .scaleSequential()
-      .domain(ext)
-      .interpolator(d3.interpolateHsl(color1, color2));
-
-    return { colorScale: scale, extent: ext };
-  }, [countryData]);
+  }, [data, selectedYear]);
 
   // Memoize the visualization update function
   const updateVisualization = useCallback(async () => {
@@ -105,15 +123,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       // Clear previous content
       d3.select(svgRef.current).selectAll("*").remove();
 
-      // Create Equal Earth projection
-      const projection = d3
-        .geoEqualEarth()
-        .fitSize([width, height], { type: "Sphere" })
-        .rotate([0, 0]);
-
-      const path = d3.geoPath(projection);
-
-      // Create SVG
+      // Create SVG and define patterns
       const svg = d3
         .select(svgRef.current)
         .attr("viewBox", [0, 0, width, height])
@@ -121,6 +131,47 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("height", height)
         .style("max-width", "100%")
         .style("height", "auto");
+
+      const defs = svg.append("defs");
+
+      // Create color gradient for legend and map
+      const gradient = defs
+        .append("linearGradient")
+        .attr("id", "color-gradient")
+        .attr("x1", "0%")
+        .attr("x2", "100%")
+        .attr("y1", "0%")
+        .attr("y2", "0%");
+
+      // Add gradient stops
+      const stops = d3.range(0, 1.1, 0.1);
+      stops.forEach((stop) => {
+        gradient
+          .append("stop")
+          .attr("offset", `${stop * 100}%`)
+          .attr("stop-color", colorScale(d3.quantile(globalExtent, stop) || 0));
+      });
+      
+      // Diagonal lines pattern for no data
+      defs
+        .append("pattern")
+        .attr("id", "hatch")
+        .attr("patternUnits", "userSpaceOnUse")
+        .attr("width", 4)
+        .attr("height", 4)
+        .append("path")
+        .attr("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2")
+        .attr("stroke", color1)
+        .attr("stroke-width", 0.5)
+        .attr("stroke-opacity", 0.2);
+
+      // Create Equal Earth projection
+      const projection = d3
+        .geoEqualEarth()
+        .fitSize([width, height], { type: "Sphere" })
+        .rotate([0, 0]);
+
+      const path = d3.geoPath(projection);
 
       const countries = feature(
         worldDataRef.current,
@@ -136,8 +187,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("d", path)
         .attr("fill", (d: any) => {
           const data = countryData.get(d.id);
-          const value = data ? data.value : undefined;
-          return value !== undefined ? colorScale(value) : color2;
+          return data ? colorScale(data.value) : "url(#hatch)";
         })
         .attr("stroke", color1)
         .attr("stroke-width", 0.3)
@@ -146,80 +196,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
         )
         .style("transition", "fill 0.2s ease-in-out");
 
-      // Add legend
-      const legendWidth = Math.min(300, width * 0.4);
-      const legendHeight = 8;
-      const legendX = width - legendWidth - 20;
-      const legendY = height - 35;
-
-      const legendScale = d3
-        .scaleLinear()
-        .domain(extent)
-        .range([0, legendWidth]);
-
-      const legendAxis = d3
-        .axisBottom(legendScale)
-        .ticks(5)
-        .tickFormat((d) => d.toLocaleString())
-        .tickSize(4);
-
-      const defs = svg.append("defs");
-      const gradient = defs
-        .append("linearGradient")
-        .attr("id", "legend-gradient")
-        .attr("x1", "0%")
-        .attr("x2", "100%")
-        .attr("y1", "0%")
-        .attr("y2", "0%");
-
-      gradient
-        .selectAll("stop")
-        .data(d3.ticks(0, 1, 10))
-        .join("stop")
-        .attr("offset", (d) => `${d * 100}%`)
-        .attr("stop-color", (d) =>
-          colorScale(d3.interpolate(extent[0], extent[1])(d))
-        );
-
-      const legend = svg
-        .append("g")
-        .attr("transform", `translate(${legendX},${legendY})`);
-
-      legend
-        .append("rect")
-        .attr("x", -10)
-        .attr("y", -5)
-        .attr("width", legendWidth + 20)
-        .attr("height", 30)
-        .attr("fill", "#ffffff")
-        .attr("rx", 4)
-        .attr("opacity", 0.8);
-
-      legend
-        .append("rect")
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .attr("rx", 2)
-        .style("fill", "url(#legend-gradient)");
-
-      legend
-        .append("g")
-        .attr("transform", `translate(0,${legendHeight})`)
-        .call(legendAxis)
-        .call((g) => g.select(".domain").remove())
-        .call((g) =>
-          g
-            .selectAll("text")
-            .attr("fill", "#666666")
-            .attr("font-size", "10px")
-            .attr("dy", "1em")
-        )
-        .call((g) => g.selectAll("line").attr("stroke", "#cccccc"));
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
     }
-  }, [data, language, countryData, colorScale, extent]);
+  }, [data, language, countryData, colorScale, color1, globalExtent]);
 
   // Initial render and resize handling
   useEffect(() => {
@@ -270,22 +251,72 @@ export function MapPanel({ data, language }: MapPanelProps) {
   }
 
   return (
-    <div className="relative h-full w-full">
-      <svg
-        ref={svgRef}
-        className="w-full h-full"
-        style={{ minHeight: "400px" }}
-      />
-      <div
-        ref={tooltipRef}
-        className="absolute pointer-events-none opacity-0 bg-popover text-popover-foreground p-2 rounded-md shadow-md transition-opacity border"
-        style={{
-          zIndex: 1000,
-          maxWidth: "200px",
-          transform: "translate(-50%, -100%)",
-          transition: "opacity 0.15s ease-in-out",
-        }}
-      />
+    <div className="relative flex flex-col h-full w-full gap-4 p-4">
+      {/* Title Section */}
+      <div className="flex flex-col items-center gap-2">
+        <h2 className="text-xl font-semibold">{selectedYear}</h2>
+      </div>
+
+      {/* Time Slider Section */}
+      <div className="flex flex-col gap-2 px-8">
+        <Slider
+          value={[selectedYear]}
+          min={years[0]}
+          max={years[years.length - 1]}
+          step={1}
+          onValueChange={(value) => setSelectedYear(value[0])}
+          className="w-full"
+        />
+        <div className="flex justify-between text-sm text-muted-foreground">
+          <span>{years[0]}</span>
+          <span>{years[years.length - 1]}</span>
+        </div>
+      </div>
+
+      {/* Map Section */}
+      <div className="flex-grow relative">
+        <svg
+          ref={svgRef}
+          className="w-full h-full"
+          style={{ minHeight: "400px" }}
+        />
+        <div
+          ref={tooltipRef}
+          className="absolute pointer-events-none opacity-0 bg-popover text-popover-foreground p-2 rounded-md shadow-md transition-opacity border"
+          style={{
+            zIndex: 1000,
+            maxWidth: "200px",
+            transform: "translate(-50%, -100%)",
+            transition: "opacity 0.15s ease-in-out",
+          }}
+        />
+      </div>
+
+      {/* Legend Section */}
+      {globalExtent[0] !== undefined && globalExtent[1] !== undefined && data.length > 0 && (
+        <div className="flex items-center justify-center gap-4 text-sm">
+          <div className="flex items-center gap-2">
+            <span>{globalExtent[0].toLocaleString()}</span>
+            <div
+              className="h-2 w-40 rounded"
+              style={{
+                background: "url(#color-gradient)",
+              }}
+            >
+              <svg width="100%" height="100%">
+                <rect width="100%" height="100%" fill="url(#color-gradient)" />
+              </svg>
+            </div>
+            <span>{globalExtent[1].toLocaleString()}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <svg width="20" height="10">
+              <rect width="20" height="10" fill="url(#hatch)" />
+            </svg>
+            <span className="text-muted-foreground">No data</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
