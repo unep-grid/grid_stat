@@ -8,7 +8,13 @@ import { feature } from "topojson-client";
 import { unM49 } from "../../lib/utils/regions";
 import { interpolateProjection } from "../../lib/utils/projection";
 import { Slider } from "../ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface MapPanelProps {
   data: IndicatorData[];
@@ -36,14 +42,38 @@ const projections = {
   "Azimuthal Equal Area": "geoAzimuthalEqualAreaRaw",
   "Azimuthal Equidistant": "geoAzimuthalEquidistantRaw",
   "Equal Earth": "geoEqualEarthRaw",
-  "Equirectangular": "geoEquirectangularRaw",
-  "Mercator": "geoMercatorRaw",
+  Equirectangular: "geoEquirectangularRaw",
+  Mercator: "geoMercatorRaw",
   "Natural Earth": "geoNaturalEarth1Raw",
-  "Orthographic": "geoOrthographicRaw",
-  "Stereographic": "geoStereographicRaw",
+  Orthographic: "geoOrthographicRaw",
+  Stereographic: "geoStereographicRaw",
 } as const;
 
 type ProjectionType = keyof typeof projections;
+
+let colors = {
+  foreground: `hsl()`,
+  background: `hsl()`,
+};
+
+function updateColors(svgRef) {
+  const container = svgRef?.current?.parentElement;
+  if (!container) {
+    return {};
+  }
+
+  const styles = getComputedStyle(container);
+  colors.foreground = `hsl(${styles
+    .getPropertyValue("--foreground")
+    .trim()
+    .split(" ")
+    .join(",")})`;
+  colors.background = `hsl(${styles
+    .getPropertyValue("--background")
+    .trim()
+    .split(" ")
+    .join(",")})`;
+}
 
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -51,7 +81,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [currentProjection, setCurrentProjection] = useState<ProjectionType>("Equal Earth");
+  const [currentProjection, setCurrentProjection] =
+    useState<ProjectionType>("Equal Earth");
 
   // Get available years from data
   const years = useMemo(() => {
@@ -59,22 +90,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return uniqueYears;
   }, [data]);
 
+  updateColors(svgRef);
+
   // Initialize with latest year
   const [selectedYear, setSelectedYear] = useState<number>(
     years[years.length - 1] || 0
   );
-
-  const docStyle = getComputedStyle(document.documentElement);
-  const color1 = `hsl(${docStyle
-    .getPropertyValue("--foreground")
-    .trim()
-    .split(" ")
-    .join(",")})`;
-  const color2 = `hsl(${docStyle
-    .getPropertyValue("--background")
-    .trim()
-    .split(" ")
-    .join(",")})`;
 
   // Calculate global min/max across all years
   const globalExtent = useMemo(() => {
@@ -84,21 +105,22 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Create color scale using global extent
   const colorScale = useMemo(() => {
-    if (globalExtent[0] === undefined || globalExtent[1] === undefined || data.length === 0) {
-      return () => color2;
+    if (
+      globalExtent[0] === undefined ||
+      globalExtent[1] === undefined ||
+      data.length === 0
+    ) {
+      return () => colors.background;
     }
 
-    const scale = d3
-      .scaleLinear()
-      .domain(globalExtent)
-      .range([0.2, 0.8]); // Use a range between 0.2 and 0.8 to avoid too dark/light colors
+    const scale = d3.scaleLinear().domain(globalExtent).range([0.2, 0.8]); // Use a range between 0.2 and 0.8 to avoid too dark/light colors
 
     const colorInterpolator = (t: number) => {
-      return d3.interpolateHsl(color2, color1)(t);
+      return d3.interpolateHsl(colors.background, colors.foreground)(t);
     };
 
     return (value: number) => colorInterpolator(scale(value));
-  }, [globalExtent, color1, color2, data]);
+  }, [globalExtent, colors.background, colors.foreground, data]);
 
   // Convert M49 codes to ISO3166 and prepare data for visualization
   const countryData = useMemo(() => {
@@ -122,69 +144,77 @@ export function MapPanel({ data, language }: MapPanelProps) {
     if (!svgRef.current || !projectionRef.current) return;
 
     const path = d3.geoPath(projectionRef.current);
-    d3.select(svgRef.current)
-      .selectAll("path.country")
-      .attr("d", path);
+    d3.select(svgRef.current).selectAll("path.country").attr("d", path);
   }, []);
 
   // Handle drag interaction
-  const handleDrag = useCallback((event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
-    if (!projectionRef.current) return;
+  const handleDrag = useCallback(
+    (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
+      if (!projectionRef.current) return;
 
-    const sensitivityX = 5; // Horizontal movement sensitivity
-    const sensitivityY = 5; // Vertical movement sensitivity
+      const sensitivityX = 5; // Horizontal movement sensitivity
+      const sensitivityY = 5; // Vertical movement sensitivity
 
-    const [λ, φ, γ] = projectionRef.current.rotate();
-    
-    // Update rotation based on drag movement
-    projectionRef.current.rotate([
-      λ + event.dx / sensitivityX,
-      φ - event.dy / sensitivityY,
-      γ
-    ]);
+      const [λ, φ, γ] = projectionRef.current.rotate();
 
-    updateMapPaths();
-  }, [updateMapPaths]);
+      // Update rotation based on drag movement
+      projectionRef.current.rotate([
+        λ + event.dx / sensitivityX,
+        φ - event.dy / sensitivityY,
+        γ,
+      ]);
+
+      updateMapPaths();
+    },
+    [updateMapPaths]
+  );
 
   // Handle projection change with animation
-  const handleProjectionChange = useCallback((newProjection: ProjectionType) => {
-    if (!svgRef.current || !worldDataRef.current || !projectionRef.current) return;
+  const handleProjectionChange = useCallback(
+    (newProjection: ProjectionType) => {
+      if (!svgRef.current || !worldDataRef.current || !projectionRef.current)
+        return;
 
-    const container = svgRef.current.parentElement;
-    if (!container) return;
+      const container = svgRef.current.parentElement;
+      if (!container) return;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    const scale = width / 6;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const scale = width / 6;
 
-    // Get current rotation before changing projection
-    const currentRotation = projectionRef.current.rotate();
+      // Get current rotation before changing projection
+      const currentRotation = projectionRef.current.rotate();
 
-    const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
-    const newProjectionRaw = (d3 as any)[projections[newProjection]];
+      const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
+      const newProjectionRaw = (d3 as any)[projections[newProjection]];
 
-    const projection = interpolateProjection(oldProjectionRaw, newProjectionRaw)
-      .scale(scale)
-      .translate([width / 2, height / 2])
-      .rotate(currentRotation) // Use the current rotation
-      .precision(0.1);
+      const projection = interpolateProjection(
+        oldProjectionRaw,
+        newProjectionRaw
+      )
+        .scale(scale)
+        .translate([width / 2, height / 2])
+        .rotate(currentRotation) // Use the current rotation
+        .precision(0.1);
 
-    projectionRef.current = projection;
-    const path = d3.geoPath(projection);
+      projectionRef.current = projection;
+      const path = d3.geoPath(projection);
 
-    // Animate the transition
-    d3.select(svgRef.current)
-      .selectAll("path.country")
-      .transition()
-      .duration(1000)
-      .attrTween("d", function(d: any) {
-        return function(t: number) {
-          projection.alpha(t);
-          return path(d)!;
-        };
-      })
-      .on("end", () => setCurrentProjection(newProjection));
-  }, [currentProjection]);
+      // Animate the transition
+      d3.select(svgRef.current)
+        .selectAll("path.country")
+        .transition()
+        .duration(1000)
+        .attrTween("d", function (d: any) {
+          return function (t: number) {
+            projection.alpha(t);
+            return path(d)!;
+          };
+        })
+        .on("end", () => setCurrentProjection(newProjection));
+    },
+    [currentProjection]
+  );
 
   // Memoize the visualization update function
   const updateVisualization = useCallback(async () => {
@@ -193,7 +223,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     try {
       const container = svgRef.current.parentElement;
       if (!container) return;
-
+      updateColors(svgRef);
       const width = container.clientWidth;
       const height = container.clientHeight;
       const scale = width / 6;
@@ -221,7 +251,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .style("height", "auto");
 
       // Add drag behavior
-      const dragBehavior = d3.drag<SVGSVGElement, null>()
+      const dragBehavior = d3
+        .drag<SVGSVGElement, null>()
         .on("drag", handleDrag);
 
       svg.call(dragBehavior);
@@ -245,7 +276,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .attr("offset", `${stop * 100}%`)
           .attr("stop-color", colorScale(d3.quantile(globalExtent, stop) || 0));
       });
-      
+
       // Diagonal lines pattern for no data
       defs
         .append("pattern")
@@ -255,13 +286,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("height", 4)
         .append("path")
         .attr("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2")
-        .attr("stroke", color1)
+        .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 0.2);
 
       // Create projection
       const projectionRaw = (d3 as any)[projections[currentProjection]];
-      const projection = d3.geoProjection(projectionRaw)
+      const projection = d3
+        .geoProjection(projectionRaw)
         .scale(scale)
         .translate([width / 2, height / 2])
         .rotate(projectionRef.current?.rotate() || [0, 0, 0]) // Use current rotation if available
@@ -286,18 +318,25 @@ export function MapPanel({ data, language }: MapPanelProps) {
           const data = countryData.get(d.id);
           return data ? colorScale(data.value) : "url(#hatch)";
         })
-        .attr("stroke", color1)
+        .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.3)
         .style("cursor", (d: any) =>
           countryData.get(d.id) ? "pointer" : "default"
         )
         .style("transition", "fill 0.2s ease-in-out");
-
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
     }
-  }, [data, language, countryData, colorScale, color1, globalExtent, currentProjection, handleDrag]);
+  }, [
+    data,
+    language,
+    countryData,
+    colorScale,
+    globalExtent,
+    currentProjection,
+    handleDrag,
+  ]);
 
   // Initial render and resize handling
   useEffect(() => {
@@ -390,47 +429,55 @@ export function MapPanel({ data, language }: MapPanelProps) {
       </div>
 
       {/* Legend and Projection Selector Section */}
-      {globalExtent[0] !== undefined && globalExtent[1] !== undefined && data.length > 0 && (
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <span>{globalExtent[0].toLocaleString()}</span>
-            <div
-              className="h-2 w-40 rounded"
-              style={{
-                background: "url(#color-gradient)",
-              }}
-            >
-              <svg width="100%" height="100%">
-                <rect width="100%" height="100%" fill="url(#color-gradient)" />
-              </svg>
+      {globalExtent[0] !== undefined &&
+        globalExtent[1] !== undefined &&
+        data.length > 0 && (
+          <div className="flex items-center justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <span>{globalExtent[0].toLocaleString()}</span>
+              <div
+                className="h-2 w-40 rounded"
+                style={{
+                  background: "url(#color-gradient)",
+                }}
+              >
+                <svg width="100%" height="100%">
+                  <rect
+                    width="100%"
+                    height="100%"
+                    fill="url(#color-gradient)"
+                  />
+                </svg>
+              </div>
+              <span>{globalExtent[1].toLocaleString()}</span>
             </div>
-            <span>{globalExtent[1].toLocaleString()}</span>
+            <div className="flex items-center gap-2">
+              <svg width="20" height="10">
+                <rect width="20" height="10" fill="url(#hatch)" />
+              </svg>
+              <span className="text-muted-foreground">No data</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Select
+                value={currentProjection}
+                onValueChange={(value: ProjectionType) =>
+                  handleProjectionChange(value)
+                }
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Select projection" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(projections).map((proj) => (
+                    <SelectItem key={proj} value={proj}>
+                      {proj}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <svg width="20" height="10">
-              <rect width="20" height="10" fill="url(#hatch)" />
-            </svg>
-            <span className="text-muted-foreground">No data</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Select
-              value={currentProjection}
-              onValueChange={(value: ProjectionType) => handleProjectionChange(value)}
-            >
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select projection" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(projections).map((proj) => (
-                  <SelectItem key={proj} value={proj}>
-                    {proj}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
