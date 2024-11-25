@@ -9,6 +9,7 @@ import {
 } from "../ui/navigation-menu";
 import { LanguageSelector } from "./LanguageSelector";
 import { Logo } from "./Logo";
+import { useTheme } from "./ThemeProvider";
 
 const navItems = [
   { name: "Home", href: import.meta.env.BASE_URL + "/" },
@@ -17,18 +18,12 @@ const navItems = [
 ];
 
 export function Navbar() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
 
-  // Initialize theme from localStorage and set current path
+  // Set current path
   useEffect(() => {
-    const savedTheme = localStorage.getItem("class_theme") as "light" | "dark";
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-
-    // Get current path for active link detection
     const path = window.location.pathname;
     setCurrentPath(
       path === import.meta.env.BASE_URL
@@ -36,17 +31,6 @@ export function Navbar() {
         : path.replace(import.meta.env.BASE_URL, "")
     );
   }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("class_theme", newTheme);
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
 
   const isActive = (href: string) => {
     const itemPath = href.replace(import.meta.env.BASE_URL, "");

@@ -28,32 +28,32 @@ const base = import.meta.env.BASE_URL;
   </head>
   <body class="w-full">
     <div id="app">
-      <Navbar client:load />
       <slot />
     </div>
     <script>
-      const setDarkMode = (document) => {
-        const theme = localStorage.getItem("class_theme");
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      };
-
-      // Set initial theme
-      setDarkMode(document);
-
-      // Handle theme changes during navigation
-      document.addEventListener("astro:before-swap", (event) => {
-        setDarkMode(event.newDocument);
-      });
-
       // Set initial language from localStorage if available
       const savedLang = localStorage.getItem("language");
       if (savedLang) {
         document.documentElement.lang = savedLang;
       }
+
+      // Set initial theme
+      const theme = localStorage.getItem("class_theme");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+
+      // Handle theme during navigation
+      document.addEventListener("astro:before-swap", (event) => {
+        const theme = localStorage.getItem("class_theme");
+        if (theme === "dark") {
+          event.newDocument.documentElement.classList.add("dark");
+        } else {
+          event.newDocument.documentElement.classList.remove("dark");
+        }
+      });
     </script>
   </body>
 </html>

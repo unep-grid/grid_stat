@@ -1,10 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { DataExplorer } from "../components/data/DataExplorer";
+import { DataPage } from "../components/data/DataPage";
 ---
 
-<Layout title="Data Explorer - UNEP-GRID">
-  <div class="w-full">
-    <DataExplorer client:load />
-  </div>
+<Layout title="Data Explorer">
+  <DataPage client:load />
 </Layout>

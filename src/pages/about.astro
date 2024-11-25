@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { TeamMember } from '@/components/about/TeamMember';
+import { TeamMember } from '../components/about/TeamMember';
+import { PageWrapper } from '../components/layout/PageWrapper';
 
 const team = [
   {
@@ -37,35 +38,37 @@ const team = [
 ---
 
 <Layout title="About - UNEP-GRID">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-3xl mx-auto mb-12">
-      <h1 class="text-4xl font-bold mb-4">About UNEP-GRID Data Platform</h1>
-      <p class="text-lg text-muted-foreground mb-4">
-        The UNEP-GRID Data Platform is a comprehensive solution for exploring and
-        analyzing global environmental and sustainability data. Our platform
-        provides researchers, policy makers, and the public with access to
-        critical indicators and visualization tools.
-      </p>
-      <p class="text-lg text-muted-foreground">
-        Our team combines expertise in environmental science, data analysis, and
-        software development to create a powerful platform for understanding
-        global sustainability challenges.
-      </p>
-    </div>
-
-    <section>
-      <h2 class="text-3xl font-bold mb-8">Our Team</h2>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {team.map((member) => (
-          <TeamMember
-            client:load
-            name={member.name}
-            role={member.role}
-            bio={member.bio}
-            imageUrl={member.imageUrl}
-          />
-        ))}
+  <PageWrapper client:load>
+    <main class="container mx-auto px-4 py-8">
+      <div class="max-w-3xl mx-auto mb-12">
+        <h1 class="text-4xl font-bold mb-4">About UNEP-GRID Data Platform</h1>
+        <p class="text-lg text-muted-foreground mb-4">
+          The UNEP-GRID Data Platform is a comprehensive solution for exploring and
+          analyzing global environmental and sustainability data. Our platform
+          provides researchers, policy makers, and the public with access to
+          critical indicators and visualization tools.
+        </p>
+        <p class="text-lg text-muted-foreground">
+          Our team combines expertise in environmental science, data analysis, and
+          software development to create a powerful platform for understanding
+          global sustainability challenges.
+        </p>
       </div>
-    </section>
-  </main>
+
+      <section>
+        <h2 class="text-3xl font-bold mb-8">Our Team</h2>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {team.map((member) => (
+            <TeamMember
+              client:load
+              name={member.name}
+              role={member.role}
+              bio={member.bio}
+              imageUrl={member.imageUrl}
+            />
+          ))}
+        </div>
+      </section>
+    </main>
+  </PageWrapper>
 </Layout>

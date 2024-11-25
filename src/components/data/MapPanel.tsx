@@ -8,6 +8,7 @@ import { feature } from "topojson-client";
 import { unM49 } from "../../lib/utils/regions";
 import { interpolateProjection } from "../../lib/utils/projection";
 import { Slider } from "../ui/slider";
+import { useTheme } from "../layout/ThemeProvider";
 import {
   Select,
   SelectContent,
@@ -51,30 +52,6 @@ const projections = {
 
 type ProjectionType = keyof typeof projections;
 
-let colors = {
-  foreground: `hsl()`,
-  background: `hsl()`,
-};
-
-function updateColors(svgRef) {
-  const container = svgRef?.current?.parentElement;
-  if (!container) {
-    return {};
-  }
-
-  const styles = getComputedStyle(container);
-  colors.foreground = `hsl(${styles
-    .getPropertyValue("--foreground")
-    .trim()
-    .split(" ")
-    .join(",")})`;
-  colors.background = `hsl(${styles
-    .getPropertyValue("--background")
-    .trim()
-    .split(" ")
-    .join(",")})`;
-}
-
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -84,13 +61,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Equal Earth");
 
+  // Use theme context for colors
+  const { colors } = useTheme();
+
   // Get available years from data
   const years = useMemo(() => {
     const uniqueYears = [...new Set(data.map((d) => d.date_start))].sort();
     return uniqueYears;
   }, [data]);
-
-  updateColors(svgRef);
 
   // Initialize with latest year
   const [selectedYear, setSelectedYear] = useState<number>(
@@ -113,7 +91,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       return () => colors.background;
     }
 
-    const scale = d3.scaleLinear().domain(globalExtent).range([0.2, 0.8]); // Use a range between 0.2 and 0.8 to avoid too dark/light colors
+    const scale = d3.scaleLinear().domain(globalExtent).range([0.2, 0.8]);
 
     const colorInterpolator = (t: number) => {
       return d3.interpolateHsl(colors.background, colors.foreground)(t);
@@ -223,7 +201,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     try {
       const container = svgRef.current.parentElement;
       if (!container) return;
-      updateColors(svgRef);
+
       const width = container.clientWidth;
       const height = container.clientHeight;
       const scale = width / 6;
@@ -336,6 +314,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     globalExtent,
     currentProjection,
     handleDrag,
+    colors.foreground,
   ]);
 
   // Initial render and resize handling
@@ -350,19 +329,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
       resizeObserver.observe(svgRef.current.parentElement);
     }
 
-    // Update on theme changes
-    const observer = new MutationObserver(() => {
-      requestAnimationFrame(updateVisualization);
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
     return () => {
       resizeObserver.disconnect();
-      observer.disconnect();
     };
   }, [updateVisualization]);
 
