@@ -1,3 +1,8 @@
+/**
+ * Map projection interpolation implementation inspired by:
+ * "Interpolating D3 Map Projections" by Herman Sontrop
+ * https://observablehq.com/d/0fadbba834367bb5
+ */
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import type { IndicatorData } from "../../lib/types";
 import type { Language } from "../../lib/utils/translations";
@@ -7,6 +12,7 @@ import type { Topology, GeometryCollection } from "topojson-specification";
 import { feature } from "topojson-client";
 import { unM49 } from "../../lib/utils/regions";
 import { Slider } from "../ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface MapPanelProps {
   data: IndicatorData[];
@@ -29,11 +35,40 @@ interface WorldTopology
   type: "Topology";
 }
 
+// Available projections
+const projections = {
+  "Azimuthal Equal Area": "geoAzimuthalEqualAreaRaw",
+  "Azimuthal Equidistant": "geoAzimuthalEquidistantRaw",
+  "Equal Earth": "geoEqualEarthRaw",
+  "Equirectangular": "geoEquirectangularRaw",
+  "Mercator": "geoMercatorRaw",
+  "Natural Earth": "geoNaturalEarth1Raw",
+  "Orthographic": "geoOrthographicRaw",
+  "Stereographic": "geoStereographicRaw",
+} as const;
+
+type ProjectionType = keyof typeof projections;
+
+// Projection interpolation function (from Observable example by Herman Sontrop)
+function interpolateProjection(raw0: any, raw1: any) {
+  const mutate = d3.geoProjectionMutator(t => (x, y) => {
+    const [x0, y0] = raw0(x, y), [x1, y1] = raw1(x, y);
+    return [x0 + t * (x1 - x0), y0 + t * (y1 - y0)];
+  });
+  let t = 0;
+  return Object.assign(mutate(t), {
+    alpha(_?: number) {
+      return arguments.length ? mutate(t = +_!) : t;
+    }
+  });
+}
+
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [currentProjection, setCurrentProjection] = useState<ProjectionType>("Equal Earth");
 
   // Get available years from data
   const years = useMemo(() => {
@@ -99,6 +134,42 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return dataMap;
   }, [data, selectedYear]);
 
+  // Handle projection change with animation
+  const handleProjectionChange = useCallback((newProjection: ProjectionType) => {
+    if (!svgRef.current || !worldDataRef.current) return;
+
+    const container = svgRef.current.parentElement;
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const scale = width / 6;
+
+    const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
+    const newProjectionRaw = (d3 as any)[projections[newProjection]];
+
+    const projection = interpolateProjection(oldProjectionRaw, newProjectionRaw)
+      .scale(scale)
+      .translate([width / 2, height / 2])
+      .rotate([0, 0])
+      .precision(0.1);
+
+    const path = d3.geoPath(projection);
+
+    // Animate the transition
+    d3.select(svgRef.current)
+      .selectAll("path.country")
+      .transition()
+      .duration(1000)
+      .attrTween("d", function(d: any) {
+        return function(t: number) {
+          projection.alpha(t);
+          return path(d)!;
+        };
+      })
+      .on("end", () => setCurrentProjection(newProjection));
+  }, [currentProjection]);
+
   // Memoize the visualization update function
   const updateVisualization = useCallback(async () => {
     if (!svgRef.current) return;
@@ -109,6 +180,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const width = container.clientWidth;
       const height = container.clientHeight;
+      const scale = width / 6;
 
       // Load world map data if not already loaded
       if (!worldDataRef.current) {
@@ -165,11 +237,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 0.2);
 
-      // Create Equal Earth projection
-      const projection = d3
-        .geoEqualEarth()
-        .fitSize([width, height], { type: "Sphere" })
-        .rotate([0, 0]);
+      // Create projection
+      const projectionRaw = (d3 as any)[projections[currentProjection]];
+      const projection = d3.geoProjection(projectionRaw)
+        .scale(scale)
+        .translate([width / 2, height / 2])
+        .rotate([0, 0])
+        .precision(0.1);
 
       const path = d3.geoPath(projection);
 
@@ -200,7 +274,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
     }
-  }, [data, language, countryData, colorScale, color1, globalExtent]);
+  }, [data, language, countryData, colorScale, color1, globalExtent, currentProjection]);
 
   // Initial render and resize handling
   useEffect(() => {
@@ -292,7 +366,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         />
       </div>
 
-      {/* Legend Section */}
+      {/* Legend and Projection Selector Section */}
       {globalExtent[0] !== undefined && globalExtent[1] !== undefined && data.length > 0 && (
         <div className="flex items-center justify-center gap-4 text-sm">
           <div className="flex items-center gap-2">
@@ -314,6 +388,23 @@ export function MapPanel({ data, language }: MapPanelProps) {
               <rect width="20" height="10" fill="url(#hatch)" />
             </svg>
             <span className="text-muted-foreground">No data</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Select
+              value={currentProjection}
+              onValueChange={(value: ProjectionType) => handleProjectionChange(value)}
+            >
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select projection" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(projections).map((proj) => (
+                  <SelectItem key={proj} value={proj}>
+                    {proj}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       )}
