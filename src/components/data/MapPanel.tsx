@@ -67,6 +67,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
+  const projectionRef = useRef<d3.GeoProjection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] = useState<ProjectionType>("Equal Earth");
 
@@ -134,6 +135,35 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return dataMap;
   }, [data, selectedYear]);
 
+  // Update map paths with current projection
+  const updateMapPaths = useCallback(() => {
+    if (!svgRef.current || !projectionRef.current) return;
+
+    const path = d3.geoPath(projectionRef.current);
+    d3.select(svgRef.current)
+      .selectAll("path.country")
+      .attr("d", path);
+  }, []);
+
+  // Handle drag interaction
+  const handleDrag = useCallback((event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
+    if (!projectionRef.current) return;
+
+    const sensitivityX = 5; // Horizontal movement sensitivity
+    const sensitivityY = 5; // Vertical movement sensitivity
+
+    const [λ, φ, γ] = projectionRef.current.rotate();
+    
+    // Update rotation based on drag movement
+    projectionRef.current.rotate([
+      λ + event.dx / sensitivityX,
+      φ - event.dy / sensitivityY,
+      γ
+    ]);
+
+    updateMapPaths();
+  }, [updateMapPaths]);
+
   // Handle projection change with animation
   const handleProjectionChange = useCallback((newProjection: ProjectionType) => {
     if (!svgRef.current || !worldDataRef.current) return;
@@ -154,6 +184,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       .rotate([0, 0])
       .precision(0.1);
 
+    projectionRef.current = projection;
     const path = d3.geoPath(projection);
 
     // Animate the transition
@@ -204,6 +235,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .style("max-width", "100%")
         .style("height", "auto");
 
+      // Add drag behavior
+      const dragBehavior = d3.drag<SVGSVGElement, null>()
+        .on("drag", handleDrag);
+
+      svg.call(dragBehavior);
+
       const defs = svg.append("defs");
 
       // Create color gradient for legend and map
@@ -245,6 +282,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .rotate([0, 0])
         .precision(0.1);
 
+      projectionRef.current = projection;
       const path = d3.geoPath(projection);
 
       const countries = feature(
@@ -274,7 +312,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
     }
-  }, [data, language, countryData, colorScale, color1, globalExtent, currentProjection]);
+  }, [data, language, countryData, colorScale, color1, globalExtent, currentProjection, handleDrag]);
 
   // Initial render and resize handling
   useEffect(() => {
@@ -352,7 +390,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         <svg
           ref={svgRef}
           className="w-full h-full"
-          style={{ minHeight: "400px" }}
+          style={{ minHeight: "400px", cursor: "grab" }}
         />
         <div
           ref={tooltipRef}
