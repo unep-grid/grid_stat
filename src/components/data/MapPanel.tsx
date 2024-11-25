@@ -51,7 +51,7 @@ type ProjectionType = keyof typeof projections;
 
 // Projection interpolation function (from Observable example by Herman Sontrop)
 function interpolateProjection(raw0: any, raw1: any) {
-  const mutate = d3.geoProjectionMutator(t => (x, y) => {
+  const mutate = d3.geoProjectionMutator((t: number) => (x: number, y: number) => {
     const [x0, y0] = raw0(x, y), [x1, y1] = raw1(x, y);
     return [x0 + t * (x1 - x0), y0 + t * (y1 - y0)];
   });
@@ -166,7 +166,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Handle projection change with animation
   const handleProjectionChange = useCallback((newProjection: ProjectionType) => {
-    if (!svgRef.current || !worldDataRef.current) return;
+    if (!svgRef.current || !worldDataRef.current || !projectionRef.current) return;
 
     const container = svgRef.current.parentElement;
     if (!container) return;
@@ -175,13 +175,16 @@ export function MapPanel({ data, language }: MapPanelProps) {
     const height = container.clientHeight;
     const scale = width / 6;
 
+    // Get current rotation before changing projection
+    const currentRotation = projectionRef.current.rotate();
+
     const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
     const newProjectionRaw = (d3 as any)[projections[newProjection]];
 
     const projection = interpolateProjection(oldProjectionRaw, newProjectionRaw)
       .scale(scale)
       .translate([width / 2, height / 2])
-      .rotate([0, 0])
+      .rotate(currentRotation) // Use the current rotation
       .precision(0.1);
 
     projectionRef.current = projection;
@@ -279,7 +282,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const projection = d3.geoProjection(projectionRaw)
         .scale(scale)
         .translate([width / 2, height / 2])
-        .rotate([0, 0])
+        .rotate(projectionRef.current?.rotate() || [0, 0, 0]) // Use current rotation if available
         .precision(0.1);
 
       projectionRef.current = projection;
