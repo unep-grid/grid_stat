@@ -1,13 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Hero } from '../components/home/Hero';
-import { PageWrapper } from '../components/layout/PageWrapper';
 ---
 
 <Layout title="UNEP-GRID Data Platform">
-  <PageWrapper client:load>
-    <main class="min-h-screen">
-      <Hero client:load />
-    </main>
-  </PageWrapper>
+  <main class="min-h-screen">
+    <Hero client:load />
+  </main>
 </Layout>

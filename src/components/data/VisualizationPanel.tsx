@@ -5,6 +5,7 @@ import { DataTable } from './tables/DataTable';
 import { MetaDataPanel } from './MetaDataPanel';
 import { MapPanel } from './MapPanel';
 import { DownloadPanel } from './DownloadPanel';
+import { ThemeProvider } from '../layout/ThemeProvider';
 import type { Indicator, IndicatorData } from "../../lib/types";
 import type { Language } from "../../lib/utils/translations";
 import { t } from "../../lib/utils/translations";
@@ -68,7 +69,9 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
             value="map" 
             className="absolute inset-0 m-0 data-[state=active]:block"
           >
-            <MapPanel data={data} language={language} />
+            <ThemeProvider>
+              <MapPanel data={data} language={language} />
+            </ThemeProvider>
           </TabsContent>
 
           <TabsContent 

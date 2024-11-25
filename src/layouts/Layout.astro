@@ -1,5 +1,5 @@
 ---
-import { Navbar } from "../components/layout/Navbar";
+import { AppWrapper } from "../components/layout/AppWrapper";
 import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
 import { DEFAULT_LANGUAGE } from "../lib/utils/translations";
@@ -28,7 +28,9 @@ const base = import.meta.env.BASE_URL;
   </head>
   <body class="w-full">
     <div id="app">
-      <slot />
+      <AppWrapper client:load>
+        <slot />
+      </AppWrapper>
     </div>
     <script>
       // Set initial language from localStorage if available
