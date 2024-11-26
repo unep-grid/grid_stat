@@ -42,7 +42,7 @@ interface WorldTopology
 interface WorldBounds extends Feature<Geometry> {
   type: "Feature";
   geometry: {
-    type: "Polygon";
+    type: "Polygon",
     coordinates: number[][][];
   };
 }
@@ -79,15 +79,28 @@ const createWorldBounds = (): WorldBounds => ({
   properties: {}
 });
 
+// Throttle function to limit the rate of function calls
+const throttle = (func: Function, limit: number) => {
+  let inThrottle: boolean;
+  return function(this: any, ...args: any[]) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};
+
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
-  const cachedBoundsPathRef = useRef<string | null>(null);
+  const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Equal Earth");
+  const isDraggingRef = useRef(false);
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -145,59 +158,76 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return dataMap;
   }, [data, selectedYear]);
 
-  // Calculate and cache the world bounds path for the current projection
-  const calculateWorldBoundsPath = useCallback((projection: d3.GeoProjection) => {
-    const originalRotation = projection.rotate();
-    projection.rotate([0, 0, 0]); // Reset rotation to calculate bounds
-    const path = d3.geoPath(projection);
+  // Update world bounds - only called when projection type changes
+  const updateWorldBounds = useCallback((projection: d3.GeoProjection) => {
+    if (!svgRef.current) return;
+
+    // Create a new projection instance for bounds calculation with zero rotation
+    const container = svgRef.current.parentElement;
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const scale = width / 6;
+
+    const projectionRaw = (d3 as any)[projections[currentProjection]];
+    const boundsProjection = d3
+      .geoProjection(projectionRaw)
+      .scale(scale)
+      .translate([width / 2, height / 2])
+      .rotate([0, 0, 0])
+      .precision(0.1);
+
+    const path = d3.geoPath(boundsProjection);
     const worldBounds = createWorldBounds();
-    const boundsPath = path(worldBounds) || "";
-    projection.rotate(originalRotation); // Restore original rotation
-    return boundsPath;
-  }, []);
+    const boundsPath = path(worldBounds);
 
-  // Update map paths with current projection
-  const updateMapPaths = useCallback(() => {
-    if (!svgRef.current || !projectionRef.current) return;
+    d3.select(svgRef.current)
+      .select("path.world-bounds")
+      .attr("d", boundsPath || "");
+  }, [currentProjection]);
 
-    const path = d3.geoPath(projectionRef.current);
-    
-    // Update country paths
+  // Efficient path updates for countries
+  const updateCountryPaths = useCallback(() => {
+    if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current) return;
+
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
-      .attr("d", (d) => path(d) || "");
-
-    // Update world bounds with cached path
-    if (cachedBoundsPathRef.current) {
-      d3.select(svgRef.current)
-        .select("path.world-bounds")
-        .attr("d", cachedBoundsPathRef.current);
-    }
+      .attr("d", (d) => pathGeneratorRef.current!(d) || "");
   }, []);
 
-  // Handle drag interaction
+  // Throttled update function for smooth performance
+  const throttledUpdate = useCallback(
+    throttle(() => {
+      if (isDraggingRef.current) {
+        updateCountryPaths();
+      }
+    }, 16), // ~60fps
+    [updateCountryPaths]
+  );
+
+  // Handle drag interaction with improved performance
   const handleDrag = useCallback(
     (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
       if (!projectionRef.current) return;
 
-      const sensitivityX = 5; // Horizontal movement sensitivity
-      const sensitivityY = 5; // Vertical movement sensitivity
+      const sensitivityX = 5;
+      const sensitivityY = 5;
 
       const [λ, φ, γ] = projectionRef.current.rotate();
-
-      // Update rotation based on drag movement
       projectionRef.current.rotate([
         λ + event.dx / sensitivityX,
         φ - event.dy / sensitivityY,
         γ,
       ]);
 
-      updateMapPaths();
+      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
+      throttledUpdate();
     },
-    [updateMapPaths]
+    [throttledUpdate]
   );
 
-  // Handle projection change with animation
+  // Handle projection change with immediate bounds update
   const handleProjectionChange = useCallback(
     (newProjection: ProjectionType) => {
       if (!svgRef.current || !worldDataRef.current || !projectionRef.current)
@@ -210,7 +240,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const height = container.clientHeight;
       const scale = width / 6;
 
-      // Get current rotation before changing projection
       const currentRotation = projectionRef.current.rotate();
 
       const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
@@ -227,12 +256,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       projectionRef.current = projection;
       
-      // Calculate and cache the new bounds path
-      cachedBoundsPathRef.current = calculateWorldBoundsPath(projection);
+      // Update bounds immediately with the new projection
+      updateWorldBounds(projection);
 
-      const path = d3.geoPath(projection);
+      pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Animate the transition
+      // Animate country paths
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
         .transition()
@@ -240,20 +269,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attrTween("d", function (d) {
           return function (t: number) {
             projection.alpha(t);
-            return path(d) || "";
+            return pathGeneratorRef.current!(d) || "";
           };
         })
         .on("end", () => {
           setCurrentProjection(newProjection);
-          // Update the world bounds after animation
-          if (cachedBoundsPathRef.current) {
-            d3.select(svgRef.current)
-              .select("path.world-bounds")
-              .attr("d", cachedBoundsPathRef.current);
-          }
         });
     },
-    [currentProjection, calculateWorldBoundsPath]
+    [currentProjection, updateWorldBounds]
   );
 
   // Memoize the visualization update function
@@ -291,10 +314,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .style("max-width", "100%")
         .style("height", "auto");
 
-      // Add drag behavior
+      // Add drag behavior with start/end handlers
       const dragBehavior = d3
         .drag<SVGSVGElement, null>()
-        .on("drag", handleDrag);
+        .on("start", () => { isDraggingRef.current = true; })
+        .on("drag", handleDrag)
+        .on("end", () => { isDraggingRef.current = false; });
 
       svg.call(dragBehavior as any);
 
@@ -341,13 +366,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .precision(0.1);
 
       projectionRef.current = projection;
+      pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Calculate and cache the initial bounds path
-      cachedBoundsPathRef.current = calculateWorldBoundsPath(projection);
-
-      const path = d3.geoPath(projection);
-
-      // Create a group for the map
       const mapGroup = svg.append("g");
 
       const countries = feature(
@@ -361,7 +381,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .data(countries.features)
         .join("path")
         .attr("class", "country")
-        .attr("d", (d) => path(d) || "")
+        .attr("d", (d) => pathGeneratorRef.current!(d) || "")
         .attr("fill", (d: any) => {
           const data = countryData.get(d.id);
           return data ? colorScale(data.value) : "url(#hatch)";
@@ -373,14 +393,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
         )
         .style("transition", "fill 0.2s ease-in-out");
 
-      // Add world bounds using cached path
-      mapGroup.append("path")
+      // Add world bounds with zero rotation
+      mapGroup
+        .append("path")
         .attr("class", "world-bounds")
-        .attr("d", cachedBoundsPathRef.current || "")
         .attr("fill", "none")
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 2)
         .attr("stroke-opacity", 1);
+
+      // Initial bounds update with zero rotation
+      updateWorldBounds(projection);
 
     } catch (err) {
       console.error("Error during visualization update:", err);
@@ -395,7 +418,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     currentProjection,
     handleDrag,
     colors.foreground,
-    calculateWorldBoundsPath,
+    updateWorldBounds,
   ]);
 
   // Initial render and resize handling
