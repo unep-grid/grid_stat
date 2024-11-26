@@ -15,19 +15,41 @@ export const throttle = (func: Function, limit: number) => {
 };
 
 // Process data for visualization
-export const processCountryData = (data: IndicatorData[], selectedYear: number) => {
+export const processRegionData = (data: IndicatorData[], selectedYear: number, latest: boolean = false) => {
   const dataMap = new Map();
-  const yearData = data.filter((d) => d.date_start === selectedYear);
-  yearData.forEach((d) => {
-    const m49Code = d.m49_code.toString().padStart(3, "0");
-    const region = unM49.find((r) => r.code === m49Code);
-    if (region?.iso3166) {
-      dataMap.set(region.iso3166, {
-        value: d.value,
-        name: region.name,
-      });
-    }
-  });
+
+  if (latest) {
+    const latestData = new Map();
+    data.forEach((d) => {
+      const existing = latestData.get(d.m49_code);
+      if (!existing || d.date_start > existing.date_start) {
+        latestData.set(d.m49_code, d);
+      }
+    });
+    latestData.forEach((d) => {
+      const m49Code = d.m49_code.toString().padStart(3, "0");
+      const region = unM49.find((r) => r.code === m49Code);
+      if (region?.iso3166) {
+        dataMap.set(region.iso3166, {
+          value: d.value,
+          name: region.name,
+        });
+      }
+    });
+  } else {
+    const yearData = data.filter((d) => d.date_start === selectedYear);
+    yearData.forEach((d) => {
+      const m49Code = d.m49_code.toString().padStart(3, "0");
+      const region = unM49.find((r) => r.code === m49Code);
+      if (region?.iso3166) {
+        dataMap.set(region.iso3166, {
+          value: d.value,
+          name: region.name,
+        });
+      }
+    });
+  }
+
   return dataMap;
 };
 

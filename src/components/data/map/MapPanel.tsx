@@ -9,7 +9,7 @@ import { Legend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import {
   throttle,
-  processCountryData,
+  processRegionData,
   calculateGlobalExtent,
   createColorScale,
 } from "./utils";
@@ -17,6 +17,7 @@ import type {
   MapPanelProps,
   WorldTopology,
   ProjectionType,
+  IndicatorData,
 } from "./types";
 import { projections } from "./projections";
 
@@ -35,6 +36,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
+  const [isLatestMode, setIsLatestMode] = useState(false);
   const isDraggingRef = useRef(false);
 
   // Use theme context for colors
@@ -61,10 +63,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
   );
 
   // Process data for visualization
-  const countryData = useMemo(
-    () => processCountryData(data, selectedYear),
-    [data, selectedYear]
-  );
+  const countryData = useMemo(() => {
+    return processRegionData(data, selectedYear, isLatestMode);
+  }, [data, selectedYear, isLatestMode]);
 
   // Prepare data for legend (all data values)
   const legendData = useMemo(() => 
@@ -384,6 +385,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         years={years}
         selectedYear={selectedYear}
         onYearChange={setSelectedYear}
+        onLatestToggle={setIsLatestMode}
       />
 
       {/* Map Container */}

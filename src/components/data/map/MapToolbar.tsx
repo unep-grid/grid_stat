@@ -27,6 +27,7 @@ interface MapToolbarProps {
   years: number[];
   selectedYear: number;
   onYearChange: (year: number) => void;
+  onLatestToggle: (isLatest: boolean) => void;
 }
 
 export function MapToolbar({
@@ -39,8 +40,8 @@ export function MapToolbar({
   years,
   selectedYear,
   onYearChange,
+  onLatestToggle,
 }: MapToolbarProps) {
-
   return (
     <div className="map-toolbar flex items-center justify-between p-2 border-b bg-background">
       <div className="flex items-center space-x-2">
@@ -110,6 +111,7 @@ export function MapToolbar({
         years={years}
         selectedYear={selectedYear}
         onYearChange={onYearChange}
+        onLatestToggle={onLatestToggle}
       />
     </div>
   );

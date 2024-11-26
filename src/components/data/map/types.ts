@@ -39,3 +39,5 @@ export const projections = Object.fromEntries(
 ) as { [key: string]: any };
 
 export type ProjectionType = typeof projectionsList[number]['name'];
+
+export type { IndicatorData };
