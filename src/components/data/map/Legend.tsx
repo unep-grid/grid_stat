@@ -51,7 +51,7 @@ export function Legend({
         <div 
           className="w-4 h-4 bg-background" 
           style={{ 
-            backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'4\' height=\'4\' viewBox=\'0 0 4 4\'%3E%3Cpath d=\'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2\' stroke=\'' + encodeURIComponent(colors.foreground) + '\' stroke-width=\'0.5\' stroke-opacity=\'0.2\' /%3E%3C/svg%3E")',
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'4\' height=\'4\' viewBox=\'0 0 4 4\'%3E%3Cpath d=\'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2\' stroke=\'' + encodeURIComponent(colors.foreground) + '\' stroke-width=\'0.5\' stroke-opacity=\'0.5\' /%3E%3C/svg%3E")',
             backgroundRepeat: 'repeat'
           }}
         />

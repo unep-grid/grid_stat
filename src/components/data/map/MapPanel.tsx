@@ -254,7 +254,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2")
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.5)
-        .attr("stroke-opacity", 0.2);
+        .attr("stroke-opacity", 0.5);
 
       // Find initial projection from the list
       const initialProjection = projections.find(p => p.name === currentProjection);
