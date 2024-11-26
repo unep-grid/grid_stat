@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Slider } from "../../ui/slider";
 import { Button } from "../../ui/button";
-import { AlarmClockMinus, AlarmClockPlus } from "lucide-react";
+import { Calendar, CalendarOff } from "lucide-react";
 
 interface TimeControlProps {
   years: number[];
@@ -39,12 +39,12 @@ export function TimeControl({
         size="icon"
         onClick={handleLatestToggle}
       >
-        {isLatest ? <AlarmClockMinus className="h-4 w-4" /> : <AlarmClockPlus className="h-4 w-4" />}
+        {isLatest ? <CalendarOff className="h-4 w-4" /> : <Calendar className="h-4 w-4" />}
         <span className="sr-only">Toggle Latest</span>
       </Button>
 
       {/* Year Slider */}
-      <div className="flex-grow min-w-[150px]">
+      <div className={`flex-grow min-w-[150px] ${isLatest ? 'opacity-50' : ''}`}>
         <Slider
           value={[years.indexOf(selectedYear)]}
           onValueChange={handleYearChange}
