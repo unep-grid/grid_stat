@@ -1,5 +1,5 @@
-import React from "react";
-import { Slider } from "../../ui/slider";
+import React from 'react';
+import { Slider } from "@/components/ui/slider";
 
 interface TimeControlProps {
   years: number[];
@@ -7,33 +7,27 @@ interface TimeControlProps {
   onYearChange: (year: number) => void;
 }
 
-export function TimeControl({
-  years,
-  selectedYear,
-  onYearChange,
+export function TimeControl({ 
+  years, 
+  selectedYear, 
+  onYearChange 
 }: TimeControlProps) {
   return (
-    <>
-      {/* Title Section */}
-      <div className="flex flex-col items-center gap-2">
-        <h2 className="text-xl font-semibold">{selectedYear}</h2>
+    <div className="flex items-center space-x-4 w-full">
+      {/* Year Slider */}
+      <div className="flex-grow min-w-[200px]">
+        <Slider
+          value={[years.indexOf(selectedYear)]}
+          onValueChange={(values) => onYearChange(years[values[0]])}
+          max={years.length - 1}
+          step={1}
+        />
       </div>
 
-      {/* Time Slider Section */}
-      <div className="flex flex-col gap-2 px-8">
-        <Slider
-          value={[selectedYear]}
-          min={years[0]}
-          max={years[years.length - 1]}
-          step={1}
-          onValueChange={(value) => onYearChange(value[0])}
-          className="w-full"
-        />
-        <div className="flex justify-between text-sm text-muted-foreground">
-          <span>{years[0]}</span>
-          <span>{years[years.length - 1]}</span>
-        </div>
+      {/* Year Label */}
+      <div className="w-20 text-center font-medium">
+        {selectedYear}
       </div>
-    </>
+    </div>
   );
 }

@@ -7,7 +7,6 @@ import { useTheme } from "../../layout/ThemeProvider";
 import { t } from "../../../lib/utils/translations";
 import { TimeControl } from "./TimeControl";
 import { Legend } from "./Legend";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
@@ -494,24 +493,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
         {isLegendVisible && globalExtent[0] !== undefined &&
           globalExtent[1] !== undefined &&
           data.length > 0 && (
-            <Card 
-              className="absolute top-4 left-4 z-10 w-64 shadow-md"
-            >
-              <CardHeader>
-                <CardTitle className="text-sm">
-                  Legend ({selectedYear})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Legend
-                  data={legendData}
-                  globalExtent={globalExtent}
-                  currentProjection={currentProjection}
-                  onProjectionChange={handleProjectionChange}
-                  title=""  // Remove explicit title as we're using CardTitle
-                />
-              </CardContent>
-            </Card>
+            <div className="absolute top-4 left-4 z-10 p-2">
+              <Legend
+                data={legendData}
+                globalExtent={globalExtent}
+              />
+            </div>
           )}
       </div>
     </div>
