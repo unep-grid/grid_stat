@@ -5,27 +5,8 @@ import type { Feature, Geometry } from "geojson";
 import { interpolateProjection } from "../../../lib/utils/projection";
 import { useTheme } from "../../layout/ThemeProvider";
 import { t } from "../../../lib/utils/translations";
-import { TimeControl } from "./TimeControl";
 import { Legend } from "./Legend";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
-import { 
-  Download, 
-  Map, 
-  LayoutList 
-} from "lucide-react";
+import { MapToolbar } from "./MapToolbar";
 import {
   throttle,
   processCountryData,
@@ -52,7 +33,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
-    useState<ProjectionType>("Equal Earth");
+    useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const isDraggingRef = useRef(false);
 
@@ -411,74 +392,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
   return (
     <div className="relative flex flex-col h-full w-full">
       {/* Toolbar */}
-      <div className="flex items-center justify-between p-2 border-b">
-        <div className="flex items-center space-x-2">
-          {/* Projection Selector */}
-          <Select 
-            value={currentProjection} 
-            onValueChange={(value) => handleProjectionChange(value as ProjectionType)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Projection">
-                <div className="flex items-center">
-                  <Map className="mr-2 h-4 w-4" />
-                  {currentProjection}
-                </div>
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {projections.map((proj) => (
-                <SelectItem key={proj.name} value={proj.name}>
-                  {proj.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Legend Toggle */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant={isLegendVisible ? "default" : "outline"}
-                  size="icon"
-                  onClick={() => setIsLegendVisible(!isLegendVisible)}
-                >
-                  <LayoutList className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Toggle Legend</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          {/* Export SVG */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  onClick={handleExportSVG}
-                >
-                  <Download className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Export SVG</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-
-        {/* Time Control */}
-        <TimeControl
-          years={years}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-        />
-      </div>
+      <MapToolbar
+        projections={projections}
+        currentProjection={currentProjection}
+        onProjectionChange={handleProjectionChange}
+        isLegendVisible={isLegendVisible}
+        onLegendToggle={() => setIsLegendVisible(!isLegendVisible)}
+        onExportSVG={handleExportSVG}
+        years={years}
+        selectedYear={selectedYear}
+        onYearChange={setSelectedYear}
+      />
 
       {/* Map Container */}
       <div className="relative flex-grow">

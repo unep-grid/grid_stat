@@ -62,7 +62,7 @@ export const projections = [
   { name: "Laskowski tri-optimal", value: d3.geoLaskowskiRaw },
   { name: "Loximuthal", value: d3.geoLoximuthalRaw((40 / 180) * Math.PI) },
   { name: "Miller cylindrical", value: d3.geoMillerRaw },
-  { name: "Mollweide", value: d3.geoMollweideRaw },
+  { name: "Mollweide", value: d3.geoMollweideRaw},
   { name: "Natural Earth", value: d3.geoNaturalEarth1Raw },
   { name: "Natural Earth II", value: d3.geoNaturalEarth2Raw },
   { name: "Nell–Hammer", value: d3.geoNellHammerRaw },
