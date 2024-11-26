@@ -9,6 +9,7 @@ import { unM49 } from "../../lib/utils/regions";
 import { interpolateProjection } from "../../lib/utils/projection";
 import { Slider } from "../ui/slider";
 import { useTheme } from "../layout/ThemeProvider";
+import type { Feature, Geometry } from "geojson";
 import {
   Select,
   SelectContent,
@@ -38,16 +39,24 @@ interface WorldTopology
   type: "Topology";
 }
 
+interface WorldBounds extends Feature<Geometry> {
+  type: "Feature";
+  geometry: {
+    type: "Polygon";
+    coordinates: number[][][];
+  };
+}
+
 // Available projections
 const projections = {
   "Azimuthal Equal Area": "geoAzimuthalEqualAreaRaw",
   "Azimuthal Equidistant": "geoAzimuthalEquidistantRaw",
   "Equal Earth": "geoEqualEarthRaw",
-  Equirectangular: "geoEquirectangularRaw",
-  Mercator: "geoMercatorRaw",
+  "Equirectangular": "geoEquirectangularRaw",
+  "Mercator": "geoMercatorRaw",
   "Natural Earth": "geoNaturalEarth1Raw",
-  Orthographic: "geoOrthographicRaw",
-  Stereographic: "geoStereographicRaw",
+  "Orthographic": "geoOrthographicRaw",
+  "Stereographic": "geoStereographicRaw"
 } as const;
 
 type ProjectionType = keyof typeof projections;
@@ -122,7 +131,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
     if (!svgRef.current || !projectionRef.current) return;
 
     const path = d3.geoPath(projectionRef.current);
-    d3.select(svgRef.current).selectAll("path.country").attr("d", path);
+    d3.select(svgRef.current)
+      .selectAll<SVGPathElement, Feature<Geometry>>("path")
+      .attr("d", (d) => path(d) || "");
   }, []);
 
   // Handle drag interaction
@@ -180,13 +191,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       // Animate the transition
       d3.select(svgRef.current)
-        .selectAll("path.country")
+        .selectAll<SVGPathElement, Feature<Geometry>>("path")
         .transition()
         .duration(1000)
-        .attrTween("d", function (d: any) {
+        .attrTween("d", function (d) {
           return function (t: number) {
             projection.alpha(t);
-            return path(d)!;
+            return path(d) || "";
           };
         })
         .on("end", () => setCurrentProjection(newProjection));
@@ -208,12 +219,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       // Load world map data if not already loaded
       if (!worldDataRef.current) {
-        worldDataRef.current = await d3.json<WorldTopology>(
+        const response = await d3.json<WorldTopology>(
           "/grid_stat/world-110m.json"
         );
-        if (!worldDataRef.current) {
+        if (!response) {
           throw new Error("Failed to load world map data");
         }
+        worldDataRef.current = response;
       }
 
       // Clear previous content
@@ -233,7 +245,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .drag<SVGSVGElement, null>()
         .on("drag", handleDrag);
 
-      svg.call(dragBehavior);
+      svg.call(dragBehavior as any);
 
       const defs = svg.append("defs");
 
@@ -280,18 +292,48 @@ export function MapPanel({ data, language }: MapPanelProps) {
       projectionRef.current = projection;
       const path = d3.geoPath(projection);
 
+      // Create a group for the map
+      const mapGroup = svg.append("g");
+
+      // Add world bounds rectangle
+      const worldBounds: WorldBounds = {
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [
+            [
+              [-180, -90],
+              [-180, 90],
+              [180, 90],
+              [180, -90],
+              [-180, -90]
+            ]
+          ]
+        },
+        properties: {}
+      };
+
+      mapGroup.append("path")
+        .datum(worldBounds)
+        .attr("class", "world-bounds")
+        .attr("d", (d) => path(d) || "")
+        .attr("fill", "none")
+        .attr("stroke", colors.foreground)
+        .attr("stroke-width", 0.5)
+        .attr("stroke-opacity", 0.3);
+
       const countries = feature(
         worldDataRef.current,
         worldDataRef.current.objects.world
       );
 
       // Draw countries
-      svg
-        .selectAll("path.country")
+      mapGroup
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
         .data(countries.features)
         .join("path")
         .attr("class", "country")
-        .attr("d", path)
+        .attr("d", (d) => path(d) || "")
         .attr("fill", (d: any) => {
           const data = countryData.get(d.id);
           return data ? colorScale(data.value) : "url(#hatch)";

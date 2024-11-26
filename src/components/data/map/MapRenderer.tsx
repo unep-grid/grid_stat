@@ -89,6 +89,32 @@ export function MapRenderer({
     // Create a group for the map
     const g = svg.append("g");
 
+    // Add projection boundary rectangle
+    const worldBounds = {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [-180, -90],
+            [-180, 90],
+            [180, 90],
+            [180, -90],
+            [-180, -90]
+          ]
+        ]
+      }
+    };
+
+    g.append("path")
+      .datum(worldBounds)
+      .attr("class", "world-bounds")
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", color1)
+      .attr("stroke-width", 0.5)
+      .attr("opacity", 0.5);
+
     // Draw countries
     g.selectAll("path.country")
       .data(countries.features)
