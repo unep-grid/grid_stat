@@ -17,7 +17,7 @@ interface VisualizationPanelProps {
 }
 
 export function VisualizationPanel({ indicator, data, language }: VisualizationPanelProps) {
-  const [activeTab, setActiveTab] = useState('chart');
+  const [activeTab, setActiveTab] = useState('metadata');
 
   if (!indicator) {
     return (
@@ -28,22 +28,31 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
   }
 
   return (
-    <div className="h-full flex flex-col p-4">
-      <div className="shrink-0 mb-6">
-        <h2 className="text-2xl font-semibold">{indicator.title}</h2>
-        <p className="text-sm text-muted-foreground mt-2">{indicator.description}</p>
-      </div>
-
+    <div className="h-full flex flex-col">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
-        <TabsList className="shrink-0">
-          <TabsTrigger value="chart">{t('dv.chart', language)}</TabsTrigger>
-          <TabsTrigger value="table">{t('dv.table', language)}</TabsTrigger>
-          <TabsTrigger value="metadata">{t('dv.metadata', language)}</TabsTrigger>
-          <TabsTrigger value="map">{t('dv.map', language)}</TabsTrigger>
-          <TabsTrigger value="download">{t('dv.download', language)}</TabsTrigger>
-        </TabsList>
+        <div className="shrink-0 border-b">
+          <TabsList className="w-full justify-start h-16 bg-transparent p-0">
+            <TabsTrigger value="metadata" className="data-[state=active]:bg-background">{t('dv.metadata', language)}</TabsTrigger>
+            <TabsTrigger value="chart" className="data-[state=active]:bg-background">{t('dv.chart', language)}</TabsTrigger>
+            <TabsTrigger value="table" className="data-[state=active]:bg-background">{t('dv.table', language)}</TabsTrigger>
+            <TabsTrigger value="map" className="data-[state=active]:bg-background">{t('dv.map', language)}</TabsTrigger>
+            <TabsTrigger value="download" className="data-[state=active]:bg-background">{t('dv.download', language)}</TabsTrigger>
+          </TabsList>
+        </div>
         
-        <div className="flex-1 min-h-0 relative mt-4">
+        <div className="flex-1 min-h-0 relative">
+          <TabsContent 
+            value="metadata" 
+            className="absolute inset-0 m-0 data-[state=active]:block overflow-y-auto"
+          >
+            <div className="space-y-6 p-4">
+              <div>
+                <h2 className="text-2xl font-semibold mb-2">{indicator.title}</h2>
+              </div>
+              <MetaDataPanel indicator={indicator} language={language} />
+            </div>
+          </TabsContent>
+
           <TabsContent 
             value="chart" 
             className="absolute inset-0 m-0 data-[state=active]:block"
@@ -56,13 +65,6 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
             className="absolute inset-0 m-0 data-[state=active]:block overflow-hidden"
           >
             <DataTable data={data} language={language} />
-          </TabsContent>
-
-          <TabsContent 
-            value="metadata" 
-            className="absolute inset-0 m-0 data-[state=active]:block overflow-y-auto"
-          >
-            <MetaDataPanel indicator={indicator} language={language} />
           </TabsContent>
 
           <TabsContent 

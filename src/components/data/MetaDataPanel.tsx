@@ -9,9 +9,8 @@ interface MetaDataPanelProps {
 
 export function MetaDataPanel({ indicator, language }: MetaDataPanelProps) {
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">{t('dv.metadata_description', language)}</h3>
         <p className="text-sm text-muted-foreground">{indicator.description}</p>
       </div>
       
