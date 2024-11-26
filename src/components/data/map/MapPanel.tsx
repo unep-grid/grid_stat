@@ -7,6 +7,26 @@ import { useTheme } from "../../layout/ThemeProvider";
 import { t } from "../../../lib/utils/translations";
 import { TimeControl } from "./TimeControl";
 import { Legend } from "./Legend";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { 
+  Download, 
+  Map, 
+  LayoutList 
+} from "lucide-react";
 import {
   throttle,
   processCountryData,
@@ -34,6 +54,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Equal Earth");
+  const [isLegendVisible, setIsLegendVisible] = useState(true);
   const isDraggingRef = useRef(false);
 
   // Use theme context for colors
@@ -62,6 +83,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Process data for visualization
   const countryData = useMemo(
     () => processCountryData(data, selectedYear),
+    [data, selectedYear]
+  );
+
+  // Prepare data for legend (extract values for the selected year)
+  const legendData = useMemo(() => 
+    data
+      .filter(d => d.date_start === selectedYear)
+      .map(d => d.value),
     [data, selectedYear]
   );
 
@@ -178,6 +207,40 @@ export function MapPanel({ data, language }: MapPanelProps) {
     },
     [currentProjection]
   );
+
+  // Export SVG functionality
+  const handleExportSVG = useCallback(() => {
+    if (!svgRef.current) return;
+
+    // Clone the SVG to modify without affecting the original
+    const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
+    
+    // Remove any existing background rectangles or modifications
+    const clone = d3.select(svgClone);
+    clone.selectAll('.background-rect').remove();
+
+    // Add a white background
+    clone.insert('rect', ':first-child')
+      .attr('class', 'background-rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('fill', 'white');
+
+    // Serialize SVG
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgClone);
+
+    // Create download
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `map_${selectedYear}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [selectedYear]);
 
   // Update visualization
   const updateVisualization = useCallback(async () => {
@@ -347,40 +410,110 @@ export function MapPanel({ data, language }: MapPanelProps) {
   }
 
   return (
-    <div className="relative flex flex-col h-full w-full gap-4 p-4">
-      <TimeControl
-        years={years}
-        selectedYear={selectedYear}
-        onYearChange={setSelectedYear}
-      />
+    <div className="relative flex flex-col h-full w-full">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between p-2 border-b">
+        <div className="flex items-center space-x-2">
+          {/* Projection Selector */}
+          <Select 
+            value={currentProjection} 
+            onValueChange={(value) => handleProjectionChange(value as ProjectionType)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Projection">
+                <div className="flex items-center">
+                  <Map className="mr-2 h-4 w-4" />
+                  {currentProjection}
+                </div>
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {projections.map((proj) => (
+                <SelectItem key={proj.name} value={proj.name}>
+                  {proj.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      <div className="flex-grow relative">
+          {/* Legend Toggle */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant={isLegendVisible ? "default" : "outline"}
+                  size="icon"
+                  onClick={() => setIsLegendVisible(!isLegendVisible)}
+                >
+                  <LayoutList className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Toggle Legend</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/* Export SVG */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={handleExportSVG}
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Export SVG</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        {/* Time Control */}
+        <TimeControl
+          years={years}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+        />
+      </div>
+
+      {/* Map Container */}
+      <div className="relative flex-grow">
+        {/* Main Map */}
         <svg
           ref={svgRef}
           className="w-full h-full"
           style={{ minHeight: "400px", cursor: "grab" }}
         />
-        <div
-          ref={tooltipRef}
-          className="absolute pointer-events-none opacity-0 bg-popover text-popover-foreground p-2 rounded-md shadow-md transition-opacity border"
-          style={{
-            zIndex: 1000,
-            maxWidth: "200px",
-            transform: "translate(-50%, -100%)",
-            transition: "opacity 0.15s ease-in-out",
-          }}
-        />
-      </div>
 
-      {globalExtent[0] !== undefined &&
-        globalExtent[1] !== undefined &&
-        data.length > 0 && (
-          <Legend
-            globalExtent={globalExtent}
-            currentProjection={currentProjection}
-            onProjectionChange={handleProjectionChange}
-          />
-        )}
+        {/* Legend */}
+        {isLegendVisible && globalExtent[0] !== undefined &&
+          globalExtent[1] !== undefined &&
+          data.length > 0 && (
+            <Card 
+              className="absolute top-4 left-4 z-10 w-64 shadow-md"
+            >
+              <CardHeader>
+                <CardTitle className="text-sm">
+                  Legend ({selectedYear})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Legend
+                  data={legendData}
+                  globalExtent={globalExtent}
+                  currentProjection={currentProjection}
+                  onProjectionChange={handleProjectionChange}
+                  title=""  // Remove explicit title as we're using CardTitle
+                />
+              </CardContent>
+            </Card>
+          )}
+      </div>
     </div>
   );
 }

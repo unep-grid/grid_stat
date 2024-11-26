@@ -1,64 +1,68 @@
-import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
-import type { ProjectionType } from "./types";
-import { projections } from "./types";
+import React from 'react';
+import { 
+  analyzeDataForMap, 
+  selectColorPalette, 
+  generateLegendSteps,
+} from './legendUtils';
+import type { LegendConfig } from './legendUtils';
+import type { ProjectionType } from './types';
 
 interface LegendProps {
+  data: (number | string)[];
   globalExtent: [number, number];
-  currentProjection: ProjectionType;
-  onProjectionChange: (projection: ProjectionType) => void;
+  currentProjection?: ProjectionType;
+  onProjectionChange?: (projection: ProjectionType) => void;
+  geography?: boolean;
+  title?: string;
 }
 
-export function Legend({
-  globalExtent,
-  currentProjection,
-  onProjectionChange,
+export function Legend({ 
+  data, 
+  geography = true, 
+  title = 'Legend' 
 }: LegendProps) {
+  // Analyze the data to determine legend configuration
+  const config: LegendConfig = analyzeDataForMap(data, geography);
+  
+  // Select appropriate color palette
+  const colors = selectColorPalette(config);
+  
+  // Generate legend steps
+  const steps = generateLegendSteps(config);
+
   return (
-    <div className="flex items-center justify-center gap-4 text-sm">
-      <div className="flex items-center gap-2">
-        <span>{globalExtent[0].toLocaleString()}</span>
-        <div
-          className="h-2 w-40 rounded"
-          style={{
-            background: "url(#color-gradient)",
-          }}
-        >
-          <svg width="100%" height="100%">
-            <rect width="100%" height="100%" fill="url(#color-gradient)" />
-          </svg>
-        </div>
-        <span>{globalExtent[1].toLocaleString()}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <svg width="20" height="10">
-          <rect width="20" height="10" fill="url(#hatch)" />
-        </svg>
-        <span className="text-muted-foreground">No data</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Select
-          value={currentProjection}
-          onValueChange={(value: ProjectionType) => onProjectionChange(value)}
-        >
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Select projection" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.keys(projections).map((proj) => (
-              <SelectItem key={proj} value={proj}>
-                {proj}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <div className="space-y-2">
+      {config.categories ? (
+        // Categorical legend
+        <>
+          {config.categories.map((category, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <div 
+                className="w-4 h-4" 
+                style={{ backgroundColor: colors[index % colors.length] }}
+              />
+              <span className="text-sm">{category}</span>
+            </div>
+          ))}
+        </>
+      ) : (
+        // Numerical legend
+        <>
+          {steps.map((step, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <div 
+                className="w-4 h-4" 
+                style={{ backgroundColor: colors[index] }}
+              />
+              <span className="text-sm">
+                {config.scaleType === 'log' 
+                  ? step.toExponential(2) 
+                  : step.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }
