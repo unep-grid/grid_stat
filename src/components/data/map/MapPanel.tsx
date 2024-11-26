@@ -58,8 +58,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Create color scale using global extent
   const colorScale = useMemo(
-    () => createColorScale(globalExtent, colors.background, colors.foreground, data),
-    [globalExtent, colors.background, colors.foreground, data]
+    () => createColorScale(globalExtent, data),
+    [globalExtent, data]
   );
 
   // Process data for visualization
@@ -407,6 +407,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
                 globalExtent={globalExtent}
                 colorScale={colorScale}
                 language={language}
+                currentYear={selectedYear}
               />
             </div>
           )}

@@ -43,6 +43,9 @@ export function TimeControl({
         <span className="sr-only">Toggle Latest</span>
       </Button>
 
+      {/* Year Labels */}
+      <span>{years[0]}</span>
+
       {/* Year Slider */}
       <div className={`flex-grow min-w-[150px] ${isLatest ? 'opacity-50' : ''}`}>
         <Slider
@@ -54,12 +57,7 @@ export function TimeControl({
         />
       </div>
 
-      {/* Year Labels */}
-      <div className="flex space-x-2">
-        <span>{years[0]}</span>
-        <span>{selectedYear}</span>
-        <span>{years[years.length - 1]}</span>
-      </div>
+      <span>{years[years.length - 1]}</span>
     </div>
   );
 }

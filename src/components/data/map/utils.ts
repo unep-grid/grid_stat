@@ -62,8 +62,6 @@ export const calculateGlobalExtent = (data: IndicatorData[]): [number, number] =
 // Create color scale
 export const createColorScale = (
   globalExtent: [number, number], 
-  backgroundColor: string, 
-  foregroundColor: string,
   data: IndicatorData[]
 ) => {
   if (
@@ -71,14 +69,11 @@ export const createColorScale = (
     globalExtent[1] === undefined ||
     data.length === 0
   ) {
-    return () => backgroundColor;
+    return () => "#f7f7f7"; // Default color for no data
   }
 
-  const scale = d3.scaleLinear().domain(globalExtent).range([0.2, 0.8]);
+  const scale = d3.scaleSequential(d3.interpolateRdPu)
+    .domain(globalExtent);
 
-  const colorInterpolator = (t: number) => {
-    return d3.interpolateHsl(backgroundColor, foregroundColor)(t);
-  };
-
-  return (value: number) => colorInterpolator(scale(value));
+  return (value: number) => scale(value);
 };

@@ -10,6 +10,7 @@ interface LegendProps {
   steps?: number;
   title?: string;
   language?: Language;
+  currentYear: number;
 }
 
 export function Legend({ 
@@ -18,7 +19,8 @@ export function Legend({
   colorScale, 
   steps = 5,
   title = 'Legend',
-  language = DEFAULT_LANGUAGE
+  language = DEFAULT_LANGUAGE,
+  currentYear
 }: LegendProps) {
   const { colors } = useTheme();
 
@@ -29,7 +31,7 @@ export function Legend({
 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 space-y-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">{title}</div>
+      <div className="text-sm font-semibold mb-1">{title} {currentYear}</div>
       
       {/* Color gradient legend */}
       <div className="flex items-center space-x-2">
