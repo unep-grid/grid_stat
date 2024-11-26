@@ -66,12 +66,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
     [data, selectedYear]
   );
 
-  // Prepare data for legend (extract values for the selected year)
+  // Prepare data for legend (all data values)
   const legendData = useMemo(() => 
-    data
-      .filter(d => d.date_start === selectedYear)
-      .map(d => d.value),
-    [data, selectedYear]
+    data.map(d => d.value),
+    [data]
   );
 
   // Update world bounds
@@ -104,7 +102,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     [updateCountryPaths]
   );
 
-  // Handle drag interaction
+  // Drag interaction
   const handleDrag = useCallback(
     (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
       if (!projectionRef.current) return;
@@ -187,40 +185,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     },
     [currentProjection]
   );
-
-  // Export SVG functionality
-  const handleExportSVG = useCallback(() => {
-    if (!svgRef.current) return;
-
-    // Clone the SVG to modify without affecting the original
-    const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
-    
-    // Remove any existing background rectangles or modifications
-    const clone = d3.select(svgClone);
-    clone.selectAll('.background-rect').remove();
-
-    // Add a white background
-    clone.insert('rect', ':first-child')
-      .attr('class', 'background-rect')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .attr('fill', 'white');
-
-    // Serialize SVG
-    const serializer = new XMLSerializer();
-    const svgString = serializer.serializeToString(svgClone);
-
-    // Create download
-    const blob = new Blob([svgString], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `map_${selectedYear}.svg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }, [selectedYear]);
 
   // Update visualization
   const updateVisualization = useCallback(async () => {
@@ -355,6 +319,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     colors.foreground,
   ]);
 
+  // Effect to update visualization
   useEffect(() => {
     updateVisualization();
 
@@ -371,24 +336,41 @@ export function MapPanel({ data, language }: MapPanelProps) {
     };
   }, [updateVisualization]);
 
-  if (error) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <div className="text-destructive">
-          {t("dv.map_error", language)}: {error}
-        </div>
-      </div>
-    );
-  }
+  // Export SVG functionality
+  const handleExportSVG = useCallback(() => {
+    if (!svgRef.current) return;
 
-  if (!data || data.length === 0) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground">{t("dv.no_data", language)}</p>
-      </div>
-    );
-  }
+    // Clone the SVG to modify without affecting the original
+    const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
+    
+    // Remove any existing background rectangles or modifications
+    const clone = d3.select(svgClone);
+    clone.selectAll('.background-rect').remove();
 
+    // Add a white background
+    clone.insert('rect', ':first-child')
+      .attr('class', 'background-rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('fill', 'white');
+
+    // Serialize SVG
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgClone);
+
+    // Create download
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `map_${selectedYear}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [selectedYear]);
+
+  // Render component
   return (
     <div className="relative flex flex-col h-full w-full">
       {/* Toolbar */}
@@ -421,6 +403,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
               <Legend
                 data={legendData}
                 globalExtent={globalExtent}
+                colorScale={colorScale}
+                language={language}
               />
             </div>
           )}

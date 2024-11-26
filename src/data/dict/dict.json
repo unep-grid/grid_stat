@@ -78,6 +78,10 @@
       "en": "Keywords",
       "fr": "Mots-clés"
     },
+    "missing_values": {
+      "en": "N/A",
+      "fr": "N/A"
+    },
     "results": {
       "en": "results",
       "fr": "résultats"
