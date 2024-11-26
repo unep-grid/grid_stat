@@ -2,6 +2,7 @@ import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Feature, Geometry } from "geojson";
 import type { IndicatorData } from "../../../lib/types";
 import type { Language } from "../../../lib/utils/translations";
+import { projections as projectionsList } from "./projections";
 
 export interface MapPanelProps {
   data: IndicatorData[];
@@ -32,16 +33,9 @@ export interface WorldBounds extends Feature<Geometry> {
   };
 }
 
-// Available projections mapping
-export const projections = {
-  "Azimuthal Equal Area": "geoAzimuthalEqualAreaRaw",
-  "Azimuthal Equidistant": "geoAzimuthalEquidistantRaw",
-  "Equal Earth": "geoEqualEarthRaw",
-  "Equirectangular": "geoEquirectangularRaw",
-  "Mercator": "geoMercatorRaw",
-  "Natural Earth": "geoNaturalEarth1Raw",
-  "Orthographic": "geoOrthographicRaw",
-  "Stereographic": "geoStereographicRaw"
-} as const;
+// Create projections mapping from the projections list
+export const projections = Object.fromEntries(
+  projectionsList.map(p => [p.name, p.value])
+) as { [key: string]: any };
 
-export type ProjectionType = keyof typeof projections;
+export type ProjectionType = typeof projectionsList[number]['name'];

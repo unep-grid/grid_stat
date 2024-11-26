@@ -1,25 +1,6 @@
 import * as d3 from "d3";
 import { unM49 } from "../../../lib/utils/regions";
 import type { IndicatorData } from "../../../lib/types";
-import type { WorldBounds } from "./types";
-
-// Create world bounds feature
-export const createWorldBounds = (): WorldBounds => ({
-  type: "Feature",
-  geometry: {
-    type: "Polygon",
-    coordinates: [
-      [
-        [-179, -89],
-        [-179, 89],
-        [179, 89],
-        [179, -89],
-        [-179, -89]
-      ]
-    ]
-  },
-  properties: {}
-});
 
 // Throttle function to limit the rate of function calls
 export const throttle = (func: Function, limit: number) => {

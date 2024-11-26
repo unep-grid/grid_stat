@@ -8,7 +8,6 @@ import { t } from "../../../lib/utils/translations";
 import { TimeControl } from "./TimeControl";
 import { Legend } from "./Legend";
 import {
-  createWorldBounds,
   throttle,
   processCountryData,
   calculateGlobalExtent,
@@ -19,7 +18,12 @@ import type {
   WorldTopology,
   ProjectionType,
 } from "./types";
-import { projections } from "./types";
+import { projections } from "./projections";
+
+// Define the GeoSphere type
+type GeoSphere = {
+  type: "Sphere";
+};
 
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -64,30 +68,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Update world bounds
   const updateWorldBounds = useCallback((projection: d3.GeoProjection) => {
     if (!svgRef.current) return;
-
-    const container = svgRef.current.parentElement;
-    if (!container) return;
-
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    const scale = width / 6;
-
-    const projectionRaw = (d3 as any)[projections[currentProjection]];
-    const boundsProjection = d3
-      .geoProjection(projectionRaw)
-      .scale(scale)
-      .translate([width / 2, height / 2])
-      .rotate([0, 0, 0])
-      .precision(0.1);
-
-    const path = d3.geoPath(boundsProjection);
-    const worldBounds = createWorldBounds();
-    const boundsPath = path(worldBounds);
-
+    const path = d3.geoPath(projection);
     d3.select(svgRef.current)
       .select("path.world-bounds")
-      .attr("d", boundsPath || "");
-  }, [currentProjection]);
+      .attr("d", path({ type: "Sphere" } as GeoSphere) as any);
+  }, []);
 
   // Update country paths
   const updateCountryPaths = useCallback(() => {
@@ -96,7 +81,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
       .attr("d", (d) => pathGeneratorRef.current!(d) || "");
-  }, []);
+
+    updateWorldBounds(projectionRef.current);
+  }, [updateWorldBounds]);
 
   // Throttled update function
   const throttledUpdate = useCallback(
@@ -144,12 +131,15 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const currentRotation = projectionRef.current.rotate();
 
-      const oldProjectionRaw = (d3 as any)[projections[currentProjection]];
-      const newProjectionRaw = (d3 as any)[projections[newProjection]];
+      // Find the old and new projection functions from the list
+      const oldProjection = projections.find(p => p.name === currentProjection);
+      const newProjectionData = projections.find(p => p.name === newProjection);
+
+      if (!oldProjection || !newProjectionData) return;
 
       const projection = interpolateProjection(
-        oldProjectionRaw,
-        newProjectionRaw
+        oldProjection.value,
+        newProjectionData.value
       )
         .scale(scale)
         .translate([width / 2, height / 2])
@@ -157,24 +147,36 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .precision(0.1);
 
       projectionRef.current = projection;
-      updateWorldBounds(projection);
       pathGeneratorRef.current = d3.geoPath(projection);
+
+      // Transition both the countries and the sphere
+      const transition = d3.transition().duration(1000);
 
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
-        .transition()
-        .duration(1000)
+        .transition(transition)
         .attrTween("d", function (d) {
           return function (t: number) {
             projection.alpha(t);
-            return pathGeneratorRef.current!(d) || "";
+            return d3.geoPath(projection)(d) || "";
+          };
+        });
+
+      // Transition the sphere
+      d3.select(svgRef.current)
+        .select("path.world-bounds")
+        .transition(transition)
+        .attrTween("d", () => {
+          return function (t: number) {
+            projection.alpha(t);
+            return d3.geoPath(projection)({ type: "Sphere" } as GeoSphere) as string;
           };
         })
         .on("end", () => {
           setCurrentProjection(newProjection);
         });
     },
-    [currentProjection, updateWorldBounds]
+    [currentProjection]
   );
 
   // Update visualization
@@ -247,9 +249,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 0.2);
 
-      const projectionRaw = (d3 as any)[projections[currentProjection]];
+      // Find initial projection from the list
+      const initialProjection = projections.find(p => p.name === currentProjection);
+      if (!initialProjection) return;
+
       const projection = d3
-        .geoProjection(projectionRaw)
+        .geoProjection(initialProjection.value)
         .scale(scale)
         .translate([width / 2, height / 2])
         .rotate(projectionRef.current?.rotate() || [0, 0, 0])
@@ -259,6 +264,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
       pathGeneratorRef.current = d3.geoPath(projection);
 
       const mapGroup = svg.append("g");
+
+      // Add sphere outline first
+      mapGroup
+        .append("path")
+        .attr("class", "world-bounds")
+        .datum({ type: "Sphere" } as GeoSphere)
+        .attr("fill", "none")
+        .attr("stroke", colors.foreground)
+        .attr("stroke-width", 2)
+        .attr("stroke-opacity", 1)
+        .attr("d", pathGeneratorRef.current as any);
 
       const countries = feature(
         worldDataRef.current,
@@ -282,16 +298,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         )
         .style("transition", "fill 0.2s ease-in-out");
 
-      mapGroup
-        .append("path")
-        .attr("class", "world-bounds")
-        .attr("fill", "none")
-        .attr("stroke", colors.foreground)
-        .attr("stroke-width", 2)
-        .attr("stroke-opacity", 1);
-
-      updateWorldBounds(projection);
-
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
@@ -304,7 +310,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     currentProjection,
     handleDrag,
     colors.foreground,
-    updateWorldBounds,
   ]);
 
   useEffect(() => {
