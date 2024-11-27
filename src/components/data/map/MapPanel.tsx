@@ -33,6 +33,89 @@ interface HoveredRegion {
   y: number;
 }
 
+// Shared size scale configuration
+const createSizeScale = (extent: [number, number]) => 
+  d3.scaleSqrt()
+    .domain(extent)
+    .range([3, 15]); // Reduced maximum size
+
+// Custom Legend for proportional symbols
+function ProportionalSymbolLegend({
+  globalExtent,
+  currentYear,
+  language,
+  colors,
+}: {
+  globalExtent: [number, number];
+  currentYear: number;
+  language: string;
+  colors: { foreground: string };
+}) {
+  const [minValue, maxValue] = globalExtent;
+  const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
+  
+  // Calculate intermediate values
+  const steps = [
+    minValue,
+    minValue + (maxValue - minValue) * 0.25,
+    minValue + (maxValue - minValue) * 0.5,
+    minValue + (maxValue - minValue) * 0.75,
+    maxValue
+  ];
+  
+  // SVG dimensions and layout
+  const width = 120;
+  const height = 160; // Increased height to accommodate more circles
+  const margin = { top: 20, right: 40, bottom: 10, left: 10 };
+  const centerX = margin.left + (width - margin.left - margin.right) / 3;
+  
+  // Use shared size scale
+  const sizeScale = createSizeScale(globalExtent);
+
+  // Calculate vertical spacing
+  const verticalSpacing = (height - margin.top - margin.bottom) / (steps.length - 1);
+
+  return (
+    <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
+      <div className="text-sm font-semibold mb-1">Legend {currentYear}</div>
+      <svg width={width} height={height} className="overflow-visible">
+        {steps.map((value, i) => {
+          const radius = sizeScale(value);
+          const cy = margin.top + i * verticalSpacing;
+          return (
+            <g key={i}>
+              <circle
+                cx={centerX}
+                cy={cy}
+                r={radius}
+                fill="none"
+                stroke={colors.foreground}
+                strokeWidth={1}
+              />
+              <line
+                x1={centerX}
+                y1={cy}
+                x2={centerX + radius + 5}
+                y2={cy}
+                stroke={colors.foreground}
+                strokeWidth={1}
+              />
+              <text
+                x={centerX + radius + 8}
+                y={cy + 4}
+                className="text-xs"
+                fill={colors.foreground}
+              >
+                {format(value)}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
@@ -78,6 +161,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Prepare data for legend (all data values)
   const legendData = useMemo(() => data.map((d) => d.value), [data]);
 
+  // @TODO: This will be provided by a future attribute 'measure_scale'
+  const indicatorId = parseInt(data[0]?.id || "0", 10);
+  const useChoropleth = indicatorId === 1 || indicatorId === 3;
+
   // Update world bounds
   const updateWorldBounds = useCallback((projection: d3.GeoProjection) => {
     if (!svgRef.current) return;
@@ -95,6 +182,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
       .attr("d", (d) => pathGeneratorRef.current!(d) || "");
+
+    // Update point symbols if they exist
+    d3.select(svgRef.current)
+      .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
+      .attr("transform", (d: any) => {
+        const centroid = pathGeneratorRef.current!.centroid(d);
+        return `translate(${centroid[0]},${centroid[1]})`;
+      });
 
     updateWorldBounds(projectionRef.current);
   }, [updateWorldBounds]);
@@ -198,6 +293,41 @@ export function MapPanel({ data, language }: MapPanelProps) {
     },
     [currentProjection]
   );
+
+  // Helper functions for hover events
+  const handleRegionHover = (event: any, d: any) => {
+    const regionInfo = regionData.get(d.id);
+    if (regionInfo && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const mouseX = event.clientX - containerRect.left;
+      const mouseY = event.clientY - containerRect.top;
+      
+      setHoveredRegion({
+        name: regionInfo.name,
+        value: regionInfo.value,
+        x: mouseX,
+        y: mouseY
+      });
+    }
+  };
+
+  const handleRegionMove = (event: any) => {
+    if (containerRef.current && hoveredRegion) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const mouseX = event.clientX - containerRect.left;
+      const mouseY = event.clientY - containerRect.top;
+      
+      setHoveredRegion({
+        ...hoveredRegion,
+        x: mouseX,
+        y: mouseY
+      });
+    }
+  };
+
+  const handleRegionOut = () => {
+    setHoveredRegion(null);
+  };
 
   // Update visualization
   const updateVisualization = useCallback(async () => {
@@ -307,55 +437,91 @@ export function MapPanel({ data, language }: MapPanelProps) {
         worldDataRef.current.objects.world
       );
 
-      mapGroup
-        .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
-        .data(regions.features)
-        .join("path")
-        .attr("class", "region")
-        .attr("d", (d) => pathGeneratorRef.current!(d) || "")
-        .attr("fill", (d: any) => {
-          const data = regionData.get(d.id);
-          return data ? colorScale(data.value) : "url(#hatch)";
-        })
-        .attr("stroke", colors.foreground)
-        .attr("stroke-width", 0.3)
-        .style("cursor", (d: any) =>
-          regionData.get(d.id) ? "pointer" : "default"
-        )
-        .style("transition", "fill 0.2s ease-in-out")
-        .on("mouseover", function (event, d: any) {
-          d3.select(this).attr("stroke-width", 1.5);
-          const regionInfo = regionData.get(d.id);
-          if (regionInfo && containerRef.current) {
-            const containerRect = containerRef.current.getBoundingClientRect();
-            const mouseX = event.clientX - containerRect.left;
-            const mouseY = event.clientY - containerRect.top;
-            
-            setHoveredRegion({
-              name: regionInfo.name,
-              value: regionInfo.value,
-              x: mouseX,
-              y: mouseY
-            });
-          }
-        })
-        .on("mousemove", function (event) {
-          if (containerRef.current && hoveredRegion) {
-            const containerRect = containerRef.current.getBoundingClientRect();
-            const mouseX = event.clientX - containerRect.left;
-            const mouseY = event.clientY - containerRect.top;
-            
-            setHoveredRegion({
-              ...hoveredRegion,
-              x: mouseX,
-              y: mouseY
-            });
-          }
-        })
-        .on("mouseout", function () {
-          d3.select(this).attr("stroke-width", 0.3);
-          setHoveredRegion(null);
-        });
+      if (useChoropleth) {
+        // Render choropleth map for indicators 1 and 3
+        mapGroup
+          .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
+          .data(regions.features)
+          .join("path")
+          .attr("class", "region")
+          .attr("d", (d) => pathGeneratorRef.current!(d) || "")
+          .attr("fill", (d: any) => {
+            const data = regionData.get(d.id);
+            return data ? colorScale(data.value) : "url(#hatch)";
+          })
+          .attr("stroke", colors.foreground)
+          .attr("stroke-width", 0.3)
+          .style("cursor", (d: any) =>
+            regionData.get(d.id) ? "pointer" : "default"
+          )
+          .style("transition", "fill 0.2s ease-in-out")
+          .on("mouseover", function (event, d: any) {
+            d3.select(this).attr("stroke-width", 1.5);
+            handleRegionHover(event, d);
+          })
+          .on("mousemove", handleRegionMove)
+          .on("mouseout", function () {
+            d3.select(this).attr("stroke-width", 0.3);
+            handleRegionOut();
+          });
+      } else {
+        // Render base map with no fill
+        const baseMap = mapGroup
+          .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
+          .data(regions.features)
+          .join("path")
+          .attr("class", "region")
+          .attr("d", (d) => pathGeneratorRef.current!(d) || "")
+          .attr("fill", "none")
+          .attr("stroke", colors.foreground)
+          .attr("stroke-width", 0.3);
+
+        // Add proportional symbols
+        const symbolGenerator = d3.symbol().type(d3.symbolCircle);
+        // Use shared size scale
+        const sizeScale = createSizeScale(globalExtent);
+
+        const symbolGroup = mapGroup.append("g").attr("class", "symbols");
+
+        symbolGroup
+          .selectAll("path.region-point")
+          .data(
+            regions.features.filter((d: any) => regionData.get(d.id))
+          )
+          .join("path")
+          .attr("class", "region-point")
+          .attr("transform", (d: any) => {
+            const centroid = pathGeneratorRef.current!.centroid(d);
+            return `translate(${centroid[0]},${centroid[1]})`;
+          })
+          .attr("d", (d: any) => {
+            const data = regionData.get(d.id);
+            // Convert circle radius to symbol size (pi * r^2)
+            const radius = sizeScale(data ? data.value : 0);
+            return symbolGenerator.size(Math.PI * radius * radius)();
+          })
+          .attr("fill", "none")
+          .attr("stroke", colors.foreground)
+          .attr("stroke-width", 1)
+          .style("cursor", "pointer")
+          .on("mouseover", function (event, d: any) {
+            // Highlight both the point and its corresponding region
+            d3.select(this).attr("stroke-width", 2);
+            baseMap
+              .filter((region: any) => region.id === d.id)
+              .attr("stroke-width", 1.5);
+            handleRegionHover(event, d);
+          })
+          .on("mousemove", handleRegionMove)
+          .on("mouseout", function (event, d: any) {
+            // Reset both the point and its corresponding region
+            d3.select(this).attr("stroke-width", 1);
+            baseMap
+              .filter((region: any) => region.id === d.id)
+              .attr("stroke-width", 0.3);
+            handleRegionOut();
+          });
+      }
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
@@ -368,6 +534,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     currentProjection,
     handleDrag,
     colors.foreground,
+    useChoropleth,
   ]);
 
   // Effect to update visualization
@@ -463,13 +630,22 @@ export function MapPanel({ data, language }: MapPanelProps) {
           globalExtent[1] !== undefined &&
           data.length > 0 && (
             <div className="absolute top-4 left-4 z-10 p-2">
-              <Legend
-                data={legendData}
-                globalExtent={globalExtent}
-                colorScale={colorScale}
-                language={language}
-                currentYear={selectedYear}
-              />
+              {useChoropleth ? (
+                <Legend
+                  data={legendData}
+                  globalExtent={globalExtent}
+                  colorScale={colorScale}
+                  language={language}
+                  currentYear={selectedYear}
+                />
+              ) : (
+                <ProportionalSymbolLegend
+                  globalExtent={globalExtent}
+                  currentYear={selectedYear}
+                  language={language}
+                  colors={colors}
+                />
+              )}
             </div>
           )}
       </div>
