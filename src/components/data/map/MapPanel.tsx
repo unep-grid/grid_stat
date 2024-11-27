@@ -28,7 +28,6 @@ type GeoSphere = {
 
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
   const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
@@ -63,15 +62,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
   );
 
   // Process data for visualization
-  const countryData = useMemo(() => {
+  const regionData = useMemo(() => {
     return processRegionData(data, selectedYear, isLatestMode);
   }, [data, selectedYear, isLatestMode]);
 
   // Prepare data for legend (all data values)
-  const legendData = useMemo(() => 
-    data.map(d => d.value),
-    [data]
-  );
+  const legendData = useMemo(() => data.map((d) => d.value), [data]);
 
   // Update world bounds
   const updateWorldBounds = useCallback((projection: d3.GeoProjection) => {
@@ -82,12 +78,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
       .attr("d", path({ type: "Sphere" } as GeoSphere) as any);
   }, []);
 
-  // Update country paths
-  const updateCountryPaths = useCallback(() => {
-    if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current) return;
+  // Update region paths
+  const updateRegionPaths = useCallback(() => {
+    if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current)
+      return;
 
     d3.select(svgRef.current)
-      .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
+      .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
       .attr("d", (d) => pathGeneratorRef.current!(d) || "");
 
     updateWorldBounds(projectionRef.current);
@@ -97,10 +94,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const throttledUpdate = useCallback(
     throttle(() => {
       if (isDraggingRef.current) {
-        updateCountryPaths();
+        updateRegionPaths();
       }
     }, 16),
-    [updateCountryPaths]
+    [updateRegionPaths]
   );
 
   // Drag interaction
@@ -140,8 +137,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const currentRotation = projectionRef.current.rotate();
 
       // Find the old and new projection functions from the list
-      const oldProjection = projections.find(p => p.name === currentProjection);
-      const newProjectionData = projections.find(p => p.name === newProjection);
+      const oldProjection = projections.find(
+        (p) => p.name === currentProjection
+      );
+      const newProjectionData = projections.find(
+        (p) => p.name === newProjection
+      );
 
       if (!oldProjection || !newProjectionData) return;
 
@@ -157,11 +158,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Transition both the countries and the sphere
+      // Transition both the regions and the sphere
       const transition = d3.transition().duration(1000);
 
       d3.select(svgRef.current)
-        .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
         .transition(transition)
         .attrTween("d", function (d) {
           return function (t: number) {
@@ -177,7 +178,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attrTween("d", () => {
           return function (t: number) {
             projection.alpha(t);
-            return d3.geoPath(projection)({ type: "Sphere" } as GeoSphere) as string;
+            return d3.geoPath(projection)({
+              type: "Sphere",
+            } as GeoSphere) as string;
           };
         })
         .on("end", () => {
@@ -221,9 +224,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const dragBehavior = d3
         .drag<SVGSVGElement, null>()
-        .on("start", () => { isDraggingRef.current = true; })
+        .on("start", () => {
+          isDraggingRef.current = true;
+        })
         .on("drag", handleDrag)
-        .on("end", () => { isDraggingRef.current = false; });
+        .on("end", () => {
+          isDraggingRef.current = false;
+        });
 
       svg.call(dragBehavior as any);
 
@@ -258,7 +265,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-opacity", 0.5);
 
       // Find initial projection from the list
-      const initialProjection = projections.find(p => p.name === currentProjection);
+      const initialProjection = projections.find(
+        (p) => p.name === currentProjection
+      );
       if (!initialProjection) return;
 
       const projection = d3
@@ -284,40 +293,71 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-opacity", 1)
         .attr("d", pathGeneratorRef.current as any);
 
-      const countries = feature(
+      const regions = feature(
         worldDataRef.current,
         worldDataRef.current.objects.world
       );
 
       mapGroup
-        .selectAll<SVGPathElement, Feature<Geometry>>("path.country")
-        .data(countries.features)
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
+        .data(regions.features)
         .join("path")
-        .attr("class", "country")
+        .attr("class", "region")
         .attr("d", (d) => pathGeneratorRef.current!(d) || "")
         .attr("fill", (d: any) => {
-          const data = countryData.get(d.id);
+          const data = regionData.get(d.id);
           return data ? colorScale(data.value) : "url(#hatch)";
         })
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.3)
         .style("cursor", (d: any) =>
-          countryData.get(d.id) ? "pointer" : "default"
+          regionData.get(d.id) ? "pointer" : "default"
         )
-        .style("transition", "fill 0.2s ease-in-out");
-
+        .style("transition", "fill 0.2s ease-in-out")
+        .on("mouseover", function (event, d: any) {
+          d3.select(this).attr("stroke-width", 1.5); // Increase border width on hover
+          const regionInfo = regionData.get(d.id);
+          if (regionInfo) {
+            const tooltip = d3.select("#tooltip");
+            const formattedValue = new Intl.NumberFormat(language).format(
+              regionInfo.value
+            );
+            tooltip
+              .style("opacity", 1)
+              .html(
+                `${t("dv.region", language)}: ${regionInfo.name}<br>${t(
+                  "dv.value",
+                  language
+                )}: ${formattedValue}`
+              )
+              .style("left", `${event.layerX + 30}px`)
+              .style("top", `${event.layerY - 30}px`);
+            
+          }
+        })
+        .on("mousemove", function (event) {
+          const tooltip = d3.select("#tooltip");
+          tooltip
+            .style("left", `${event.layerX + 30}px`)
+            .style("top", `${event.layerY - 30}px`);
+        })
+        .on("mouseout", function () {
+          d3.select(this).attr("stroke-width", 0.3); // Reset border width
+          d3.select("#tooltip").style("opacity", 0);
+        });
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
     }
   }, [
     data,
-    countryData,
+    regionData,
     colorScale,
     globalExtent,
     currentProjection,
     handleDrag,
     colors.foreground,
+    language,
   ]);
 
   // Effect to update visualization
@@ -343,26 +383,27 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
     // Clone the SVG to modify without affecting the original
     const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
-    
+
     // Remove any existing background rectangles or modifications
     const clone = d3.select(svgClone);
-    clone.selectAll('.background-rect').remove();
+    clone.selectAll(".background-rect").remove();
 
     // Add a white background
-    clone.insert('rect', ':first-child')
-      .attr('class', 'background-rect')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .attr('fill', 'white');
+    clone
+      .insert("rect", ":first-child")
+      .attr("class", "background-rect")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
 
     // Serialize SVG
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svgClone);
 
     // Create download
-    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const blob = new Blob([svgString], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = `map_${selectedYear}.svg`;
     document.body.appendChild(link);
@@ -397,8 +438,25 @@ export function MapPanel({ data, language }: MapPanelProps) {
           style={{ minHeight: "400px", cursor: "grab" }}
         />
 
+        {/* Custom Tooltip */}
+        <div
+          id="tooltip"
+          style={{
+            position: "absolute",
+            opacity: 0,
+            border: `1px solid ${colors.foreground}`,
+            backgroundColor: colors.background,
+            borderRadius: "4px",
+            padding: "8px",
+            pointerEvents: "none",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+            transition: "opacity 0.2s ease-in-out",
+          }}
+        />
+
         {/* Legend */}
-        {isLegendVisible && globalExtent[0] !== undefined &&
+        {isLegendVisible &&
+          globalExtent[0] !== undefined &&
           globalExtent[1] !== undefined &&
           data.length > 0 && (
             <div className="absolute top-4 left-4 z-10 p-2">
