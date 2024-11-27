@@ -4,9 +4,9 @@ import { feature } from "topojson-client";
 import type { Feature, Geometry } from "geojson";
 import { interpolateProjection } from "../../../lib/utils/projection";
 import { useTheme } from "../../layout/ThemeProvider";
-import { t } from "../../../lib/utils/translations";
 import { Legend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
+import { MapTooltip } from "./MapTooltip";
 import {
   throttle,
   processRegionData,
@@ -26,17 +26,26 @@ type GeoSphere = {
   type: "Sphere";
 };
 
+interface HoveredRegion {
+  name: string;
+  value: number;
+  x: number;
+  y: number;
+}
+
 export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
   const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
   const isDraggingRef = useRef(false);
+  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -289,7 +298,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .datum({ type: "Sphere" } as GeoSphere)
         .attr("fill", "none")
         .attr("stroke", colors.foreground)
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 1)
         .attr("d", pathGeneratorRef.current as any);
 
@@ -315,35 +324,37 @@ export function MapPanel({ data, language }: MapPanelProps) {
         )
         .style("transition", "fill 0.2s ease-in-out")
         .on("mouseover", function (event, d: any) {
-          d3.select(this).attr("stroke-width", 1.5); // Increase border width on hover
+          d3.select(this).attr("stroke-width", 1.5);
           const regionInfo = regionData.get(d.id);
-          if (regionInfo) {
-            const tooltip = d3.select("#tooltip");
-            const formattedValue = new Intl.NumberFormat(language).format(
-              regionInfo.value
-            );
-            tooltip
-              .style("opacity", 1)
-              .html(
-                `${t("dv.region", language)}: ${regionInfo.name}<br>${t(
-                  "dv.value",
-                  language
-                )}: ${formattedValue}`
-              )
-              .style("left", `${event.layerX + 30}px`)
-              .style("top", `${event.layerY - 30}px`);
+          if (regionInfo && containerRef.current) {
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const mouseX = event.clientX - containerRect.left;
+            const mouseY = event.clientY - containerRect.top;
             
+            setHoveredRegion({
+              name: regionInfo.name,
+              value: regionInfo.value,
+              x: mouseX,
+              y: mouseY
+            });
           }
         })
         .on("mousemove", function (event) {
-          const tooltip = d3.select("#tooltip");
-          tooltip
-            .style("left", `${event.layerX + 30}px`)
-            .style("top", `${event.layerY - 30}px`);
+          if (containerRef.current && hoveredRegion) {
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const mouseX = event.clientX - containerRect.left;
+            const mouseY = event.clientY - containerRect.top;
+            
+            setHoveredRegion({
+              ...hoveredRegion,
+              x: mouseX,
+              y: mouseY
+            });
+          }
         })
         .on("mouseout", function () {
-          d3.select(this).attr("stroke-width", 0.3); // Reset border width
-          d3.select("#tooltip").style("opacity", 0);
+          d3.select(this).attr("stroke-width", 0.3);
+          setHoveredRegion(null);
         });
     } catch (err) {
       console.error("Error during visualization update:", err);
@@ -357,7 +368,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     currentProjection,
     handleDrag,
     colors.foreground,
-    language,
   ]);
 
   // Effect to update visualization
@@ -412,9 +422,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
     URL.revokeObjectURL(url);
   }, [selectedYear]);
 
-  // Render component
   return (
-    <div className="relative flex flex-col h-full w-full">
+    <div className="relative flex flex-col h-full w-full" ref={containerRef}>
       {/* Toolbar */}
       <MapToolbar
         projections={projections}
@@ -438,20 +447,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
           style={{ minHeight: "400px", cursor: "grab" }}
         />
 
-        {/* Custom Tooltip */}
-        <div
-          id="tooltip"
-          style={{
-            position: "absolute",
-            opacity: 0,
-            border: `1px solid ${colors.foreground}`,
-            backgroundColor: colors.background,
-            borderRadius: "4px",
-            padding: "8px",
-            pointerEvents: "none",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            transition: "opacity 0.2s ease-in-out",
-          }}
+        {/* Tooltip Component */}
+        <MapTooltip
+          regionName={hoveredRegion?.name || ""}
+          value={hoveredRegion?.value || 0}
+          x={hoveredRegion?.x || 0}
+          y={hoveredRegion?.y || 0}
+          visible={!!hoveredRegion}
+          language={language}
         />
 
         {/* Legend */}
