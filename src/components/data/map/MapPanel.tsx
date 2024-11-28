@@ -214,20 +214,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = container.clientHeight;
     const baseScale = width / 6;
 
-    // Update projection scale based on zoom
-    projectionRef.current.scale(baseScale * transform.k);
-
-    // Update projection center based on mouse position
-    const point = [transform.x, transform.y];
-    projectionRef.current.translate([
-      width / 2 + point[0],
-      height / 2 + point[1]
-    ]);
-
-    // Update path generator with new projection
+    // Only update scale, ignore translation
+    const newScale = baseScale * transform.k;
+    projectionRef.current.scale(newScale);
     pathGeneratorRef.current = d3.geoPath(projectionRef.current);
 
     // Update all map elements
@@ -235,9 +226,23 @@ export function MapPanel({ data, language }: MapPanelProps) {
   }, [updateRegionPaths]);
 
   // Drag interaction
+  const handleDragStart = useCallback(() => {
+    isDraggingRef.current = true;
+    if (svgRef.current) {
+      svgRef.current.style.cursor = "grabbing";
+    }
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    isDraggingRef.current = false;
+    if (svgRef.current) {
+      svgRef.current.style.cursor = "grab";
+    }
+  }, []);
+
   const handleDrag = useCallback(
     (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
-      if (!projectionRef.current) return;
+      if (!projectionRef.current || !pathGeneratorRef.current) return;
 
       const sensitivityX = 5;
       const sensitivityY = 5;
@@ -393,21 +398,23 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       // Initialize zoom behavior
       const zoom = d3.zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.5, 8])  // Allow zooming from half size to 8x
-        .on("zoom", handleZoom);
+        .scaleExtent([0.5, 8])
+        .on("zoom", handleZoom)
+        .filter(event => {
+          // Only handle wheel events for zooming
+          // Ignore double-click zoom
+          return event.type === 'wheel' && !event.button;
+        });
 
       zoomRef.current = zoom;
       svg.call(zoom);
 
+      // Setup drag behavior
       const dragBehavior = d3
         .drag<SVGSVGElement, null>()
-        .on("start", () => {
-          isDraggingRef.current = true;
-        })
+        .on("start", handleDragStart)
         .on("drag", handleDrag)
-        .on("end", () => {
-          isDraggingRef.current = false;
-        });
+        .on("end", handleDragEnd);
 
       svg.call(dragBehavior as any);
 
@@ -574,6 +581,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
     globalExtent,
     currentProjection,
     handleDrag,
+    handleDragStart,
+    handleDragEnd,
     handleZoom,
     colors.foreground,
     colors.background,
