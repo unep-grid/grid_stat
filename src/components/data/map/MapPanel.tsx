@@ -88,8 +88,8 @@ function ProportionalSymbolLegend({
                 cx={centerX}
                 cy={cy}
                 r={radius}
-                fill="none"
-                stroke={colors.foreground}
+                fill={colors.foreground}
+                stroke={colors.background}
                 strokeWidth={1}
               />
               <line
@@ -472,7 +472,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .join("path")
           .attr("class", "region")
           .attr("d", (d) => pathGeneratorRef.current!(d) || "")
-          .attr("fill", "none")
+          .attr("fill", (d: any) => {
+            const data = regionData.get(d.id);
+            return data ? "none" : "url(#hatch)";
+          })
           .attr("stroke", colors.foreground)
           .attr("stroke-width", 0.3);
 
@@ -500,8 +503,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
             const radius = sizeScale(data ? data.value : 0);
             return symbolGenerator.size(Math.PI * radius * radius)();
           })
-          .attr("fill", "none")
-          .attr("stroke", colors.foreground)
+          .attr("fill", colors.foreground)
+          .attr("stroke", colors.background)
           .attr("stroke-width", 1)
           .style("cursor", "pointer")
           .on("mouseover", function (event, d: any) {
