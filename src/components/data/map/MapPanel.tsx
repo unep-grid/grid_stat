@@ -195,16 +195,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     updateWorldBounds(projectionRef.current);
   }, [updateWorldBounds]);
 
-  // Throttled update function
-  const throttledUpdate = useCallback(
-    throttle(() => {
-      if (isDraggingRef.current) {
-        updateRegionPaths();
-      }
-    }, 16),
-    [updateRegionPaths]
-  );
-
   // Handle zoom
   const handleZoom = useCallback((event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
     if (!projectionRef.current || !pathGeneratorRef.current) return;
@@ -216,16 +206,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
     const width = container.clientWidth;
     const baseScale = width / 6;
 
-    // Only update scale, ignore translation
+    // Only handle scaling, no translation
     const newScale = baseScale * transform.k;
     projectionRef.current.scale(newScale);
     pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-
-    // Update all map elements
     updateRegionPaths();
   }, [updateRegionPaths]);
 
-  // Drag interaction
+  // Drag interaction handlers
   const handleDragStart = useCallback(() => {
     isDraggingRef.current = true;
     if (svgRef.current) {
@@ -255,9 +243,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
       ]);
 
       pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-      throttledUpdate();
+      updateRegionPaths();
     },
-    [throttledUpdate]
+    [updateRegionPaths]
   );
 
   // Handle projection change
