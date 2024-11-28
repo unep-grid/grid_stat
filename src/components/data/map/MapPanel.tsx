@@ -195,6 +195,20 @@ export function MapPanel({ data, language }: MapPanelProps) {
     updateWorldBounds(projectionRef.current);
   }, [updateWorldBounds]);
 
+  // Animation frame reference
+  const animationFrameRef = useRef<number>();
+
+  // Create RAF-based update function
+  const scheduleUpdate = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    animationFrameRef.current = requestAnimationFrame(() => {
+      updateRegionPaths();
+      animationFrameRef.current = undefined;
+    });
+  }, [updateRegionPaths]);
+
   // Handle zoom
   const handleZoom = useCallback((event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
     if (!projectionRef.current || !pathGeneratorRef.current) return;
@@ -210,8 +224,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
     const newScale = baseScale * transform.k;
     projectionRef.current.scale(newScale);
     pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-    updateRegionPaths();
-  }, [updateRegionPaths]);
+    scheduleUpdate();
+  }, [scheduleUpdate]);
 
   // Drag interaction handlers
   const handleDragStart = useCallback(() => {
@@ -243,9 +257,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
       ]);
 
       pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-      updateRegionPaths();
+      scheduleUpdate();
     },
-    [updateRegionPaths]
+    [scheduleUpdate]
   );
 
   // Handle projection change
@@ -591,6 +605,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
     return () => {
       resizeObserver.disconnect();
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, [updateVisualization]);
 
