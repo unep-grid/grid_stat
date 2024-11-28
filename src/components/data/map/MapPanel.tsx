@@ -49,7 +49,7 @@ function ProportionalSymbolLegend({
   globalExtent: [number, number];
   currentYear: number;
   language: string;
-  colors: { foreground: string };
+  colors: { foreground: string; background: string };
 }) {
   const [minValue, maxValue] = globalExtent;
   const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
@@ -129,6 +129,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const [isLatestMode, setIsLatestMode] = useState(false);
   const isDraggingRef = useRef(false);
   const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -203,6 +204,35 @@ export function MapPanel({ data, language }: MapPanelProps) {
     }, 16),
     [updateRegionPaths]
   );
+
+  // Handle zoom
+  const handleZoom = useCallback((event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
+    if (!projectionRef.current || !pathGeneratorRef.current) return;
+
+    const transform = event.transform;
+    const container = svgRef.current?.parentElement;
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const baseScale = width / 6;
+
+    // Update projection scale based on zoom
+    projectionRef.current.scale(baseScale * transform.k);
+
+    // Update projection center based on mouse position
+    const point = [transform.x, transform.y];
+    projectionRef.current.translate([
+      width / 2 + point[0],
+      height / 2 + point[1]
+    ]);
+
+    // Update path generator with new projection
+    pathGeneratorRef.current = d3.geoPath(projectionRef.current);
+
+    // Update all map elements
+    updateRegionPaths();
+  }, [updateRegionPaths]);
 
   // Drag interaction
   const handleDrag = useCallback(
@@ -360,6 +390,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("height", height)
         .style("max-width", "100%")
         .style("height", "auto");
+
+      // Initialize zoom behavior
+      const zoom = d3.zoom<SVGSVGElement, unknown>()
+        .scaleExtent([0.5, 8])  // Allow zooming from half size to 8x
+        .on("zoom", handleZoom);
+
+      zoomRef.current = zoom;
+      svg.call(zoom);
 
       const dragBehavior = d3
         .drag<SVGSVGElement, null>()
@@ -536,7 +574,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
     globalExtent,
     currentProjection,
     handleDrag,
+    handleZoom,
     colors.foreground,
+    colors.background,
     useChoropleth,
   ]);
 
@@ -557,18 +597,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
     };
   }, [updateVisualization]);
 
-  // Export SVG functionality
   const handleExportSVG = useCallback(() => {
     if (!svgRef.current) return;
 
-    // Clone the SVG to modify without affecting the original
     const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
-
-    // Remove any existing background rectangles or modifications
     const clone = d3.select(svgClone);
     clone.selectAll(".background-rect").remove();
 
-    // Add a white background
     clone
       .insert("rect", ":first-child")
       .attr("class", "background-rect")
@@ -576,11 +611,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
       .attr("height", "100%")
       .attr("fill", "white");
 
-    // Serialize SVG
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svgClone);
 
-    // Create download
     const blob = new Blob([svgString], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -594,7 +627,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   return (
     <div className="relative flex flex-col h-full w-full" ref={containerRef}>
-      {/* Toolbar */}
       <MapToolbar
         projections={projections}
         currentProjection={currentProjection}
@@ -608,16 +640,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
         onLatestToggle={setIsLatestMode}
       />
 
-      {/* Map Container */}
       <div className="relative flex-grow">
-        {/* Main Map */}
         <svg
           ref={svgRef}
           className="w-full h-full"
           style={{ minHeight: "400px", cursor: "grab" }}
         />
 
-        {/* Tooltip Component */}
         <MapTooltip
           regionName={hoveredRegion?.name || ""}
           value={hoveredRegion?.value || 0}
@@ -627,7 +656,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
           language={language}
         />
 
-        {/* Legend */}
         {isLegendVisible &&
           globalExtent[0] !== undefined &&
           globalExtent[1] !== undefined &&
