@@ -146,6 +146,14 @@
       "en": "Region",
       "fr": "Région"
     },
+    "legend": {
+      "en": "Legend",
+      "fr": "Légende"
+    },
+    "latest": {
+      "en": "Latest",
+      "fr": "Récent"
+    },
     "metadata": {
       "en": "Metadata",
       "fr": "Métadonnées"

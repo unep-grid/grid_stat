@@ -4,7 +4,6 @@ import { useTheme } from '../../layout/ThemeProvider';
 import { t, type Language, DEFAULT_LANGUAGE } from '../../../lib/utils/translations';
 
 interface LegendProps {
-  data: (number | string)[];
   globalExtent: [number, number];
   colorScale: (value: number) => string;
   steps?: number;
@@ -14,7 +13,6 @@ interface LegendProps {
 }
 
 export function Legend({ 
-  data, 
   globalExtent, 
   colorScale, 
   steps = 5,
@@ -31,7 +29,7 @@ export function Legend({
 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 space-y-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">{title} {currentYear}</div>
+      <div className="text-sm font-semibold mb-1">{title}</div>
       
       {/* Color gradient legend */}
       <div className="flex items-center space-x-2">

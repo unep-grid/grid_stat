@@ -7,6 +7,7 @@ import { useTheme } from "../../layout/ThemeProvider";
 import { Legend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import { MapTooltip } from "./MapTooltip";
+import { t, type Language, DEFAULT_LANGUAGE } from '../../../lib/utils/translations';
 import {
   throttle,
   processRegionData,
@@ -42,14 +43,12 @@ const createSizeScale = (extent: [number, number]) =>
 // Custom Legend for proportional symbols
 function ProportionalSymbolLegend({
   globalExtent,
-  currentYear,
-  language,
   colors,
+  title,
 }: {
   globalExtent: [number, number];
-  currentYear: number;
-  language: string;
   colors: { foreground: string; background: string };
+  title: string;
 }) {
   const [minValue, maxValue] = globalExtent;
   const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
@@ -77,7 +76,7 @@ function ProportionalSymbolLegend({
 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">Legend {currentYear}</div>
+      <div className="text-sm font-semibold mb-1">{title}</div>
       <svg width={width} height={height} className="overflow-visible">
         {steps.map((value, i) => {
           const radius = sizeScale(value);
@@ -117,33 +116,43 @@ function ProportionalSymbolLegend({
 }
 
 export function MapPanel({ data, language }: MapPanelProps) {
+  // All refs
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
   const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number>();
+  const isDraggingRef = useRef(false);
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+
+  // All state
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
-  const isDraggingRef = useRef(false);
   const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
-  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
 
   // Use theme context for colors
   const { colors } = useTheme();
 
-  // Get available years from data
+  // Get available years from data and initialize selected year
   const years = useMemo(() => {
     const uniqueYears = [...new Set(data.map((d) => d.date_start))].sort();
     return uniqueYears;
   }, [data]);
 
-  // Initialize with latest year
   const [selectedYear, setSelectedYear] = useState<number>(
     years[years.length - 1] || 0
   );
+
+  // Prepare legend title with year/latest mode
+  const legendTitle = useMemo(() => {
+    const baseTitle = t("dv.legend",language) // This should be translated based on language
+    const latest = t("dv.latest", language)
+    return `${baseTitle} ${isLatestMode ? latest : selectedYear}`;
+  }, [isLatestMode, selectedYear]);
 
   // Calculate global min/max across all years
   const globalExtent = useMemo(() => calculateGlobalExtent(data), [data]);
@@ -195,8 +204,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     updateWorldBounds(projectionRef.current);
   }, [updateWorldBounds]);
 
-  // Animation frame reference
-  const animationFrameRef = useRef<number>();
 
   // Create RAF-based update function
   const scheduleUpdate = useCallback(() => {
@@ -687,15 +694,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
                   data={legendData}
                   globalExtent={globalExtent}
                   colorScale={colorScale}
+                  title={legendTitle}
                   language={language}
-                  currentYear={selectedYear}
                 />
               ) : (
                 <ProportionalSymbolLegend
                   globalExtent={globalExtent}
-                  currentYear={selectedYear}
-                  language={language}
                   colors={colors}
+                  title={legendTitle}
                 />
               )}
             </div>
