@@ -1,3 +1,4 @@
+{/* Previous imports remain unchanged */}
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
@@ -125,6 +126,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const animationFrameRef = useRef<number>();
   const isDraggingRef = useRef(false);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const graticuleRef = useRef(d3.geoGraticule().step([15, 15]));
 
   // All state
   const [error, setError] = useState<string | null>(null);
@@ -189,6 +191,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
     if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current)
       return;
 
+    // Update graticule with current projection
+    d3.select(svgRef.current)
+      .select("path.graticule")
+      .attr("d", pathGeneratorRef.current(graticuleRef.current()) || "");
+
+    // Update regions
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
       .attr("d", (d) => pathGeneratorRef.current!(d) || "");
@@ -306,8 +314,19 @@ export function MapPanel({ data, language }: MapPanelProps) {
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Transition both the regions and the sphere
+      // Transition both the regions, graticule, and sphere
       const transition = d3.transition().duration(1000);
+
+      // Update graticule during transition
+      d3.select(svgRef.current)
+        .select("path.graticule")
+        .transition(transition)
+        .attrTween("d", () => {
+          return function (t: number) {
+            projection.alpha(t);
+            return d3.geoPath(projection)(graticuleRef.current()) || "";
+          };
+        });
 
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
@@ -451,6 +470,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("patternUnits", "userSpaceOnUse")
         .attr("width", 4)
         .attr("height", 4)
+        .attr("fill", colors.background) // Add background fill to prevent graticule showing through
         .append("path")
         .attr("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2")
         .attr("stroke", colors.foreground)
@@ -485,6 +505,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 1)
         .attr("d", pathGeneratorRef.current as any);
+
+      // Add graticule with proper projection
+      mapGroup
+        .append("path")
+        .datum(graticuleRef.current())
+        .attr("class", "graticule")
+        .attr("d", pathGeneratorRef.current as any)
+        .attr("fill", "none")
+        .attr("stroke", colors.foreground)
+        .attr("stroke-width", 0.2)
+        .attr("stroke-opacity", 0.3);
 
       const regions = feature(
         worldDataRef.current,
