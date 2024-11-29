@@ -126,7 +126,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const animationFrameRef = useRef<number>();
   const isDraggingRef = useRef(false);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
-  const graticuleRef = useRef(d3.geoGraticule().step([15, 15]));
+  const currentTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
+
+  const graticuleRef = useRef(
+    d3.geoGraticule()
+      .step([10, 10])     // Draw lines every 10 degrees for better density
+      .extent([[-180, -90], [180, 90]])  // Ensure full coverage
+  );
 
   // All state
   const [error, setError] = useState<string | null>(null);
@@ -192,9 +198,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
       return;
 
     // Update graticule with current projection
+    const graticuleData = graticuleRef.current();
     d3.select(svgRef.current)
       .select("path.graticule")
-      .attr("d", pathGeneratorRef.current(graticuleRef.current()) || "");
+      .attr("d", pathGeneratorRef.current(graticuleData) || "");
 
     // Update regions
     d3.select(svgRef.current)
@@ -212,7 +219,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
     updateWorldBounds(projectionRef.current);
   }, [updateWorldBounds]);
 
-
   // Create RAF-based update function
   const scheduleUpdate = useCallback(() => {
     if (animationFrameRef.current) {
@@ -228,15 +234,15 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const handleZoom = useCallback((event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
     if (!projectionRef.current || !pathGeneratorRef.current) return;
 
-    const transform = event.transform;
+    currentTransformRef.current = event.transform;
     const container = svgRef.current?.parentElement;
     if (!container) return;
 
     const width = container.clientWidth;
     const baseScale = width / 6;
 
-    // Only handle scaling, no translation
-    const newScale = baseScale * transform.k;
+    // Update projection scale based on zoom transform
+    const newScale = baseScale * event.transform.k;
     projectionRef.current.scale(newScale);
     pathGeneratorRef.current = d3.geoPath(projectionRef.current);
     scheduleUpdate();
@@ -280,7 +286,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Handle projection change
   const handleProjectionChange = useCallback(
     (newProjection: ProjectionType) => {
-      if (!svgRef.current || !worldDataRef.current || !projectionRef.current)
+      if (!svgRef.current || !worldDataRef.current || !projectionRef.current || !zoomRef.current)
         return;
 
       const container = svgRef.current.parentElement;
@@ -288,9 +294,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const width = container.clientWidth;
       const height = container.clientHeight;
-      const scale = width / 6;
+      const baseScale = width / 6;
 
+      // Get current zoom and rotation state
       const currentRotation = projectionRef.current.rotate();
+      const currentScale = projectionRef.current.scale();
+      const zoomK = currentTransformRef.current.k;
 
       // Find the old and new projection functions from the list
       const oldProjection = projections.find(
@@ -306,7 +315,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         oldProjection.value,
         newProjectionData.value
       )
-        .scale(scale)
+        .scale(currentScale)
         .translate([width / 2, height / 2])
         .rotate(currentRotation)
         .precision(0.1);
@@ -318,13 +327,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const transition = d3.transition().duration(1000);
 
       // Update graticule during transition
+      const graticuleData = graticuleRef.current();
       d3.select(svgRef.current)
         .select("path.graticule")
         .transition(transition)
         .attrTween("d", () => {
           return function (t: number) {
             projection.alpha(t);
-            return d3.geoPath(projection)(graticuleRef.current()) || "";
+            return d3.geoPath(projection)(graticuleData) || "";
           };
         });
 
@@ -437,6 +447,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       zoomRef.current = zoom;
       svg.call(zoom);
 
+      // Apply initial zoom transform if it exists
+      if (currentTransformRef.current.k !== 1) {
+        svg.call(zoom.transform, currentTransformRef.current);
+      }
+
       // Setup drag behavior
       const dragBehavior = d3
         .drag<SVGSVGElement, null>()
@@ -470,7 +485,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("patternUnits", "userSpaceOnUse")
         .attr("width", 4)
         .attr("height", 4)
-        .attr("fill", colors.background) // Add background fill to prevent graticule showing through
+        .attr("fill", colors.background)
         .append("path")
         .attr("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2")
         .attr("stroke", colors.foreground)
@@ -485,7 +500,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const projection = d3
         .geoProjection(initialProjection.value)
-        .scale(scale)
+        .scale(scale * currentTransformRef.current.k)
         .translate([width / 2, height / 2])
         .rotate(projectionRef.current?.rotate() || [0, 0, 0])
         .precision(0.1);
@@ -507,9 +522,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("d", pathGeneratorRef.current as any);
 
       // Add graticule with proper projection
+      const graticuleData = graticuleRef.current();
       mapGroup
         .append("path")
-        .datum(graticuleRef.current())
+        .datum(graticuleData)
         .attr("class", "graticule")
         .attr("d", pathGeneratorRef.current as any)
         .attr("fill", "none")
