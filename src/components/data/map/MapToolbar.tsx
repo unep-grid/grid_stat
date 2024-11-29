@@ -50,7 +50,7 @@ export function MapToolbar({
           value={currentProjection}
           onValueChange={(value: ProjectionType) => onProjectionChange(value)}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[220px]">
             <SelectValue placeholder="Select Projection">
               <div className="flex items-center">
                 <Map className="mr-2 h-4 w-4" />
