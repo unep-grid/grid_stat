@@ -533,11 +533,18 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
         const symbolGroup = mapGroup.append("g").attr("class", "symbols");
 
+        // Sort features by value in descending order so larger points are rendered first
+        const sortedFeatures = regions.features
+          .filter((d: any) => regionData.get(d.id))
+          .sort((a: any, b: any) => {
+            const valueA = regionData.get(a.id)?.value || 0;
+            const valueB = regionData.get(b.id)?.value || 0;
+            return valueB - valueA; // Descending order
+          });
+
         symbolGroup
           .selectAll("path.region-point")
-          .data(
-            regions.features.filter((d: any) => regionData.get(d.id))
-          )
+          .data(sortedFeatures)
           .join("path")
           .attr("class", "region-point")
           .attr("transform", (d: any) => {
