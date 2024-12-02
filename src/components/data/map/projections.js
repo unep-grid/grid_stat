@@ -1,7 +1,12 @@
 import * as d3_geo from "d3-geo-projection";
-import * as d3_base from "d3"
+import * as d3_base from "d3";
 
-const d3 = Object.assign({},d3_base,d3_geo);
+const d3 = Object.assign({}, d3_base, d3_geo);
+
+
+
+debugger;
+
 
 // Primary projections - commonly used for general purpose mapping
 export const primaryProjections = [
@@ -11,6 +16,7 @@ export const primaryProjections = [
   { name: "Equirectangular (plate carrée)", value: d3.geoEquirectangularRaw },
   { name: "Mollweide", value: d3.geoMollweideRaw },
   { name: "Winkel tripel", value: d3.geoWinkel3Raw },
+  { name: "Orthographic", value: d3.geoOrthographicRaw },
 ];
 
 // Additional projections
@@ -25,10 +31,19 @@ export const additionalProjections = [
   { name: "Bromley", value: d3.geoBromleyRaw },
   { name: "Collignon", value: d3.geoCollignonRaw },
   { name: "conic equal-area", value: d3.geoConicEqualAreaRaw(0, Math.PI / 3) },
-  { name: "conic equidistant", value: d3.geoConicEquidistantRaw(0, Math.PI / 3) },
+  {
+    name: "conic equidistant",
+    value: d3.geoConicEquidistantRaw(0, Math.PI / 3),
+  },
   { name: "Craster parabolic", value: d3.geoCrasterRaw },
-  { name: "cylindrical equal-area", value: d3.geoCylindricalEqualAreaRaw((38.58 / 180) * Math.PI) },
-  { name: "cylindrical stereographic", value: d3.geoCylindricalStereographicRaw(0) },
+  {
+    name: "cylindrical equal-area",
+    value: d3.geoCylindricalEqualAreaRaw((38.58 / 180) * Math.PI),
+  },
+  {
+    name: "cylindrical stereographic",
+    value: d3.geoCylindricalStereographicRaw(0),
+  },
   { name: "Eckert I", value: d3.geoEckert1Raw },
   { name: "Eckert II", value: d3.geoEckert2Raw },
   { name: "Eckert III", value: d3.geoEckert3Raw },
@@ -49,7 +64,10 @@ export const additionalProjections = [
   { name: "Goode's homolosine", value: d3.geoHomolosineRaw },
   { name: "Hammer", value: d3.geoHammerRaw(2) },
   { name: "Hill eucyclic", value: d3.geoHillRaw(1) },
-  { name: "Hufnagel pseudocylindrical", value: d3.geoHufnagelRaw(1, 0, Math.PI / 4, 2) },
+  {
+    name: "Hufnagel pseudocylindrical",
+    value: d3.geoHufnagelRaw(1, 0, Math.PI / 4, 2),
+  },
   { name: "Kavrayskiy VII", value: d3.geoKavrayskiy7Raw },
   { name: "Lagrange conformal", value: d3.geoLagrangeRaw(0.5) },
   { name: "Larrivée", value: d3.geoLarriveeRaw },
@@ -64,15 +82,24 @@ export const additionalProjections = [
   { name: "sinusoidal", value: d3.geoSinusoidalRaw },
   { name: "sinu-Mollweide", value: d3.geoSinuMollweideRaw },
   { name: "Times", value: d3.geoTimesRaw },
-  { name: "Tobler hyperelliptical", value: d3.geoHyperellipticalRaw(0, 2.5, 1.183136) },
+  {
+    name: "Tobler hyperelliptical",
+    value: d3.geoHyperellipticalRaw(0, 2.5, 1.183136),
+  },
   { name: "Van der Grinten", value: d3.geoVanDerGrintenRaw },
   { name: "Van der Grinten II", value: d3.geoVanDerGrinten2Raw },
   { name: "Van der Grinten III", value: d3.geoVanDerGrinten3Raw },
   { name: "Van der Grinten IV", value: d3.geoVanDerGrinten4Raw },
   { name: "Wagner IV", value: d3.geoWagner4Raw },
   { name: "Wagner VI", value: d3.geoWagner6Raw },
-  { name: "Wagner VII", value: d3.geoWagnerRaw((65 / 180) * Math.PI, (60 / 180) * Math.PI, 0, 200) },
-  { name: "Wagner VIII", value: d3.geoWagnerRaw((65 / 180) * Math.PI, (60 / 180) * Math.PI, 20, 200) },
+  {
+    name: "Wagner VII",
+    value: d3.geoWagnerRaw((65 / 180) * Math.PI, (60 / 180) * Math.PI, 0, 200),
+  },
+  {
+    name: "Wagner VIII",
+    value: d3.geoWagnerRaw((65 / 180) * Math.PI, (60 / 180) * Math.PI, 20, 200),
+  },
 ];
 
 // Export combined list for backward compatibility

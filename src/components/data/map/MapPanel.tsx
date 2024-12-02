@@ -437,7 +437,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         const response = await d3.json<WorldTopology>(
           "/grid_stat/world-110m.json"
         );
-        debugger;
         if (!response) {
           throw new Error("Failed to load world map data");
         }
