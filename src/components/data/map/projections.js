@@ -4,10 +4,6 @@ import * as d3_base from "d3";
 const d3 = Object.assign({}, d3_base, d3_geo);
 
 
-
-debugger;
-
-
 // Primary projections - commonly used for general purpose mapping
 export const primaryProjections = [
   { name: "Equal Earth", value: d3.geoEqualEarthRaw },
