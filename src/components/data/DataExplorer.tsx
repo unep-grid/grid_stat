@@ -14,10 +14,16 @@ const initialFilters: FilterState = {
 };
 
 const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
-  
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE; 
   const storedLang = window.localStorage?.getItem('language') as Language;
   return storedLang && SUPPORTED_LANGUAGES.includes(storedLang) ? storedLang : DEFAULT_LANGUAGE;
+};
+
+// Utility function to chunk array into smaller arrays
+const chunk = <T,>(arr: T[], size: number): T[][] => {
+  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size)
+  );
 };
 
 export function DataExplorer() {
@@ -81,21 +87,59 @@ export function DataExplorer() {
 
   // Fetch indicator data when selection changes
   useEffect(() => {
-    if (!selectedIndicator) return;
+    if (!selectedIndicator) {
+      setIndicatorData([]);
+      return;
+    }
 
-    async function fetchIndicatorData() {
+    const indicatorId = selectedIndicator.id;
+
+    async function fetchIndicatorDataChunk(offset: number): Promise<IndicatorData[]> {
+      const response = await fetch(
+        `https://api.unepgrid.ch/stats/v1/indicatorsData?id=eq.${indicatorId}&limit=200&offset=${offset}`
+      );
+      return response.json();
+    }
+
+    async function fetchAllIndicatorData() {
       try {
-        const response = await fetch(
-          `https://api.unepgrid.ch/stats/v1/indicatorsData?id=eq.${selectedIndicator.id}`
-        );
-        const data = await response.json();
-        setIndicatorData(data);
+        const CHUNK_SIZE = 200;
+        const PARALLEL_REQUESTS = 5; // Number of parallel requests to make
+        let allData: IndicatorData[] = [];
+        let offset = 0;
+        let hasMore = true;
+
+        while (hasMore) {
+          // Create an array of offsets for parallel requests
+          const offsets = Array.from({ length: PARALLEL_REQUESTS }, (_, i) => offset + i * CHUNK_SIZE);
+          
+          // Fetch multiple chunks in parallel
+          const chunks = await Promise.all(
+            offsets.map(currentOffset => fetchIndicatorDataChunk(currentOffset))
+          );
+
+          // Process the results
+          const newData = chunks.flat();
+          
+          // If any chunk is empty or we got less data than expected, we've reached the end
+          hasMore = chunks.every(chunk => chunk.length === CHUNK_SIZE);
+          
+          if (newData.length > 0) {
+            allData = [...allData, ...newData];
+            offset += PARALLEL_REQUESTS * CHUNK_SIZE;
+          } else {
+            hasMore = false;
+          }
+        }
+
+        setIndicatorData(allData);
       } catch (err) {
         console.error("Error fetching indicator data:", err);
+        setError("Failed to load indicator data");
       }
     }
 
-    fetchIndicatorData();
+    fetchAllIndicatorData();
   }, [selectedIndicator]);
 
   // Calculate remaining counts for categories and keywords

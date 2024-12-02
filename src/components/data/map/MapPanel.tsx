@@ -1,4 +1,6 @@
-{/* Previous imports remain unchanged */}
+{
+  /* Previous imports remain unchanged */
+}
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
@@ -8,7 +10,11 @@ import { useTheme } from "../../layout/ThemeProvider";
 import { Legend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import { MapTooltip } from "./MapTooltip";
-import { t, type Language, DEFAULT_LANGUAGE } from '../../../lib/utils/translations';
+import {
+  t,
+  type Language,
+  DEFAULT_LANGUAGE,
+} from "../../../lib/utils/translations";
 import {
   throttle,
   processRegionData,
@@ -36,10 +42,8 @@ interface HoveredRegion {
 }
 
 // Shared size scale configuration
-const createSizeScale = (extent: [number, number]) => 
-  d3.scaleSqrt()
-    .domain(extent)
-    .range([3, 15]); // Reduced maximum size
+const createSizeScale = (extent: [number, number]) =>
+  d3.scaleSqrt().domain(extent).range([3, 15]); // Reduced maximum size
 
 // Custom Legend for proportional symbols
 function ProportionalSymbolLegend({
@@ -53,27 +57,28 @@ function ProportionalSymbolLegend({
 }) {
   const [minValue, maxValue] = globalExtent;
   const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
-  
+
   // Calculate intermediate values
   const steps = [
     minValue,
     minValue + (maxValue - minValue) * 0.25,
     minValue + (maxValue - minValue) * 0.5,
     minValue + (maxValue - minValue) * 0.75,
-    maxValue
+    maxValue,
   ];
-  
+
   // SVG dimensions and layout
   const width = 120;
   const height = 160; // Increased height to accommodate more circles
   const margin = { top: 20, right: 40, bottom: 10, left: 10 };
   const centerX = margin.left + (width - margin.left - margin.right) / 3;
-  
+
   // Use shared size scale
   const sizeScale = createSizeScale(globalExtent);
 
   // Calculate vertical spacing
-  const verticalSpacing = (height - margin.top - margin.bottom) / (steps.length - 1);
+  const verticalSpacing =
+    (height - margin.top - margin.bottom) / (steps.length - 1);
 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
@@ -129,9 +134,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const currentTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
 
   const graticuleRef = useRef(
-    d3.geoGraticule()
-      .step([10, 10])     // Draw lines every 10 degrees for better density
-      .extent([[-180, -90], [180, 90]])  // Ensure full coverage
+    d3
+      .geoGraticule()
+      .step([10, 10]) // Draw lines every 10 degrees for better density
+      .extent([
+        [-180, -90],
+        [180, 90],
+      ]) // Ensure full coverage
   );
 
   // All state
@@ -140,7 +149,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
-  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
+  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(
+    null
+  );
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -157,8 +168,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Prepare legend title with year/latest mode
   const legendTitle = useMemo(() => {
-    const baseTitle = t("dv.legend",language) // This should be translated based on language
-    const latest = t("dv.latest", language)
+    const baseTitle = t("dv.legend", language); // This should be translated based on language
+    const latest = t("dv.latest", language);
     return `${baseTitle} ${isLatestMode ? latest : selectedYear}`;
   }, [isLatestMode, selectedYear]);
 
@@ -231,22 +242,25 @@ export function MapPanel({ data, language }: MapPanelProps) {
   }, [updateRegionPaths]);
 
   // Handle zoom
-  const handleZoom = useCallback((event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
-    if (!projectionRef.current || !pathGeneratorRef.current) return;
+  const handleZoom = useCallback(
+    (event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
+      if (!projectionRef.current || !pathGeneratorRef.current) return;
 
-    currentTransformRef.current = event.transform;
-    const container = svgRef.current?.parentElement;
-    if (!container) return;
+      currentTransformRef.current = event.transform;
+      const container = svgRef.current?.parentElement;
+      if (!container) return;
 
-    const width = container.clientWidth;
-    const baseScale = width / 6;
+      const width = container.clientWidth;
+      const baseScale = width / 6;
 
-    // Update projection scale based on zoom transform
-    const newScale = baseScale * event.transform.k;
-    projectionRef.current.scale(newScale);
-    pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-    scheduleUpdate();
-  }, [scheduleUpdate]);
+      // Update projection scale based on zoom transform
+      const newScale = baseScale * event.transform.k;
+      projectionRef.current.scale(newScale);
+      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
+      scheduleUpdate();
+    },
+    [scheduleUpdate]
+  );
 
   // Drag interaction handlers
   const handleDragStart = useCallback(() => {
@@ -286,7 +300,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Handle projection change
   const handleProjectionChange = useCallback(
     (newProjection: ProjectionType) => {
-      if (!svgRef.current || !worldDataRef.current || !projectionRef.current || !zoomRef.current)
+      if (
+        !svgRef.current ||
+        !worldDataRef.current ||
+        !projectionRef.current ||
+        !zoomRef.current
+      )
         return;
 
       const container = svgRef.current.parentElement;
@@ -374,12 +393,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const containerRect = containerRef.current.getBoundingClientRect();
       const mouseX = event.clientX - containerRect.left;
       const mouseY = event.clientY - containerRect.top;
-      
+
       setHoveredRegion({
         name: regionInfo.name,
         value: regionInfo.value,
         x: mouseX,
-        y: mouseY
+        y: mouseY,
       });
     }
   };
@@ -389,11 +408,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const containerRect = containerRef.current.getBoundingClientRect();
       const mouseX = event.clientX - containerRect.left;
       const mouseY = event.clientY - containerRect.top;
-      
+
       setHoveredRegion({
         ...hoveredRegion,
         x: mouseX,
-        y: mouseY
+        y: mouseY,
       });
     }
   };
@@ -418,6 +437,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         const response = await d3.json<WorldTopology>(
           "/grid_stat/world-110m.json"
         );
+        debugger;
         if (!response) {
           throw new Error("Failed to load world map data");
         }
@@ -435,13 +455,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .style("height", "auto");
 
       // Initialize zoom behavior
-      const zoom = d3.zoom<SVGSVGElement, unknown>()
+      const zoom = d3
+        .zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.5, 8])
         .on("zoom", handleZoom)
-        .filter(event => {
+        .filter((event) => {
           // Only handle wheel events for zooming
           // Ignore double-click zoom
-          return event.type === 'wheel' && !event.button;
+          return event.type === "wheel" && !event.button;
         });
 
       zoomRef.current = zoom;
