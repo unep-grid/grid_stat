@@ -28,7 +28,6 @@ interface HoveredRegion {
   y: number;
 }
 
-// Shared size scale configuration
 export function MapPanel({ data, language }: MapPanelProps) {
   // All refs
   const svgRef = useRef<SVGSVGElement>(null);
@@ -40,6 +39,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const isDraggingRef = useRef(false);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const currentTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
+  const shouldRecreateProjectionRef = useRef(true);
 
   const graticuleRef = useRef(
     d3
@@ -76,10 +76,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Prepare legend title with year/latest mode
   const legendTitle = useMemo(() => {
-    const baseTitle = t("dv.legend", language); // This should be translated based on language
+    const baseTitle = t("dv.legend", language);
     const latest = t("dv.latest", language);
     return `${baseTitle} ${isLatestMode ? latest : selectedYear}`;
-  }, [isLatestMode, selectedYear]);
+  }, [isLatestMode, selectedYear, language]);
 
   // Calculate global min/max across all years
   const globalExtent = useMemo(() => calculateGlobalExtent(data), [data]);
@@ -95,7 +95,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return processRegionData(data, selectedYear, isLatestMode);
   }, [data, selectedYear, isLatestMode]);
 
-  // Prepare data for legend (all data values)
+  // Prepare data for legend
   const legendData = useMemo(() => data.map((d) => d.value), [data]);
 
   // @TODO: This will be provided by a future attribute 'measure_scale'
@@ -235,9 +235,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       );
 
       if (!oldProjection || !newProjectionData) return;
-      if (oldProjection.name == newProjection) return;
+      if (oldProjection.name === newProjection) return;
 
-      console.log(`setCurrentProjection ${oldProjection.name}->${newProjection}`);
+      console.log(
+        `setCurrentProjection ${oldProjection.name}->${newProjection}`
+      );
 
       const projection = interpolateProjection(
         oldProjection.value,
@@ -255,8 +257,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Transition both the regions, graticule, and sphere (300ms=best)
-      const transition = d3.transition().duration(2000);
+      // Transition both the regions, graticule, and sphere
+      const transition = d3.transition().duration(300);
 
       // Graticule
       d3.select(svgRef.current)
@@ -292,7 +294,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           };
         });
 
-      // Sphere border + setCurrentProjection.
+      // Sphere border + setCurrentProjection
       d3.select(svgRef.current)
         .select("path.world-bounds")
         .transition(transition)
@@ -305,6 +307,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           };
         })
         .on("end", () => {
+          shouldRecreateProjectionRef.current = false;
           setCurrentProjection(newProjection);
           console.log(
             `animation from ${currentProjection} to ${newProjection} done`
@@ -387,8 +390,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .scaleExtent([0.5, 8])
         .on("zoom", handleZoom)
         .filter((event) => {
-          // Only handle wheel events for zooming
-          // Ignore double-click zoom
           return event.type === "wheel" && !event.button;
         });
 
@@ -440,25 +441,34 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 0.5);
 
-      // Find initial projection from the list
-      const initialProjection = projections.find(
-        (p) => p.name === currentProjection
-      );
-      if (!initialProjection) return;
+      // Only create new projection if needed
+      if (shouldRecreateProjectionRef.current || !projectionRef.current) {
+        const initialProjection = projections.find(
+          (p) => p.name === currentProjection
+        );
+        if (!initialProjection) return;
 
-      const projection = d3
-        .geoProjection(initialProjection.value)
-        .scale(scale * currentTransformRef.current.k)
-        .translate([width / 2, height / 2])
-        .rotate(projectionRef.current?.rotate() || [0, 0, 0])
-        .precision(0.1);
+        const projection = d3
+          .geoProjection(initialProjection.value)
+          .scale(scale * currentTransformRef.current.k)
+          .translate([width / 2, height / 2])
+          .rotate(projectionRef.current?.rotate() || [0, 0, 0])
+          .precision(0.1);
 
-      if (initialProjection.name === "Ortographic") {
-        projection.clipAngle(90);
+        if (currentProjection === "Orthographic") {
+          projection.clipAngle(90);
+        }
+
+        projectionRef.current = projection;
+        shouldRecreateProjectionRef.current = false;
+      } else {
+        // Just update scale and translation
+        projectionRef.current
+          .scale(scale * currentTransformRef.current.k)
+          .translate([width / 2, height / 2]);
       }
 
-      projectionRef.current = projection;
-      pathGeneratorRef.current = d3.geoPath(projection);
+      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
 
       const mapGroup = svg.append("g");
 
@@ -534,18 +544,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
         // Add proportional symbols
         const symbolGenerator = d3.symbol().type(d3.symbolCircle);
-        // Use shared size scale
         const sizeScale = createSizeScale(globalExtent);
 
         const symbolGroup = mapGroup.append("g").attr("class", "symbols");
 
-        // Sort features by value in descending order so larger points are rendered first
+        // Sort features by value in descending order
         const sortedFeatures = regions.features
           .filter((d: any) => regionData.get(d.id))
           .sort((a: any, b: any) => {
             const valueA = regionData.get(a.id)?.value || 0;
             const valueB = regionData.get(b.id)?.value || 0;
-            return valueB - valueA; // Descending order
+            return valueB - valueA;
           });
 
         symbolGroup
@@ -559,7 +568,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
           })
           .attr("d", (d: any) => {
             const data = regionData.get(d.id);
-            // Convert circle radius to symbol size (pi * r^2)
             const radius = sizeScale(data ? data.value : 0);
             return symbolGenerator.size(Math.PI * radius * radius)();
           })
@@ -568,7 +576,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .attr("stroke-width", 1)
           .style("cursor", "pointer")
           .on("mouseover", function (event, d: any) {
-            // Highlight both the point and its corresponding region
             d3.select(this).attr("stroke-width", 2);
             baseMap
               .filter((region: any) => region.id === d.id)
@@ -577,7 +584,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
           })
           .on("mousemove", handleRegionMove)
           .on("mouseout", function (event, d: any) {
-            // Reset both the point and its corresponding region
             d3.select(this).attr("stroke-width", 1);
             baseMap
               .filter((region: any) => region.id === d.id)
@@ -609,6 +615,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     updateVisualization();
 
     const resizeObserver = new ResizeObserver(() => {
+      shouldRecreateProjectionRef.current = true; // Force recreation on resize
       requestAnimationFrame(updateVisualization);
     });
 
