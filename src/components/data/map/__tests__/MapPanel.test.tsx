@@ -6,6 +6,8 @@ import { ThemeProvider } from "../../../layout/ThemeProvider";
 import { vi, describe, it, expect, beforeEach, beforeAll } from "vitest";
 import type { IndicatorData } from "../../../../lib/types";
 import type { BaseType } from "d3";
+import fs from 'fs';
+import path from 'path';
 
 // Mock scrollIntoView
 beforeAll(() => {
@@ -113,6 +115,31 @@ const waitForMapRender = async () => {
   });
 };
 
+// Helper function to normalize SVG for comparison
+const normalizeSVG = (svg: string) => {
+  return svg
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/>\s+</g, '><') // Remove whitespace between tags
+    .trim();
+};
+
+// Helper function to save SVG fixture
+const saveSVGFixture = (svg: string, name: string) => {
+  const fixturesDir = path.join(__dirname, '__fixtures__');
+  if (!fs.existsSync(fixturesDir)) {
+    fs.mkdirSync(fixturesDir, { recursive: true });
+  }
+  fs.writeFileSync(path.join(fixturesDir, `${name}.svg`), svg);
+};
+
+// Helper function to load SVG fixture
+const loadSVGFixture = (name: string): string => {
+  return fs.readFileSync(
+    path.join(__dirname, '__fixtures__', `${name}.svg`),
+    'utf-8'
+  );
+};
+
 describe("MapPanel", () => {
   beforeEach(() => {
     // Clear all mocks before each test
@@ -176,7 +203,7 @@ describe("MapPanel", () => {
     expect(container.querySelector(".region")).toBeTruthy();
   });
 
-  it("test 3: should handle zoom interactions", async () => {
+  it("test 3: should handle zoom interactions with scroll", async () => {
     const { container } = render(
       <ThemeProvider>
         <MapPanel data={mockData} language="en" />
@@ -185,56 +212,86 @@ describe("MapPanel", () => {
 
     await waitForMapRender();
 
-    // Use d3.select to get the SVG element with proper type casting
+    // Get the SVG element
     const svg = d3.select(container).select("svg").node() as SVGSVGElement;
     expect(svg).toBeTruthy();
 
     if (svg) {
-      // Initial state check
-      const mapGroup = d3.select(container).select("g").node() as SVGGElement;
-      expect(mapGroup).toBeTruthy();
-
       // Create a wheel event that matches d3.zoom's filter condition
-      const wheelEvent = new WheelEvent("wheel", {
-        deltaY: -50,
-        ctrlKey: true,
+      const zoomInEvent = new WheelEvent("wheel", {
+        deltaY: -100, // Negative deltaY zooms in
+        ctrlKey: true, // Must have ctrl key for d3.zoom filter
         bubbles: true,
         cancelable: true,
-        button: 0,
-        buttons: 0,
         clientX: 500,
         clientY: 400
       });
 
-      // Dispatch wheel events with proper timing
+      // Dispatch zoom in event
       await act(async () => {
-        // First zoom event
-        svg.dispatchEvent(wheelEvent);
+        svg.dispatchEvent(zoomInEvent);
         await new Promise(resolve => setTimeout(resolve, 100));
-
-        // Second zoom event to ensure transform is applied
-        svg.dispatchEvent(wheelEvent);
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        // Wait longer for zoom transitions to complete
-        await new Promise(resolve => setTimeout(resolve, 500));
       });
 
-      // Get the map group after zoom
-      const dd = d3; 
-      const mapGroupAfterZoom = dd.select(container).select("g").node() as SVGGElement;
-      expect(mapGroupAfterZoom).toBeTruthy();
+      // Get the SVG content after zoom
+      const svgContent = container.querySelector('svg')?.outerHTML;
+      expect(svgContent).toBeTruthy();
 
-      // Check if transform is applied
-      debugger;
-      const transform = mapGroupAfterZoom?.getAttribute("transform");
-      expect(transform).toBeTruthy();
-      expect(transform).toMatch(/scale|translate/);
-
-      // Additional check for the transform format
-      if (transform) {
-        expect(transform).toMatch(/^translate\([^)]+\)\s*scale\([^)]+\)$/);
+      if (process.env.UPDATE_FIXTURES) {
+        // Save the SVG content as a fixture when running in update mode
+        saveSVGFixture(svgContent!, 'map-zoomed-in');
+      } else {
+        // Compare with saved fixture
+        const expectedSVG = loadSVGFixture('map-zoomed-in');
+        expect(normalizeSVG(svgContent!)).toBe(normalizeSVG(expectedSVG));
       }
+
+      // Create zoom out event
+      const zoomOutEvent = new WheelEvent("wheel", {
+        deltaY: 100, // Positive deltaY zooms out
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
+        clientX: 500,
+        clientY: 400
+      });
+
+      // Dispatch zoom out event
+      await act(async () => {
+        svg.dispatchEvent(zoomOutEvent);
+        await new Promise(resolve => setTimeout(resolve, 100));
+      });
+
+      // Get the SVG content after zoom out
+      const svgContentZoomOut = container.querySelector('svg')?.outerHTML;
+      expect(svgContentZoomOut).toBeTruthy();
+
+      if (process.env.UPDATE_FIXTURES) {
+        saveSVGFixture(svgContentZoomOut!, 'map-zoomed-out');
+      } else {
+        const expectedSVGZoomOut = loadSVGFixture('map-zoomed-out');
+        expect(normalizeSVG(svgContentZoomOut!)).toBe(normalizeSVG(expectedSVGZoomOut));
+      }
+
+      // Verify wheel events without ctrl key don't trigger zoom
+      const nonZoomEvent = new WheelEvent("wheel", {
+        deltaY: -100,
+        ctrlKey: false,
+        bubbles: true,
+        cancelable: true,
+        clientX: 500,
+        clientY: 400
+      });
+
+      const svgBeforeNonZoom = container.querySelector('svg')?.outerHTML;
+
+      await act(async () => {
+        svg.dispatchEvent(nonZoomEvent);
+        await new Promise(resolve => setTimeout(resolve, 100));
+      });
+
+      const svgAfterNonZoom = container.querySelector('svg')?.outerHTML;
+      expect(normalizeSVG(svgAfterNonZoom!)).toBe(normalizeSVG(svgBeforeNonZoom!));
     }
   });
 
