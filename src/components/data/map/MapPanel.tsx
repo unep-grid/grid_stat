@@ -483,18 +483,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-opacity", 1)
         .attr("d", pathGeneratorRef.current as any);
 
-      // Add graticule with proper projection
-      const graticuleData = graticuleRef.current();
-      mapGroup
-        .append("path")
-        .datum(graticuleData)
-        .attr("class", "graticule")
-        .attr("d", pathGeneratorRef.current as any)
-        .attr("fill", "none")
-        .attr("stroke", colors.foreground)
-        .attr("stroke-width", 0.2)
-        .attr("stroke-opacity", 0.3);
-
       const regions = feature(
         worldDataRef.current,
         worldDataRef.current.objects.world
@@ -591,6 +579,20 @@ export function MapPanel({ data, language }: MapPanelProps) {
             handleRegionOut();
           });
       }
+
+      // Add graticule with proper projection
+      const graticuleData = graticuleRef.current();
+      mapGroup
+        .append("path")
+        .datum(graticuleData)
+        .attr("class", "graticule")
+        .attr("d", pathGeneratorRef.current as any)
+        .attr("fill", "none")
+        .attr("stroke", colors.foreground)
+        .attr("stroke-width", 0.2)
+        .attr("stroke-opacity", 0.3);
+
+
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
