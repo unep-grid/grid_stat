@@ -1,32 +1,19 @@
-{
-  /* Previous imports remain unchanged */
-}
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import type { Feature, Geometry } from "geojson";
-import { interpolateProjection } from "../../../lib/utils/projection";
-import { useTheme } from "../../layout/ThemeProvider";
-import { Legend } from "./Legend";
+import { interpolateProjection } from "@/lib/utils/projection";
+import { createSizeScale, Legend, ProportionalSymbolLegend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import { MapTooltip } from "./MapTooltip";
+import { useTheme } from "@/components/layout/ThemeProvider";
+import { t } from "@/lib/utils/translations";
 import {
-  t,
-  type Language,
-  DEFAULT_LANGUAGE,
-} from "../../../lib/utils/translations";
-import {
-  throttle,
   processRegionData,
   calculateGlobalExtent,
   createColorScale,
 } from "./utils";
-import type {
-  MapPanelProps,
-  WorldTopology,
-  ProjectionType,
-  IndicatorData,
-} from "./types";
+import type { MapPanelProps, WorldTopology, ProjectionType } from "./types";
 import { projections } from "./projections";
 
 // Define the GeoSphere type
@@ -42,85 +29,6 @@ interface HoveredRegion {
 }
 
 // Shared size scale configuration
-const createSizeScale = (extent: [number, number]) =>
-  d3.scaleSqrt().domain(extent).range([3, 15]); // Reduced maximum size
-
-// Custom Legend for proportional symbols
-function ProportionalSymbolLegend({
-  globalExtent,
-  colors,
-  title,
-}: {
-  globalExtent: [number, number];
-  colors: { foreground: string; background: string };
-  title: string;
-}) {
-  const [minValue, maxValue] = globalExtent;
-  const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
-
-  // Calculate intermediate values
-  const steps = [
-    minValue,
-    minValue + (maxValue - minValue) * 0.25,
-    minValue + (maxValue - minValue) * 0.5,
-    minValue + (maxValue - minValue) * 0.75,
-    maxValue,
-  ];
-
-  // SVG dimensions and layout
-  const width = 120;
-  const height = 160; // Increased height to accommodate more circles
-  const margin = { top: 20, right: 40, bottom: 10, left: 10 };
-  const centerX = margin.left + (width - margin.left - margin.right) / 3;
-
-  // Use shared size scale
-  const sizeScale = createSizeScale(globalExtent);
-
-  // Calculate vertical spacing
-  const verticalSpacing =
-    (height - margin.top - margin.bottom) / (steps.length - 1);
-
-  return (
-    <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">{title}</div>
-      <svg width={width} height={height} className="overflow-visible">
-        {steps.map((value, i) => {
-          const radius = sizeScale(value);
-          const cy = margin.top + i * verticalSpacing;
-          return (
-            <g key={i}>
-              <circle
-                cx={centerX}
-                cy={cy}
-                r={radius}
-                fill={colors.foreground}
-                stroke={colors.background}
-                strokeWidth={1}
-              />
-              <line
-                x1={centerX}
-                y1={cy}
-                x2={centerX + radius + 5}
-                y2={cy}
-                stroke={colors.foreground}
-                strokeWidth={1}
-              />
-              <text
-                x={centerX + radius + 8}
-                y={cy + 4}
-                className="text-xs"
-                fill={colors.foreground}
-              >
-                {format(value)}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
 export function MapPanel({ data, language }: MapPanelProps) {
   // All refs
   const svgRef = useRef<SVGSVGElement>(null);
@@ -136,11 +44,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const graticuleRef = useRef(
     d3
       .geoGraticule()
-      .step([10, 10]) // Draw lines every 10 degrees for better density
+      .step([10, 10])
       .extent([
         [-180, -90],
         [180, 90],
-      ]) // Ensure full coverage
+      ])
   );
 
   // All state
@@ -313,12 +221,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const width = container.clientWidth;
       const height = container.clientHeight;
-      const baseScale = width / 6;
 
       // Get current zoom and rotation state
       const currentRotation = projectionRef.current.rotate();
       const currentScale = projectionRef.current.scale();
-      const zoomK = currentTransformRef.current.k;
 
       // Find the old and new projection functions from the list
       const oldProjection = projections.find(
@@ -329,6 +235,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
       );
 
       if (!oldProjection || !newProjectionData) return;
+      if (oldProjection.name == newProjection) return;
+
+      console.log(`setCurrentProjection ${oldProjection.name}->${newProjection}`);
 
       const projection = interpolateProjection(
         oldProjection.value,
@@ -339,24 +248,28 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .rotate(currentRotation)
         .precision(0.1);
 
+      if (newProjection === "Orthographic") {
+        projection.clipAngle(90);
+      }
+
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Transition both the regions, graticule, and sphere
-      const transition = d3.transition().duration(1000);
+      // Transition both the regions, graticule, and sphere (300ms=best)
+      const transition = d3.transition().duration(2000);
 
-      // Update graticule during transition
-      const graticuleData = graticuleRef.current();
+      // Graticule
       d3.select(svgRef.current)
         .select("path.graticule")
         .transition(transition)
-        .attrTween("d", () => {
+        .attrTween("d", (d) => {
           return function (t: number) {
             projection.alpha(t);
-            return d3.geoPath(projection)(graticuleData) || "";
+            return d3.geoPath(projection)(d) || "";
           };
         });
 
+      // Region
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
         .transition(transition)
@@ -367,7 +280,19 @@ export function MapPanel({ data, language }: MapPanelProps) {
           };
         });
 
-      // Transition the sphere
+      // Points, if any
+      d3.select(svgRef.current)
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
+        .transition(transition)
+        .attrTween("transform", function (d) {
+          return function (t: number) {
+            projection.alpha(t);
+            const [x, y] = d3.geoPath(projection).centroid(d);
+            return `translate(${x}, ${y})`;
+          };
+        });
+
+      // Sphere border + setCurrentProjection.
       d3.select(svgRef.current)
         .select("path.world-bounds")
         .transition(transition)
@@ -381,6 +306,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
         })
         .on("end", () => {
           setCurrentProjection(newProjection);
+          console.log(
+            `animation from ${currentProjection} to ${newProjection} done`
+          );
         });
     },
     [currentProjection]
@@ -525,6 +453,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .rotate(projectionRef.current?.rotate() || [0, 0, 0])
         .precision(0.1);
 
+      if (initialProjection.name === "Ortographic") {
+        projection.clipAngle(90);
+      }
+
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
@@ -586,7 +518,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
             handleRegionOut();
           });
       } else {
-        // Render base map with no fill
+        // Render base map with no fill except no data
         const baseMap = mapGroup
           .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
           .data(regions.features)
