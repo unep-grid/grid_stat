@@ -1,26 +1,19 @@
-Project: GHG Portal
-Stack: Astro + React + TS + Tailwind + shadcn/ui
-Deploy: github workflow + github page -> unep-grid.github.io/grid_stat
+### GHG Portal Guidelines
 
-Key paths:
-@ -> ./src/*
+**Testing Strategy**:
+- Test component behavior, not D3 implementation
+- Mock only essential data (UN M49, topology)
+- Use specific DOM queries over generic text matches
+- Verify proper cleanup of resources
 
-Structure:
-/src/
-  /components/
-    /about - Team info
-    /data - Explorer, charts, tables
-    /home - Hero, news
-    /layout - nav, ...
-    /ui - shadcn components
-  /pages/ - about, data, home, news routes
-  /lib/ - utils, types
-  /data/ - dictionaries
+**Data Handling**:
+- UN M49 codes require proper mock structure
+- Transform data before visualization
+- Handle missing/invalid region data
 
-Config:
-- React JSX enabled
-- Base styles disabled in Tailwind
-- MDX for content
-- i18n ready
+**Visualization**:
+- Clean up D3 selections in useEffect
+- Use requestAnimationFrame for updates
+- Support both choropleth and symbol maps
 
-Purpose: GHG data visualization portal with multilingual support
+See existing tests for implementation examples.
