@@ -1,7 +1,9 @@
 ### GHG Portal Guidelines
 
 **Testing Strategy**:
+- Run `npm run test` after each new test. Fail early.
 - Test component behavior, not D3 implementation
+- Do not mock d3 or d3 geo in map component, import the actual methods
 - Mock only essential data (UN M49, topology)
 - Use specific DOM queries over generic text matches
 - Verify proper cleanup of resources
