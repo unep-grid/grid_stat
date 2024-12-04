@@ -115,6 +115,16 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const updateRegionPaths = useCallback(() => {
     if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current)
       return;
+    const updateProjParam = {
+      scale: projectionRef.current.scale(),
+      rotation: projectionRef.current.rotate(),
+    };
+    // Store projection parameters in SVG data attributes
+    svgRef.current.setAttribute("data-scale", updateProjParam.scale);
+    svgRef.current.setAttribute(
+      "data-rotation",
+      JSON.stringify(updateProjParam.rotation)
+    );
 
     // Update graticule with current projection
     const graticuleData = graticuleRef.current();
@@ -152,6 +162,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Handle zoom
   const handleZoom = useCallback(
     (event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
+      console.log("HANDLE ZOOM ", event);
       if (!projectionRef.current || !pathGeneratorRef.current) return;
 
       currentTransformRef.current = event.transform;
@@ -388,10 +399,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const zoom = d3
         .zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.5, 8])
-        .on("zoom", handleZoom)
-        .filter((event) => {
-          return event.type === "wheel" && !event.button;
-        });
+        .on("zoom", handleZoom);
 
       zoomRef.current = zoom;
       svg.call(zoom);
@@ -591,8 +599,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.2)
         .attr("stroke-opacity", 0.3);
-
-
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
@@ -678,9 +684,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       <div className="relative flex-grow">
         <svg
+          id="map"
           ref={svgRef}
           className="w-full h-full"
           style={{ minHeight: "400px", cursor: "grab" }}
+          data-scale="1"
+          data-rotation="0"
         />
 
         <MapTooltip
