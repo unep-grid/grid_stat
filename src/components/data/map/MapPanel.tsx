@@ -162,7 +162,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
   // Handle zoom
   const handleZoom = useCallback(
     (event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
-      console.log("HANDLE ZOOM ", event);
       if (!projectionRef.current || !pathGeneratorRef.current) return;
 
       currentTransformRef.current = event.transform;
@@ -198,6 +197,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   const handleDrag = useCallback(
     (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
+      console.log("drag");
       if (!projectionRef.current || !pathGeneratorRef.current) return;
 
       const sensitivityX = 5;
@@ -399,7 +399,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const zoom = d3
         .zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.5, 8])
-        .on("zoom", handleZoom);
+        .on("zoom", handleZoom)
+        .filter((event) => {
+          // dont accept drag event (used for rotation)
+          return event.type === "wheel" && !event.button;
+        });
 
       zoomRef.current = zoom;
       svg.call(zoom);
