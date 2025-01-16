@@ -1,0 +1,178 @@
+{
+    "hits": [
+        {
+            "description": "The indicator describes the number of local governments. This indicator is based on the series SG GOV LOGV which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "keywords": [
+                "local government"
+            ],
+            "topics": [
+                "Political Stability"
+            ],
+            "collections": [
+                {
+                    "id": 4,
+                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 5,
+                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11750,
+            "name": "Number of local governments",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11750",
+            "language": "en"
+        },
+        {
+            "description": "The indicator describes the number of local governments that adopt and implement local DRR strategies in line with national strategies. This indicator is based on the series SG DSR SILN which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "keywords": [
+                "disaster risk",
+                "risk reduction"
+            ],
+            "topics": [
+                "Political Stability"
+            ],
+            "collections": [
+                {
+                    "id": 4,
+                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 5,
+                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11745,
+            "name": "Number of local governments that adopt and implement local DRR strategies in line with national strategies",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11745",
+            "language": "en"
+        },
+        {
+            "description": "The indicator describes the proportion of local governments that adopt and implement local disaster risk reduction strategies in line with national disaster risk reduction strategies. This indicator is based on the series SG DSR SILS which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "keywords": [
+                "disaster risk",
+                "risk reduction"
+            ],
+            "topics": [
+                "Political Stability"
+            ],
+            "collections": [
+                {
+                    "id": 4,
+                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                },
+                {
+                    "id": 5,
+                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11746,
+            "name": "Proportion of local governments that adopt and implement local disaster risk reduction strategies in line with national disaster risk reduction strategies",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11746",
+            "language": "en"
+        },
+        {
+            "description": "The indicator describes the current number of seats in national parliaments. This indicator is based on the series SG GEN PARLNT which is part of the SDG indicators 5.5.1.",
+            "keywords": [
+                "local government"
+            ],
+            "topics": [
+                "Oceans and Seas"
+            ],
+            "collections": [
+                {
+                    "id": 7,
+                    "name": "SDG Goal 5: Achieve gender equality and empower all women and girls",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11749,
+            "name": "Current number of seats in national parliaments",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11749",
+            "language": "en"
+        }
+    ],
+    "query": "local",
+    "processingTimeMs": 1,
+    "limit": 20,
+    "offset": 0,
+    "estimatedTotalHits": 4,
+    "facetDistribution": {
+        "sources": {},
+        "sources.citation": {},
+        "sources.contact": {
+            "statistics@un.org": 4
+        },
+        "sources.name": {
+            "United Nations Statistics Division - multiple sources": 4
+        },
+        "sources.name_short": {
+            "UNSD-aggr": 4
+        },
+        "sources.url": {
+            "https://unstats.un.org/": 4
+        }
+    },
+    "facetStats": {}
+}
