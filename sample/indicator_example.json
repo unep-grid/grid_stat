@@ -1,0 +1,5202 @@
+[
+  {
+    "pid": 1,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 94,
+    "geo_entity": "Eritrea",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 33.72,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 4,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 9,
+    "geo_entity": "Algeria",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 2.44,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Rural Development general directorate of forests",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 6,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 9,
+    "geo_entity": "Algeria",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 5,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Rural Development general directorate of forests",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 19,
+    "geo_entity": "Angola",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 18,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 19,
+    "geo_entity": "Angola",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 19,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 20,
+    "geo_entity": "Antigua and Barbuda",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 9.78,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Foreign Affairs",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 21,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 20,
+    "geo_entity": "Antigua and Barbuda",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 10.33,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Foreign Affairs",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 22,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 90,
+    "geo_entity": "Ecuador",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 17.5,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Ambiente, Agua y Transición Ecológica",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 104,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 92,
+    "geo_entity": "Equatorial Guinea",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.82,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Pesca y Medio Ambiente",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 142,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 92,
+    "geo_entity": "Equatorial Guinea",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 1.09,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Pesca y Medio Ambiente",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 143,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 24,
+    "geo_entity": "Argentina",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 11.69,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Dirección de Asuntos Ambientales (DIGMA), Ministerio de Relaciones Exteriores, Comercio Internacional y Culto",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 144,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 24,
+    "geo_entity": "Argentina",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 5.52,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Dirección de Asuntos Ambientales (DIGMA), Ministerio de Relaciones Exteriores, Comercio Internacional y Culto",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 145,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 33,
+    "geo_entity": "Armenia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 19.28,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 146,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 33,
+    "geo_entity": "Armenia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 19.44,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 147,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 27,
+    "geo_entity": "Australia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 7.34,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Department of Climate Change, Energy, the Environment and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 148,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 27,
+    "geo_entity": "Australia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.19,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Department of Climate Change, Energy, the Environment and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 149,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 94,
+    "geo_entity": "Eritrea",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 4.16,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 150,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 95,
+    "geo_entity": "Estonia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 11.71,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of the Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 151,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 95,
+    "geo_entity": "Estonia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 7.48,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of the Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 154,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 243,
+    "geo_entity": "Eswatini",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.67,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 155,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 243,
+    "geo_entity": "Eswatini",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 24.14,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 157,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 93,
+    "geo_entity": "Ethiopia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.26,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 158,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 93,
+    "geo_entity": "Ethiopia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 19.86,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 345,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 35,
+    "geo_entity": "Australia and New Zealand",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 7.2,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 346,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 66,
+    "geo_entity": "Europe",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 11.05,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 349,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 66,
+    "geo_entity": "Europe",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 12.84,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 355,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 35,
+    "geo_entity": "Australia and New Zealand",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.03,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 358,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 23,
+    "geo_entity": "Azerbaijan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 11.56,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Ecology and Natural Resources ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 364,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 23,
+    "geo_entity": "Azerbaijan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 12.81,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Ecology and Natural Resources ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 365,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 32,
+    "geo_entity": "Bangladesh",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 2.25,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 366,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 32,
+    "geo_entity": "Bangladesh",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 22.31,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 367,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 34,
+    "geo_entity": "Barbados",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 368,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 34,
+    "geo_entity": "Barbados",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 369,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 54,
+    "geo_entity": "Belarus",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.71,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "National Statistical Committee of the Republic of Belarus",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 370,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 54,
+    "geo_entity": "Belarus",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 372,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 47,
+    "geo_entity": "Belize",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 7.95,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Natural Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 373,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 47,
+    "geo_entity": "Belize",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 7.46,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Natural Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 374,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 86,
+    "geo_entity": "Benin",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 37.56,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère du Cadre de Vie et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 375,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 86,
+    "geo_entity": "Benin",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 37.55,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère du Cadre de Vie et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 376,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 41,
+    "geo_entity": "Bhutan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 11.89,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Forests",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 377,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 41,
+    "geo_entity": "Bhutan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 13.49,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Forests",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 378,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 42,
+    "geo_entity": "Bolivia (Plurinational State of)",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.11,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Asuntos Exteriores ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 379,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 42,
+    "geo_entity": "Bolivia (Plurinational State of)",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 10,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Asuntos Exteriores ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 380,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 43,
+    "geo_entity": "Bosnia and Herzegovina",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.49,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Forestry and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 381,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 43,
+    "geo_entity": "Bosnia and Herzegovina",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 6.79,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Forestry and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 382,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 44,
+    "geo_entity": "Botswana",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 36.28,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Natural Resources Conservation and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 383,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 44,
+    "geo_entity": "Botswana",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 17.12,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Natural Resources Conservation and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 384,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 50,
+    "geo_entity": "Brunei Darussalam",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 385,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 50,
+    "geo_entity": "Brunei Darussalam",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 387,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 51,
+    "geo_entity": "Bulgaria",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 1.12,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 389,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 51,
+    "geo_entity": "Bulgaria",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 7.54,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Water",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 391,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 271,
+    "geo_entity": "Burkina Faso",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 34.6,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Economie Verte et du Changeement Climatique",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 394,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 271,
+    "geo_entity": "Burkina Faso",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.21,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Economie Verte et du Changeement Climatique",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 395,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 53,
+    "geo_entity": "Burundi",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 23.92,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Agriculture et de l'Elevage ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 401,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 53,
+    "geo_entity": "Burundi",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 12.09,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Agriculture et de l'Elevage ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 406,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 55,
+    "geo_entity": "Cambodia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 17.37,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Forestry and Fisheries",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 407,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 55,
+    "geo_entity": "Cambodia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 19.57,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Forestry and Fisheries",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 408,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 56,
+    "geo_entity": "Cameroon",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.01,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de la Protection de la Nature et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 409,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 56,
+    "geo_entity": "Cameroon",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 3.19,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de la Protection de la Nature et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 410,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 57,
+    "geo_entity": "Canada",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 9.71,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 411,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 57,
+    "geo_entity": "Canada",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 11.72,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 412,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 60,
+    "geo_entity": "Central African Republic",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 1.6,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 413,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 60,
+    "geo_entity": "Central African Republic",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 5.24,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7284,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 62,
+    "geo_entity": "Central Asia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 20.22,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7285,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 62,
+    "geo_entity": "Central Asia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 20.32,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7286,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 65,
+    "geo_entity": "Chad",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 2.11,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et de la Pêche",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7289,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 65,
+    "geo_entity": "Chad",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 9.38,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et de la Pêche",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7290,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 68,
+    "geo_entity": "Chile",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.09,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Agricultura",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7291,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 68,
+    "geo_entity": "Chile",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 6.44,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Agricultura",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7292,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 71,
+    "geo_entity": "China",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 27.2,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "National Forestry and Grassland Administration",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7295,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 71,
+    "geo_entity": "China",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 26.81,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "National Forestry and Grassland Administration",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7297,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 74,
+    "geo_entity": "Colombia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 28.8,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Relaciones Exteriores",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7298,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 74,
+    "geo_entity": "Colombia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 29.84,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Relaciones Exteriores",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7299,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 75,
+    "geo_entity": "Comoros",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7300,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 75,
+    "geo_entity": "Comoros",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7301,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 79,
+    "geo_entity": "Cook Islands",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7303,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 79,
+    "geo_entity": "Cook Islands",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7305,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 80,
+    "geo_entity": "Costa Rica",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 33.21,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio del Ambiente y Energía",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7307,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 80,
+    "geo_entity": "Costa Rica",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 32.05,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio del Ambiente y Energía",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7310,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 137,
+    "geo_entity": "Côte d’Ivoire",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.09,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Sustainable Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7311,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 137,
+    "geo_entity": "Côte d’Ivoire",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 11.84,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Sustainable Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7312,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 85,
+    "geo_entity": "Czechia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 3.21,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment of the Czech Republic",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7313,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 85,
+    "geo_entity": "Czechia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 9.93,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment of the Czech Republic",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7315,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 87,
+    "geo_entity": "Denmark",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7316,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 87,
+    "geo_entity": "Denmark",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7317,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 88,
+    "geo_entity": "Dominica",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Rural Mondernization and Kalinago Upliftment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7319,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 88,
+    "geo_entity": "Dominica",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 0.4,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Rural Mondernization and Kalinago Upliftment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7320,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 89,
+    "geo_entity": "Dominican Republic",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 48.59,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Medio Ambiente y Recursos Naturales ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 7323,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 89,
+    "geo_entity": "Dominican Republic",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 31.25,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Medio Ambiente y Recursos Naturales ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11037,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 22,
+    "geo_entity": "Eastern Asia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 24.78,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11079,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 22,
+    "geo_entity": "Eastern Asia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 26.32,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11093,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 90,
+    "geo_entity": "Ecuador",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 21.9,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministerio de Ambiente, Agua y Transición Ecológica",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11861,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 99,
+    "geo_entity": "Fiji",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11890,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 99,
+    "geo_entity": "Fiji",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11905,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 100,
+    "geo_entity": "Finland",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.95,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry for Foreign Affairs of Finland",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11919,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 100,
+    "geo_entity": "Finland",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 0.44,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry for Foreign Affairs of Finland",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 11960,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 107,
+    "geo_entity": "Gabon",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 13.1,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère des Eaux, des Forêts, de la Mer, de l'Environnement, chargé du Plan Climat et du Plan d'affectation des terres",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12043,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 107,
+    "geo_entity": "Gabon",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 29.38,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère des Eaux, des Forêts, de la Mer, de l'Environnement, chargé du Plan Climat et du Plan d'affectation des terres",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12086,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 109,
+    "geo_entity": "Gambia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 4.4,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Climate Change and Natural Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12184,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 109,
+    "geo_entity": "Gambia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 34.75,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Climate Change and Natural Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12270,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 108,
+    "geo_entity": "Georgia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 4.76,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environmental Protection and Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12359,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 108,
+    "geo_entity": "Georgia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 6.63,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environmental Protection and Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12432,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 112,
+    "geo_entity": "Ghana",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 3.48,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Science, Technology and Innovation",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12447,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 112,
+    "geo_entity": "Ghana",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 16.65,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Science, Technology and Innovation",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12475,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 115,
+    "geo_entity": "Greece",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 4.77,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Rural Development and Food",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12604,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 115,
+    "geo_entity": "Greece",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 5.79,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Rural Development and Food",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12619,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 117,
+    "geo_entity": "Grenada",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12662,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 117,
+    "geo_entity": "Grenada",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12676,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 121,
+    "geo_entity": "Guinea",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 10.79,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l’Environnement, Eaux et Forêtset et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12719,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 121,
+    "geo_entity": "Guinea",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 23.82,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l’Environnement, Eaux et Forêtset et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12761,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 207,
+    "geo_entity": "Guinea-Bissau",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.34,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Agriculture et du Développement Rural (MADR)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12776,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 207,
+    "geo_entity": "Guinea-Bissau",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 27.94,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Agriculture et du Développement Rural (MADR)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12791,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 122,
+    "geo_entity": "Guyana",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 17.78,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Guyana Lands and Surveys Commission",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12805,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 122,
+    "geo_entity": "Guyana",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 15.89,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Guyana Lands and Surveys Commission",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12819,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 123,
+    "geo_entity": "Haiti",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 53.88,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12833,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 123,
+    "geo_entity": "Haiti",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 23,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12848,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 125,
+    "geo_entity": "Holy See",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12876,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 125,
+    "geo_entity": "Holy See",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12919,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 128,
+    "geo_entity": "Hungary",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 2.29,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12933,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 128,
+    "geo_entity": "Hungary",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 14.44,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12946,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 130,
+    "geo_entity": "India",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 4.42,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 12961,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 130,
+    "geo_entity": "India",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 9.45,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forest and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13004,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 131,
+    "geo_entity": "Indonesia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 9.93,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Forestry",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13047,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 131,
+    "geo_entity": "Indonesia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 17.57,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Forestry",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13075,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 133,
+    "geo_entity": "Iraq",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13076,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 133,
+    "geo_entity": "Iraq",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 6.7,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13118,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 135,
+    "geo_entity": "Israel",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13148,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 135,
+    "geo_entity": "Israel",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13178,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 136,
+    "geo_entity": "Italy",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 14.08,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "ISPRA - Institute for the Environmental Protection and Research",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13205,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 136,
+    "geo_entity": "Italy",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 12.46,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "ISPRA - Institute for the Environmental Protection and Research",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13206,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 138,
+    "geo_entity": "Jamaica",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.22,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Local Government and Community Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13234,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 138,
+    "geo_entity": "Jamaica",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 7.71,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Local Government and Community Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13248,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 139,
+    "geo_entity": "Japan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13263,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 139,
+    "geo_entity": "Japan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13359,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 141,
+    "geo_entity": "Jordan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 5.35,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13455,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 141,
+    "geo_entity": "Jordan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 25.62,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13469,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 140,
+    "geo_entity": "Kazakhstan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 20.63,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13484,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 140,
+    "geo_entity": "Kazakhstan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 21.31,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13498,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 114,
+    "geo_entity": "Kiribati",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13526,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 114,
+    "geo_entity": "Kiribati",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13554,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 145,
+    "geo_entity": "Kuwait",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.95,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Environment Public Authority",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13582,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 145,
+    "geo_entity": "Kuwait",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 3.04,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Environment Public Authority",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13596,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 146,
+    "geo_entity": "Kyrgyzstan",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 10.61,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 13623,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 146,
+    "geo_entity": "Kyrgyzstan",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 9.58,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 14718,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 148,
+    "geo_entity": "Latin America and the Caribbean",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 15.67,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 14862,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 148,
+    "geo_entity": "Latin America and the Caribbean",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 21.89,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Non-relevant",
+      "footnotes": "Regional data are based on the country-level data submitted in UNCCD 2022 national reports from 115 countries and 52 estimates prepared by UNCCD based on global data sources.",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": "Not significant"
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 14918,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 151,
+    "geo_entity": "Latvia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 17.31,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environmental Protection and Regional Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 14932,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 151,
+    "geo_entity": "Latvia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.72,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environmental Protection and Regional Development",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 14975,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 162,
+    "geo_entity": "Mali",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 9.27,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Assainissement et du Développement Durable ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15367,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 149,
+    "geo_entity": "Lebanon",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 10.85,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15380,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 149,
+    "geo_entity": "Lebanon",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 10.78,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15450,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 150,
+    "geo_entity": "Lesotho",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.83,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Forestry, Range and Soil Conservation",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15506,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 150,
+    "geo_entity": "Lesotho",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.83,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Forestry, Range and Soil Conservation",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15535,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 152,
+    "geo_entity": "Liberia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 18.72,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Environmental Protection Agency of Liberia (EPA)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15548,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 152,
+    "geo_entity": "Liberia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.94,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Environmental Protection Agency of Liberia (EPA)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15603,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 153,
+    "geo_entity": "Libya",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.92,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Livestock and Marine Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15604,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 153,
+    "geo_entity": "Libya",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 1.51,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture, Livestock and Marine Resources",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15618,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 155,
+    "geo_entity": "Lithuania",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.6,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15619,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 155,
+    "geo_entity": "Lithuania",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 14.3,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15647,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 156,
+    "geo_entity": "Luxembourg",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15661,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 156,
+    "geo_entity": "Luxembourg",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15675,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 158,
+    "geo_entity": "Madagascar",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.75,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15689,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 158,
+    "geo_entity": "Madagascar",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 31.92,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15730,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 159,
+    "geo_entity": "Malawi",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.8,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "The Secretary for Natural Resources and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15744,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 159,
+    "geo_entity": "Malawi",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 26.75,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "The Secretary for Natural Resources and Climate Change",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15745,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 160,
+    "geo_entity": "Malaysia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.06,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Food Industries",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15786,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 160,
+    "geo_entity": "Malaysia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 15.22,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agriculture and Food Industries",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15840,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 161,
+    "geo_entity": "Maldives",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 15962,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 161,
+    "geo_entity": "Maldives",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16028,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 162,
+    "geo_entity": "Mali",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.89,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement, de l'Assainissement et du Développement Durable ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16045,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 163,
+    "geo_entity": "Malta",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "Ministry for the Environment, Climate Change and Planning",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16098,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 163,
+    "geo_entity": "Malta",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "Ministry for the Environment, Climate Change and Planning",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16132,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 196,
+    "geo_entity": "Marshall Islands",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16166,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 196,
+    "geo_entity": "Marshall Islands",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16217,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 165,
+    "geo_entity": "Mauritania",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 2.73,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16234,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 165,
+    "geo_entity": "Mauritania",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 13.63,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Environnement et du Développement Durable",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16252,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 166,
+    "geo_entity": "Mauritius",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 9.67,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agro-Industry and Food Security",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16287,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 166,
+    "geo_entity": "Mauritius",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 10.34,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Agro-Industry and Food Security",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16446,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 167,
+    "geo_entity": "Mexico",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 56.69,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Natural Resources (SEMARNAT)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16488,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 167,
+    "geo_entity": "Mexico",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 71.93,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Natural Resources (SEMARNAT)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16656,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 195,
+    "geo_entity": "Micronesia (Federated States of)",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16739,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 195,
+    "geo_entity": "Micronesia (Federated States of)",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16753,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 168,
+    "geo_entity": "Monaco",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16781,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 168,
+    "geo_entity": "Monaco",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16796,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 169,
+    "geo_entity": "Mongolia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 13.54,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16823,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 169,
+    "geo_entity": "Mongolia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 23.42,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16865,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 171,
+    "geo_entity": "Montenegro",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 6.72,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Sustainable Development and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 16963,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 171,
+    "geo_entity": "Montenegro",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 6.66,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Sustainable Development and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17005,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 173,
+    "geo_entity": "Morocco",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 3.3,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17061,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 173,
+    "geo_entity": "Morocco",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 5.05,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17103,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 176,
+    "geo_entity": "Namibia",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 0.5,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forestry and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17118,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 176,
+    "geo_entity": "Namibia",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 1.25,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Environment, Forestry and Tourism",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17160,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 177,
+    "geo_entity": "Nauru",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17259,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 177,
+    "geo_entity": "Nauru",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17274,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 178,
+    "geo_entity": "Nepal",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 3.6,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Forests and Environment ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17288,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 178,
+    "geo_entity": "Nepal",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 8.3,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Ministry of Forests and Environment ",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17289,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 189,
+    "geo_entity": "Nigeria",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": 8.79,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Federal Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17344,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 189,
+    "geo_entity": "Nigeria",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": 23.41,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Country data",
+      "footnotes": "",
+      "source_detail": "Federal Ministry of Environment",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17358,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 190,
+    "geo_entity": "Niue",
+    "date_start": 2015,
+    "date_end": 2015,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  },
+  {
+    "pid": 17372,
+    "indicator_id": 11537,
+    "indicator": "Proportion of land that is degraded over total land area",
+    "geo_entity_id": 190,
+    "geo_entity": "Niue",
+    "date_start": 2019,
+    "date_end": 2019,
+    "value": null,
+    "unit": "%",
+    "dimensions": [
+      {
+        "id": 2712,
+        "name": null,
+        "value": "Global",
+        "dimension": "reporting_type"
+      }
+    ],
+    "attributes": {
+      "nature": "Data nature not available",
+      "footnotes": "",
+      "source_detail": "United Nations Convention to Combat Desertification (UNCCD)",
+      "observation_status": null
+    },
+    "measure_scale": "ratio_index"
+  }
+]

@@ -1,0 +1,2617 @@
+[
+  {
+    "id": 278,
+    "m49": 894,
+    "iso2": "ZM",
+    "iso3": "ZMB",
+    "iso3_adm": "ZMB",
+    "name": "赞比亚",
+    "geographic_levels": [
+      "国家"
+    ],
+    "source": "unstats",
+    "language": "zh"
+  },
+  {
+    "id": 279,
+    "m49": 9991,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "经合组织地区",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "oecd",
+    "language": "zh"
+  },
+  {
+    "id": 280,
+    "m49": 20000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "非洲",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 281,
+    "m49": 210000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "北美洲",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 282,
+    "m49": 4190000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "拉丁美洲和加勒比",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 283,
+    "m49": 9200000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "亚洲及太平洋地区",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 284,
+    "m49": 9210000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "欧洲",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 285,
+    "m49": 9220000,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "西亚",
+    "geographic_levels": [
+      "地区"
+    ],
+    "source": "uneplive",
+    "language": "zh"
+  },
+  {
+    "id": 286,
+    "m49": 86,
+    "iso2": "IO",
+    "iso3": "IOT",
+    "iso3_adm": null,
+    "name": "英属印度洋领土",
+    "geographic_levels": [
+      "国家"
+    ],
+    "source": "unstats",
+    "language": "zh"
+  },
+  {
+    "id": 287,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xUK",
+    "iso3_adm": "GBR",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 288,
+    "m49": null,
+    "iso2": null,
+    "iso3": "TWN",
+    "iso3_adm": "CHN",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 289,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xUK",
+    "iso3_adm": "GBR",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 290,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xxx",
+    "iso3_adm": "xxx",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 291,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xJL",
+    "iso3_adm": "xJL",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 292,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xPI",
+    "iso3_adm": "xPI",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 293,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xRI",
+    "iso3_adm": "RUS",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 294,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xSR",
+    "iso3_adm": "xSR",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 295,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xAB",
+    "iso3_adm": "xAB",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 296,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xAC",
+    "iso3_adm": "xAC",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 297,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xAP",
+    "iso3_adm": "IND",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 298,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xJK",
+    "iso3_adm": "xJK",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 299,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xSI",
+    "iso3_adm": "xSI",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 300,
+    "m49": null,
+    "iso2": null,
+    "iso3": "xSK",
+    "iso3_adm": "JPN",
+    "name": null,
+    "geographic_levels": [
+      "非自治领土"
+    ],
+    "source": "unmap",
+    "language": "zh"
+  },
+  {
+    "id": 61,
+    "m49": 142,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Asie",
+    "geographic_levels": [
+      "région"
+    ],
+    "source": "unstats",
+    "language": "fr"
+  },
+  {
+    "id": 1,
+    "m49": 1,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "العالم",
+    "geographic_levels": [
+      "عالمي"
+    ],
+    "source": "unstats",
+    "language": "ar"
+  },
+  {
+    "id": 1,
+    "m49": 1,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "World",
+    "geographic_levels": [
+      "global"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 2,
+    "m49": 2,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Africa",
+    "geographic_levels": [
+      "region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 3,
+    "m49": 4,
+    "iso2": "AF",
+    "iso3": "AFG",
+    "iso3_adm": "AFG",
+    "name": "Afghanistan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 4,
+    "m49": 5,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "South America",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 5,
+    "m49": 8,
+    "iso2": "AL",
+    "iso3": "ALB",
+    "iso3_adm": "ALB",
+    "name": "Albania",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 6,
+    "m49": 9,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Oceania",
+    "geographic_levels": [
+      "region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 7,
+    "m49": 10,
+    "iso2": "AQ",
+    "iso3": "ATA",
+    "iso3_adm": "ATA",
+    "name": "Antarctica",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 8,
+    "m49": 11,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Western Africa",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 9,
+    "m49": 12,
+    "iso2": "DZ",
+    "iso3": "DZA",
+    "iso3_adm": "DZA",
+    "name": "Algeria",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 10,
+    "m49": 13,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Central America",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 11,
+    "m49": 14,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Eastern Africa",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 12,
+    "m49": 15,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Northern Africa",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 13,
+    "m49": 16,
+    "iso2": "AS",
+    "iso3": "ASM",
+    "iso3_adm": "USA",
+    "name": "American Samoa",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 14,
+    "m49": 17,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Middle Africa",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 15,
+    "m49": 18,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Southern Africa",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 16,
+    "m49": 19,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Americas",
+    "geographic_levels": [
+      "region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 17,
+    "m49": 20,
+    "iso2": "AD",
+    "iso3": "AND",
+    "iso3_adm": "AND",
+    "name": "Andorra",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 18,
+    "m49": 21,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Northern America",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 19,
+    "m49": 24,
+    "iso2": "AO",
+    "iso3": "AGO",
+    "iso3_adm": "AGO",
+    "name": "Angola",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 20,
+    "m49": 28,
+    "iso2": "AG",
+    "iso3": "ATG",
+    "iso3_adm": "ATG",
+    "name": "Antigua and Barbuda",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 21,
+    "m49": 29,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Caribbean",
+    "geographic_levels": [
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 22,
+    "m49": 30,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Eastern Asia",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 23,
+    "m49": 31,
+    "iso2": "AZ",
+    "iso3": "AZE",
+    "iso3_adm": "AZE",
+    "name": "Azerbaijan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 24,
+    "m49": 32,
+    "iso2": "AR",
+    "iso3": "ARG",
+    "iso3_adm": "ARG",
+    "name": "Argentina",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 25,
+    "m49": 34,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Southern Asia",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 26,
+    "m49": 35,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "South-eastern Asia",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 27,
+    "m49": 36,
+    "iso2": "AU",
+    "iso3": "AUS",
+    "iso3_adm": "AUS",
+    "name": "Australia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 28,
+    "m49": 39,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Southern Europe",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 29,
+    "m49": 40,
+    "iso2": "AT",
+    "iso3": "AUT",
+    "iso3_adm": "AUT",
+    "name": "Austria",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 30,
+    "m49": 44,
+    "iso2": "BS",
+    "iso3": "BHS",
+    "iso3_adm": "BHS",
+    "name": "Bahamas",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 31,
+    "m49": 48,
+    "iso2": "BH",
+    "iso3": "BHR",
+    "iso3_adm": "BHR",
+    "name": "Bahrain",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 32,
+    "m49": 50,
+    "iso2": "BD",
+    "iso3": "BGD",
+    "iso3_adm": "BGD",
+    "name": "Bangladesh",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 33,
+    "m49": 51,
+    "iso2": "AM",
+    "iso3": "ARM",
+    "iso3_adm": "ARM",
+    "name": "Armenia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 34,
+    "m49": 52,
+    "iso2": "BB",
+    "iso3": "BRB",
+    "iso3_adm": "BRB",
+    "name": "Barbados",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 35,
+    "m49": 53,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Australia and New Zealand",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 36,
+    "m49": 54,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Melanesia",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 37,
+    "m49": 56,
+    "iso2": "BE",
+    "iso3": "BEL",
+    "iso3_adm": "BEL",
+    "name": "Belgium",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 38,
+    "m49": 57,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Micronesia",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 39,
+    "m49": 60,
+    "iso2": "BM",
+    "iso3": "BMU",
+    "iso3_adm": "GBR",
+    "name": "Bermuda",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 40,
+    "m49": 61,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Polynesia",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 41,
+    "m49": 64,
+    "iso2": "BT",
+    "iso3": "BTN",
+    "iso3_adm": "BTN",
+    "name": "Bhutan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 42,
+    "m49": 68,
+    "iso2": "BO",
+    "iso3": "BOL",
+    "iso3_adm": "BOL",
+    "name": "Bolivia (Plurinational State of)",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 43,
+    "m49": 70,
+    "iso2": "BA",
+    "iso3": "BIH",
+    "iso3_adm": "BIH",
+    "name": "Bosnia and Herzegovina",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 44,
+    "m49": 72,
+    "iso2": "BW",
+    "iso3": "BWA",
+    "iso3_adm": "BWA",
+    "name": "Botswana",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 45,
+    "m49": 74,
+    "iso2": "BV",
+    "iso3": "BVT",
+    "iso3_adm": "NOR",
+    "name": "Bouvet Island",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 46,
+    "m49": 76,
+    "iso2": "BR",
+    "iso3": "BRA",
+    "iso3_adm": "BRA",
+    "name": "Brazil",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 47,
+    "m49": 84,
+    "iso2": "BZ",
+    "iso3": "BLZ",
+    "iso3_adm": "BLZ",
+    "name": "Belize",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 48,
+    "m49": 90,
+    "iso2": "SB",
+    "iso3": "SLB",
+    "iso3_adm": "SLB",
+    "name": "Solomon Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 49,
+    "m49": 92,
+    "iso2": "VG",
+    "iso3": "VGB",
+    "iso3_adm": "GBR",
+    "name": "British Virgin Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 50,
+    "m49": 96,
+    "iso2": "BN",
+    "iso3": "BRN",
+    "iso3_adm": "BRN",
+    "name": "Brunei Darussalam",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 51,
+    "m49": 100,
+    "iso2": "BG",
+    "iso3": "BGR",
+    "iso3_adm": "BGR",
+    "name": "Bulgaria",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 52,
+    "m49": 104,
+    "iso2": "MM",
+    "iso3": "MMR",
+    "iso3_adm": "MMR",
+    "name": "Myanmar",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 53,
+    "m49": 108,
+    "iso2": "BI",
+    "iso3": "BDI",
+    "iso3_adm": "BDI",
+    "name": "Burundi",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 54,
+    "m49": 112,
+    "iso2": "BY",
+    "iso3": "BLR",
+    "iso3_adm": "BLR",
+    "name": "Belarus",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 55,
+    "m49": 116,
+    "iso2": "KH",
+    "iso3": "KHM",
+    "iso3_adm": "KHM",
+    "name": "Cambodia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 56,
+    "m49": 120,
+    "iso2": "CM",
+    "iso3": "CMR",
+    "iso3_adm": "CMR",
+    "name": "Cameroon",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 57,
+    "m49": 124,
+    "iso2": "CA",
+    "iso3": "CAN",
+    "iso3_adm": "CAN",
+    "name": "Canada",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 58,
+    "m49": 132,
+    "iso2": "CV",
+    "iso3": "CPV",
+    "iso3_adm": "CPV",
+    "name": "Cabo Verde",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 59,
+    "m49": 136,
+    "iso2": "KY",
+    "iso3": "CYM",
+    "iso3_adm": "GBR",
+    "name": "Cayman Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 60,
+    "m49": 140,
+    "iso2": "CF",
+    "iso3": "CAF",
+    "iso3_adm": "CAF",
+    "name": "Central African Republic",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 61,
+    "m49": 142,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Asia",
+    "geographic_levels": [
+      "region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 62,
+    "m49": 143,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Central Asia",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 63,
+    "m49": 144,
+    "iso2": "LK",
+    "iso3": "LKA",
+    "iso3_adm": "LKA",
+    "name": "Sri Lanka",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 64,
+    "m49": 145,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Western Asia",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 65,
+    "m49": 148,
+    "iso2": "TD",
+    "iso3": "TCD",
+    "iso3_adm": "TCD",
+    "name": "Chad",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 66,
+    "m49": 150,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Europe",
+    "geographic_levels": [
+      "region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 67,
+    "m49": 151,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Eastern Europe",
+    "geographic_levels": [
+      "subregion",
+      "intermediate region"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 68,
+    "m49": 152,
+    "iso2": "CL",
+    "iso3": "CHL",
+    "iso3_adm": "CHL",
+    "name": "Chile",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 69,
+    "m49": 154,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Northern Europe",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 70,
+    "m49": 155,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Western Europe",
+    "geographic_levels": [
+      "intermediate region",
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 71,
+    "m49": 156,
+    "iso2": "CN",
+    "iso3": "CHN",
+    "iso3_adm": "CHN",
+    "name": "China",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 72,
+    "m49": 162,
+    "iso2": "CX",
+    "iso3": "CXR",
+    "iso3_adm": "AUS",
+    "name": "Christmas Island",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 73,
+    "m49": 166,
+    "iso2": "CC",
+    "iso3": "CCK",
+    "iso3_adm": "AUS",
+    "name": "Cocos (Keeling) Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 74,
+    "m49": 170,
+    "iso2": "CO",
+    "iso3": "COL",
+    "iso3_adm": "COL",
+    "name": "Colombia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 75,
+    "m49": 174,
+    "iso2": "KM",
+    "iso3": "COM",
+    "iso3_adm": "COM",
+    "name": "Comoros",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 76,
+    "m49": 175,
+    "iso2": "YT",
+    "iso3": "MYT",
+    "iso3_adm": "FRA",
+    "name": "Mayotte",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 77,
+    "m49": 178,
+    "iso2": "CG",
+    "iso3": "COG",
+    "iso3_adm": "COG",
+    "name": "Congo",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 78,
+    "m49": 180,
+    "iso2": "CD",
+    "iso3": "COD",
+    "iso3_adm": "COD",
+    "name": "Democratic Republic of the Congo",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 79,
+    "m49": 184,
+    "iso2": "CK",
+    "iso3": "COK",
+    "iso3_adm": "NZL",
+    "name": "Cook Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 80,
+    "m49": 188,
+    "iso2": "CR",
+    "iso3": "CRI",
+    "iso3_adm": "CRI",
+    "name": "Costa Rica",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 81,
+    "m49": 191,
+    "iso2": "HR",
+    "iso3": "HRV",
+    "iso3_adm": "HRV",
+    "name": "Croatia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 82,
+    "m49": 192,
+    "iso2": "CU",
+    "iso3": "CUB",
+    "iso3_adm": "CUB",
+    "name": "Cuba",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 83,
+    "m49": 196,
+    "iso2": "CY",
+    "iso3": "CYP",
+    "iso3_adm": "CYP",
+    "name": "Cyprus",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 84,
+    "m49": 202,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Sub-Saharan Africa",
+    "geographic_levels": [
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 85,
+    "m49": 203,
+    "iso2": "CZ",
+    "iso3": "CZE",
+    "iso3_adm": "CZE",
+    "name": "Czechia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 86,
+    "m49": 204,
+    "iso2": "BJ",
+    "iso3": "BEN",
+    "iso3_adm": "BEN",
+    "name": "Benin",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 87,
+    "m49": 208,
+    "iso2": "DK",
+    "iso3": "DNK",
+    "iso3_adm": "DNK",
+    "name": "Denmark",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 88,
+    "m49": 212,
+    "iso2": "DM",
+    "iso3": "DMA",
+    "iso3_adm": "DMA",
+    "name": "Dominica",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 89,
+    "m49": 214,
+    "iso2": "DO",
+    "iso3": "DOM",
+    "iso3_adm": "DOM",
+    "name": "Dominican Republic",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 90,
+    "m49": 218,
+    "iso2": "EC",
+    "iso3": "ECU",
+    "iso3_adm": "ECU",
+    "name": "Ecuador",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 91,
+    "m49": 222,
+    "iso2": "SV",
+    "iso3": "SLV",
+    "iso3_adm": "SLV",
+    "name": "El Salvador",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 92,
+    "m49": 226,
+    "iso2": "GQ",
+    "iso3": "GNQ",
+    "iso3_adm": "GNQ",
+    "name": "Equatorial Guinea",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 93,
+    "m49": 231,
+    "iso2": "ET",
+    "iso3": "ETH",
+    "iso3_adm": "ETH",
+    "name": "Ethiopia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 94,
+    "m49": 232,
+    "iso2": "ER",
+    "iso3": "ERI",
+    "iso3_adm": "ERI",
+    "name": "Eritrea",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 95,
+    "m49": 233,
+    "iso2": "EE",
+    "iso3": "EST",
+    "iso3_adm": "EST",
+    "name": "Estonia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 96,
+    "m49": 234,
+    "iso2": "FO",
+    "iso3": "FRO",
+    "iso3_adm": "DNK",
+    "name": "Faroe Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 97,
+    "m49": 238,
+    "iso2": "FK",
+    "iso3": "FLK",
+    "iso3_adm": "GBR",
+    "name": "Falkland Islands (Malvinas)",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 98,
+    "m49": 239,
+    "iso2": "GS",
+    "iso3": "SGS",
+    "iso3_adm": "GBR",
+    "name": "South Georgia and the South Sandwich Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 99,
+    "m49": 242,
+    "iso2": "FJ",
+    "iso3": "FJI",
+    "iso3_adm": "FJI",
+    "name": "Fiji",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 100,
+    "m49": 246,
+    "iso2": "FI",
+    "iso3": "FIN",
+    "iso3_adm": "FIN",
+    "name": "Finland",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 101,
+    "m49": 248,
+    "iso2": "AX",
+    "iso3": "ALA",
+    "iso3_adm": "FIN",
+    "name": "Åland Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 102,
+    "m49": 250,
+    "iso2": "FR",
+    "iso3": "FRA",
+    "iso3_adm": "FRA",
+    "name": "France",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 103,
+    "m49": 254,
+    "iso2": "GF",
+    "iso3": "GUF",
+    "iso3_adm": "FRA",
+    "name": "French Guiana",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 104,
+    "m49": 258,
+    "iso2": "PF",
+    "iso3": "PYF",
+    "iso3_adm": "FRA",
+    "name": "French Polynesia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 105,
+    "m49": 260,
+    "iso2": "TF",
+    "iso3": "ATF",
+    "iso3_adm": "FRA",
+    "name": "French Southern Territories",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 106,
+    "m49": 262,
+    "iso2": "DJ",
+    "iso3": "DJI",
+    "iso3_adm": "DJI",
+    "name": "Djibouti",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 107,
+    "m49": 266,
+    "iso2": "GA",
+    "iso3": "GAB",
+    "iso3_adm": "GAB",
+    "name": "Gabon",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 108,
+    "m49": 268,
+    "iso2": "GE",
+    "iso3": "GEO",
+    "iso3_adm": "GEO",
+    "name": "Georgia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 109,
+    "m49": 270,
+    "iso2": "GM",
+    "iso3": "GMB",
+    "iso3_adm": "GMB",
+    "name": "Gambia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 110,
+    "m49": 275,
+    "iso2": "PS",
+    "iso3": "PSE",
+    "iso3_adm": "PSE",
+    "name": "State of Palestine",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 111,
+    "m49": 276,
+    "iso2": "DE",
+    "iso3": "DEU",
+    "iso3_adm": "DEU",
+    "name": "Germany",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 112,
+    "m49": 288,
+    "iso2": "GH",
+    "iso3": "GHA",
+    "iso3_adm": "GHA",
+    "name": "Ghana",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 113,
+    "m49": 292,
+    "iso2": "GI",
+    "iso3": "GIB",
+    "iso3_adm": "GBR",
+    "name": "Gibraltar",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 114,
+    "m49": 296,
+    "iso2": "KI",
+    "iso3": "KIR",
+    "iso3_adm": "KIR",
+    "name": "Kiribati",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 115,
+    "m49": 300,
+    "iso2": "GR",
+    "iso3": "GRC",
+    "iso3_adm": "GRC",
+    "name": "Greece",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 116,
+    "m49": 304,
+    "iso2": "GL",
+    "iso3": "GRL",
+    "iso3_adm": "DNK",
+    "name": "Greenland",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 117,
+    "m49": 308,
+    "iso2": "GD",
+    "iso3": "GRD",
+    "iso3_adm": "GRD",
+    "name": "Grenada",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 118,
+    "m49": 312,
+    "iso2": "GP",
+    "iso3": "GLP",
+    "iso3_adm": "FRA",
+    "name": "Guadeloupe",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 119,
+    "m49": 316,
+    "iso2": "GU",
+    "iso3": "GUM",
+    "iso3_adm": "USA",
+    "name": "Guam",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 120,
+    "m49": 320,
+    "iso2": "GT",
+    "iso3": "GTM",
+    "iso3_adm": "GTM",
+    "name": "Guatemala",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 121,
+    "m49": 324,
+    "iso2": "GN",
+    "iso3": "GIN",
+    "iso3_adm": "GIN",
+    "name": "Guinea",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 122,
+    "m49": 328,
+    "iso2": "GY",
+    "iso3": "GUY",
+    "iso3_adm": "GUY",
+    "name": "Guyana",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 123,
+    "m49": 332,
+    "iso2": "HT",
+    "iso3": "HTI",
+    "iso3_adm": "HTI",
+    "name": "Haiti",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 124,
+    "m49": 334,
+    "iso2": "HM",
+    "iso3": "HMD",
+    "iso3_adm": "AUS",
+    "name": "Heard Island and McDonald Islands",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 125,
+    "m49": 336,
+    "iso2": "VA",
+    "iso3": "VAT",
+    "iso3_adm": "VAT",
+    "name": "Holy See",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 126,
+    "m49": 340,
+    "iso2": "HN",
+    "iso3": "HND",
+    "iso3_adm": "HND",
+    "name": "Honduras",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 127,
+    "m49": 344,
+    "iso2": "HK",
+    "iso3": "HKG",
+    "iso3_adm": "CHN",
+    "name": "China, Hong Kong Special Administrative Region",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 128,
+    "m49": 348,
+    "iso2": "HU",
+    "iso3": "HUN",
+    "iso3_adm": "HUN",
+    "name": "Hungary",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 129,
+    "m49": 352,
+    "iso2": "IS",
+    "iso3": "ISL",
+    "iso3_adm": "ISL",
+    "name": "Iceland",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 130,
+    "m49": 356,
+    "iso2": "IN",
+    "iso3": "IND",
+    "iso3_adm": "IND",
+    "name": "India",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 131,
+    "m49": 360,
+    "iso2": "ID",
+    "iso3": "IDN",
+    "iso3_adm": "IDN",
+    "name": "Indonesia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 132,
+    "m49": 364,
+    "iso2": "IR",
+    "iso3": "IRN",
+    "iso3_adm": "IRN",
+    "name": "Iran (Islamic Republic of)",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 133,
+    "m49": 368,
+    "iso2": "IQ",
+    "iso3": "IRQ",
+    "iso3_adm": "IRQ",
+    "name": "Iraq",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 134,
+    "m49": 372,
+    "iso2": "IE",
+    "iso3": "IRL",
+    "iso3_adm": "IRL",
+    "name": "Ireland",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 135,
+    "m49": 376,
+    "iso2": "IL",
+    "iso3": "ISR",
+    "iso3_adm": "ISR",
+    "name": "Israel",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 136,
+    "m49": 380,
+    "iso2": "IT",
+    "iso3": "ITA",
+    "iso3_adm": "ITA",
+    "name": "Italy",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 137,
+    "m49": 384,
+    "iso2": "CI",
+    "iso3": "CIV",
+    "iso3_adm": "CIV",
+    "name": "Côte d’Ivoire",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 138,
+    "m49": 388,
+    "iso2": "JM",
+    "iso3": "JAM",
+    "iso3_adm": "JAM",
+    "name": "Jamaica",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 139,
+    "m49": 392,
+    "iso2": "JP",
+    "iso3": "JPN",
+    "iso3_adm": "JPN",
+    "name": "Japan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 140,
+    "m49": 398,
+    "iso2": "KZ",
+    "iso3": "KAZ",
+    "iso3_adm": "KAZ",
+    "name": "Kazakhstan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 141,
+    "m49": 400,
+    "iso2": "JO",
+    "iso3": "JOR",
+    "iso3_adm": "JOR",
+    "name": "Jordan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 142,
+    "m49": 404,
+    "iso2": "KE",
+    "iso3": "KEN",
+    "iso3_adm": "KEN",
+    "name": "Kenya",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 143,
+    "m49": 408,
+    "iso2": "KP",
+    "iso3": "PRK",
+    "iso3_adm": "PRK",
+    "name": "Democratic People's Republic of Korea",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 144,
+    "m49": 410,
+    "iso2": "KR",
+    "iso3": "KOR",
+    "iso3_adm": "KOR",
+    "name": "Republic of Korea",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 145,
+    "m49": 414,
+    "iso2": "KW",
+    "iso3": "KWT",
+    "iso3_adm": "KWT",
+    "name": "Kuwait",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 146,
+    "m49": 417,
+    "iso2": "KG",
+    "iso3": "KGZ",
+    "iso3_adm": "KGZ",
+    "name": "Kyrgyzstan",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 147,
+    "m49": 418,
+    "iso2": "LA",
+    "iso3": "LAO",
+    "iso3_adm": "LAO",
+    "name": "Lao People's Democratic Republic",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 148,
+    "m49": 419,
+    "iso2": null,
+    "iso3": null,
+    "iso3_adm": null,
+    "name": "Latin America and the Caribbean",
+    "geographic_levels": [
+      "subregion"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 149,
+    "m49": 422,
+    "iso2": "LB",
+    "iso3": "LBN",
+    "iso3_adm": "LBN",
+    "name": "Lebanon",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 150,
+    "m49": 426,
+    "iso2": "LS",
+    "iso3": "LSO",
+    "iso3_adm": "LSO",
+    "name": "Lesotho",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 151,
+    "m49": 428,
+    "iso2": "LV",
+    "iso3": "LVA",
+    "iso3_adm": "LVA",
+    "name": "Latvia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 152,
+    "m49": 430,
+    "iso2": "LR",
+    "iso3": "LBR",
+    "iso3_adm": "LBR",
+    "name": "Liberia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 153,
+    "m49": 434,
+    "iso2": "LY",
+    "iso3": "LBY",
+    "iso3_adm": "LBY",
+    "name": "Libya",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 154,
+    "m49": 438,
+    "iso2": "LI",
+    "iso3": "LIE",
+    "iso3_adm": "LIE",
+    "name": "Liechtenstein",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 155,
+    "m49": 440,
+    "iso2": "LT",
+    "iso3": "LTU",
+    "iso3_adm": "LTU",
+    "name": "Lithuania",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 156,
+    "m49": 442,
+    "iso2": "LU",
+    "iso3": "LUX",
+    "iso3_adm": "LUX",
+    "name": "Luxembourg",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 157,
+    "m49": 446,
+    "iso2": "MO",
+    "iso3": "MAC",
+    "iso3_adm": "CHN",
+    "name": "China, Macao Special Administrative Region",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 158,
+    "m49": 450,
+    "iso2": "MG",
+    "iso3": "MDG",
+    "iso3_adm": "MDG",
+    "name": "Madagascar",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 159,
+    "m49": 454,
+    "iso2": "MW",
+    "iso3": "MWI",
+    "iso3_adm": "MWI",
+    "name": "Malawi",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 160,
+    "m49": 458,
+    "iso2": "MY",
+    "iso3": "MYS",
+    "iso3_adm": "MYS",
+    "name": "Malaysia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 161,
+    "m49": 462,
+    "iso2": "MV",
+    "iso3": "MDV",
+    "iso3_adm": "MDV",
+    "name": "Maldives",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 162,
+    "m49": 466,
+    "iso2": "ML",
+    "iso3": "MLI",
+    "iso3_adm": "MLI",
+    "name": "Mali",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 163,
+    "m49": 470,
+    "iso2": "MT",
+    "iso3": "MLT",
+    "iso3_adm": "MLT",
+    "name": "Malta",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 164,
+    "m49": 474,
+    "iso2": "MQ",
+    "iso3": "MTQ",
+    "iso3_adm": "FRA",
+    "name": "Martinique",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 165,
+    "m49": 478,
+    "iso2": "MR",
+    "iso3": "MRT",
+    "iso3_adm": "MRT",
+    "name": "Mauritania",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 166,
+    "m49": 480,
+    "iso2": "MU",
+    "iso3": "MUS",
+    "iso3_adm": "MUS",
+    "name": "Mauritius",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 167,
+    "m49": 484,
+    "iso2": "MX",
+    "iso3": "MEX",
+    "iso3_adm": "MEX",
+    "name": "Mexico",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 168,
+    "m49": 492,
+    "iso2": "MC",
+    "iso3": "MCO",
+    "iso3_adm": "MCO",
+    "name": "Monaco",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 169,
+    "m49": 496,
+    "iso2": "MN",
+    "iso3": "MNG",
+    "iso3_adm": "MNG",
+    "name": "Mongolia",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 170,
+    "m49": 498,
+    "iso2": "MD",
+    "iso3": "MDA",
+    "iso3_adm": "MDA",
+    "name": "Republic of Moldova",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 171,
+    "m49": 499,
+    "iso2": "ME",
+    "iso3": "MNE",
+    "iso3_adm": "MNE",
+    "name": "Montenegro",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 172,
+    "m49": 500,
+    "iso2": "MS",
+    "iso3": "MSR",
+    "iso3_adm": "GBR",
+    "name": "Montserrat",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 173,
+    "m49": 504,
+    "iso2": "MA",
+    "iso3": "MAR",
+    "iso3_adm": "MAR",
+    "name": "Morocco",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 174,
+    "m49": 508,
+    "iso2": "MZ",
+    "iso3": "MOZ",
+    "iso3_adm": "MOZ",
+    "name": "Mozambique",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  },
+  {
+    "id": 175,
+    "m49": 512,
+    "iso2": "OM",
+    "iso3": "OMN",
+    "iso3_adm": "OMN",
+    "name": "Oman",
+    "geographic_levels": [
+      "country"
+    ],
+    "source": "unstats",
+    "language": "en"
+  }
+]
