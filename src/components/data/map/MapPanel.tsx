@@ -15,6 +15,7 @@ import {
 } from "./utils";
 import type { MapPanelProps, WorldTopology, ProjectionType } from "./types";
 import { projections } from "./projections";
+import { geoZoom } from "@fxi/d3-geo-zoom";
 
 // Define the GeoSphere type
 type GeoSphere = {
@@ -28,6 +29,12 @@ interface HoveredRegion {
   y: number;
 }
 
+// Interface for projection state
+interface ProjectionState {
+  scale: number;
+  rotation: [number, number, number];
+}
+
 export function MapPanel({ data, language }: MapPanelProps) {
   // All refs
   const svgRef = useRef<SVGSVGElement>(null);
@@ -36,10 +43,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const pathGeneratorRef = useRef<d3.GeoPath | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
-  const isDraggingRef = useRef(false);
-  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
-  const currentTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
   const shouldRecreateProjectionRef = useRef(true);
+  const geoZoomRef = useRef<any>(null);
+
+  // Add projection state ref
+  const projectionStateRef = useRef<ProjectionState>({
+    scale: 0,
+    rotation: [0, 0, 0],
+  });
 
   const graticuleRef = useRef(
     d3
@@ -111,20 +122,18 @@ export function MapPanel({ data, language }: MapPanelProps) {
       .attr("d", path({ type: "Sphere" } as GeoSphere) as any);
   }, []);
 
-  // Update region paths
+  // Update region paths with state preservation
   const updateRegionPaths = useCallback(() => {
     if (!svgRef.current || !projectionRef.current || !pathGeneratorRef.current)
       return;
-    const updateProjParam = {
-      scale: projectionRef.current.scale(),
-      rotation: projectionRef.current.rotate(),
-    };
-    // Store projection parameters in SVG data attributes
-    svgRef.current.setAttribute("data-scale", updateProjParam.scale);
-    svgRef.current.setAttribute(
-      "data-rotation",
-      JSON.stringify(updateProjParam.rotation)
-    );
+
+    // Store current projection state
+    if (projectionRef.current) {
+      projectionStateRef.current = {
+        scale: projectionRef.current.scale(),
+        rotation: projectionRef.current.rotate(),
+      };
+    }
 
     // Update graticule with current projection
     const graticuleData = graticuleRef.current();
@@ -159,72 +168,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
     });
   }, [updateRegionPaths]);
 
-  // Handle zoom
-  const handleZoom = useCallback(
-    (event: d3.D3ZoomEvent<SVGSVGElement, any>) => {
-      if (!projectionRef.current || !pathGeneratorRef.current) return;
-
-      currentTransformRef.current = event.transform;
-      const container = svgRef.current?.parentElement;
-      if (!container) return;
-
-      const width = container.clientWidth;
-      const baseScale = width / 6;
-
-      // Update projection scale based on zoom transform
-      const newScale = baseScale * event.transform.k;
-      projectionRef.current.scale(newScale);
-      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-      scheduleUpdate();
-    },
-    [scheduleUpdate]
-  );
-
-  // Drag interaction handlers
-  const handleDragStart = useCallback(() => {
-    isDraggingRef.current = true;
-    if (svgRef.current) {
-      svgRef.current.style.cursor = "grabbing";
-    }
-  }, []);
-
-  const handleDragEnd = useCallback(() => {
-    isDraggingRef.current = false;
-    if (svgRef.current) {
-      svgRef.current.style.cursor = "grab";
-    }
-  }, []);
-
-  const handleDrag = useCallback(
-    (event: d3.D3DragEvent<SVGSVGElement, null, null>) => {
-      console.log("drag");
-      if (!projectionRef.current || !pathGeneratorRef.current) return;
-
-      const sensitivityX = 5;
-      const sensitivityY = 5;
-
-      const [λ, φ, γ] = projectionRef.current.rotate();
-      projectionRef.current.rotate([
-        λ + event.dx / sensitivityX,
-        φ - event.dy / sensitivityY,
-        γ,
-      ]);
-
-      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
-      scheduleUpdate();
-    },
-    [scheduleUpdate]
-  );
-
-  // Handle projection change
+  // Handle projection change with improved transition
   const handleProjectionChange = useCallback(
     (newProjection: ProjectionType) => {
-      if (
-        !svgRef.current ||
-        !worldDataRef.current ||
-        !projectionRef.current ||
-        !zoomRef.current
-      )
+      if (!svgRef.current || !worldDataRef.current || !projectionRef.current)
         return;
 
       const container = svgRef.current.parentElement;
@@ -233,11 +180,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
       const width = container.clientWidth;
       const height = container.clientHeight;
 
-      // Get current zoom and rotation state
-      const currentRotation = projectionRef.current.rotate();
+      // Store current state before transition
       const currentScale = projectionRef.current.scale();
+      const currentRotation = projectionRef.current.rotate();
 
-      // Find the old and new projection functions from the list
+      // Find the old and new projection functions
       const oldProjection = projections.find(
         (p) => p.name === currentProjection
       );
@@ -248,10 +195,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
       if (!oldProjection || !newProjectionData) return;
       if (oldProjection.name === newProjection) return;
 
-      console.log(
-        `setCurrentProjection ${oldProjection.name}->${newProjection}`
-      );
-
+      // Create interpolated projection with preserved scale
       const projection = interpolateProjection(
         oldProjection.value,
         newProjectionData.value
@@ -265,52 +209,85 @@ export function MapPanel({ data, language }: MapPanelProps) {
         projection.clipAngle(90);
       }
 
+      // Update refs
       projectionRef.current = projection;
       pathGeneratorRef.current = d3.geoPath(projection);
 
-      // Transition both the regions, graticule, and sphere
-      const transition = d3.transition().duration(300);
+      // Store state for restoration
+      projectionStateRef.current = {
+        scale: currentScale,
+        rotation: currentRotation,
+      };
 
-      // Graticule
+      // Remove existing zoom behavior
+      if (geoZoomRef.current) {
+        d3.select(svgRef.current).on(".zoom", null);
+      }
+
+      // Initialize new zoom behavior with preserved scale
+      const zoom = geoZoom()
+        .projection(projection)
+        .scaleExtent([0.5, 8])
+        .onMove(() => {
+          if (projectionRef.current) {
+            // Update state on move
+            projectionStateRef.current = {
+              scale: projectionRef.current.scale(),
+              rotation: projectionRef.current.rotate(),
+            };
+            scheduleUpdate();
+          }
+        })
+        //.northUp(currentProjection === "Orthographic");
+        .northUp(true);
+
+      // Apply zoom behavior to SVG
+      zoom(svgRef.current);
+      geoZoomRef.current = zoom;
+
+      // Transition with proper state handling
+      const transition = d3.transition().duration(1000);
+
+      // Ensure scale is maintained during transition
+      projection.scale(currentScale);
+
+      // Update all elements
       d3.select(svgRef.current)
         .select("path.graticule")
         .transition(transition)
         .attrTween("d", (d) => {
-          return function (t: number) {
+          return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(d) || "";
           };
         });
 
-      // Region
       d3.select(svgRef.current)
-        .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
+        .selectAll("path.region")
         .transition(transition)
         .attrTween("d", function (d) {
-          return function (t: number) {
+          return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(d) || "";
           };
         });
 
-      // Points, if any
       d3.select(svgRef.current)
-        .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
+        .selectAll("path.region-point")
         .transition(transition)
         .attrTween("transform", function (d) {
-          return function (t: number) {
+          return (t: number) => {
             projection.alpha(t);
             const [x, y] = d3.geoPath(projection).centroid(d);
             return `translate(${x}, ${y})`;
           };
         });
 
-      // Sphere border + setCurrentProjection
       d3.select(svgRef.current)
         .select("path.world-bounds")
         .transition(transition)
         .attrTween("d", () => {
-          return function (t: number) {
+          return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)({
               type: "Sphere",
@@ -320,9 +297,12 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .on("end", () => {
           shouldRecreateProjectionRef.current = false;
           setCurrentProjection(newProjection);
-          console.log(
-            `animation from ${currentProjection} to ${newProjection} done`
-          );
+
+          // Ensure correct scale after transition
+          if (projectionRef.current) {
+            projectionRef.current.scale(currentScale);
+            scheduleUpdate();
+          }
         });
     },
     [currentProjection]
@@ -363,7 +343,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     setHoveredRegion(null);
   };
 
-  // Update visualization
+  // Update visualization with state preservation
   const updateVisualization = useCallback(async () => {
     if (!svgRef.current) return;
 
@@ -373,7 +353,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       const width = container.clientWidth;
       const height = container.clientHeight;
-      const scale = width / 6;
+      const baseScale = width / 6;
 
       if (!worldDataRef.current) {
         const response = await d3.json<WorldTopology>(
@@ -385,6 +365,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
         worldDataRef.current = response;
       }
 
+      // Store current zoom state if it exists
+      const currentState = projectionStateRef.current;
+
       d3.select(svgRef.current).selectAll("*").remove();
 
       const svg = d3
@@ -394,33 +377,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("height", height)
         .style("max-width", "100%")
         .style("height", "auto");
-
-      // Initialize zoom behavior
-      const zoom = d3
-        .zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.5, 8])
-        .on("zoom", handleZoom)
-        .filter((event) => {
-          // dont accept drag event (used for rotation)
-          return event.type === "wheel" && !event.button;
-        });
-
-      zoomRef.current = zoom;
-      svg.call(zoom);
-
-      // Apply initial zoom transform if it exists
-      if (currentTransformRef.current.k !== 1) {
-        svg.call(zoom.transform, currentTransformRef.current);
-      }
-
-      // Setup drag behavior
-      const dragBehavior = d3
-        .drag<SVGSVGElement, null>()
-        .on("start", handleDragStart)
-        .on("drag", handleDrag)
-        .on("end", handleDragEnd);
-
-      svg.call(dragBehavior as any);
 
       const defs = svg.append("defs");
 
@@ -453,18 +409,20 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 0.5);
 
-      // Only create new projection if needed
+      // Create or update projection with state preservation
       if (shouldRecreateProjectionRef.current || !projectionRef.current) {
         const initialProjection = projections.find(
           (p) => p.name === currentProjection
         );
         if (!initialProjection) return;
 
+        const scale = currentState.scale || baseScale;
+
         const projection = d3
           .geoProjection(initialProjection.value)
-          .scale(scale * currentTransformRef.current.k)
+          .scale(scale)
           .translate([width / 2, height / 2])
-          .rotate(projectionRef.current?.rotate() || [0, 0, 0])
+          .rotate(currentState.rotation)
           .precision(0.1);
 
         if (currentProjection === "Orthographic") {
@@ -472,15 +430,36 @@ export function MapPanel({ data, language }: MapPanelProps) {
         }
 
         projectionRef.current = projection;
+        pathGeneratorRef.current = d3.geoPath(projection);
+
+        // Initialize d3-geo-zoom with preserved state
+        const zoom = geoZoom()
+          .projection(projection)
+          .scaleExtent([0.5, 8])
+          .onMove(() => {
+            if (projectionRef.current) {
+              projectionStateRef.current = {
+                scale: projectionRef.current.scale(),
+                rotation: projectionRef.current.rotate(),
+              };
+              scheduleUpdate();
+            }
+          })
+          .northUp(currentProjection === "Orthographic");
+
+        // Apply zoom behavior to SVG
+        zoom(svg.node());
+        geoZoomRef.current = zoom;
+
         shouldRecreateProjectionRef.current = false;
-      } else {
-        // Just update scale and translation
-        projectionRef.current
-          .scale(scale * currentTransformRef.current.k)
-          .translate([width / 2, height / 2]);
+      }
+      // Apply zoom behavior to SVG
+      if (geoZoomRef.current) {
+        geoZoomRef.current(svgRef.current);
       }
 
-      pathGeneratorRef.current = d3.geoPath(projectionRef.current);
+      // Force an update
+      scheduleUpdate();
 
       const mapGroup = svg.append("g");
 
@@ -613,13 +592,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
     colorScale,
     globalExtent,
     currentProjection,
-    handleDrag,
-    handleDragStart,
-    handleDragEnd,
-    handleZoom,
     colors.foreground,
     colors.background,
     useChoropleth,
+    scheduleUpdate,
   ]);
 
   // Effect to update visualization
@@ -691,9 +667,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           id="map"
           ref={svgRef}
           className="w-full h-full"
-          style={{ minHeight: "400px", cursor: "grab" }}
-          data-scale="1"
-          data-rotation="0"
+          style={{ minHeight: "400px" }}
         />
 
         <MapTooltip
