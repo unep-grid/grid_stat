@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Search, X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import type { FilterState } from '../../lib/types';
-import type { Language } from '@/lib/utils/translations';
-import { t } from '@/lib/utils/translations';
+import { useState } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import type { FilterState } from "../../lib/types";
+import type { Language } from "@/lib/utils/translations";
+import { t } from "@/lib/utils/translations";
 
 interface FilterPanelProps {
   language: Language;
@@ -51,9 +51,9 @@ export function FilterPanel({
   };
 
   const resetFilters = () => {
-    setSearchInput('');
+    setSearchInput("");
     onFilterChange({
-      search: '',
+      search: "",
       categories: [],
       keywords: [],
     });
@@ -69,7 +69,7 @@ export function FilterPanel({
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t('dv.search_indicators', language)}
+              placeholder={t("dv.search_indicators", language)}
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-8"
@@ -81,7 +81,7 @@ export function FilterPanel({
               size="icon"
               onClick={resetFilters}
               className="shrink-0"
-              title={t('dv.reset_filters', language)}
+              title={t("dv.reset_filters", language)}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -92,20 +92,23 @@ export function FilterPanel({
       <ScrollArea className="flex-1">
         <div className="space-y-4 p-4">
           <div>
-            <h3 className="mb-2 text-sm font-medium">{t('dv.categories', language)}</h3>
+            <h3 className="mb-2 text-sm font-medium">
+              {t("dv.categories", language)}
+            </h3>
             <div className="space-y-2">
               {categories.map((category) => {
                 const count = categoryCount[category] || 0;
-                const isDisabled = count === 0 && !filters.categories.includes(category);
+                const isDisabled =
+                  count === 0 && !filters.categories.includes(category);
                 return (
                   <Card
                     key={category}
                     className={`cursor-pointer p-2 transition-colors ${
                       filters.categories.includes(category)
-                        ? 'bg-primary text-primary-foreground'
+                        ? "bg-primary text-primary-foreground"
                         : isDisabled
-                        ? 'opacity-50 hover:bg-muted/50'
-                        : 'hover:bg-muted'
+                        ? "opacity-50 hover:bg-muted/50"
+                        : "hover:bg-muted"
                     }`}
                     onClick={() => !isDisabled && toggleCategory(category)}
                   >
@@ -124,17 +127,20 @@ export function FilterPanel({
           <Separator />
 
           <div>
-            <h3 className="mb-2 text-sm font-medium">{t('dv.keywords', language)}</h3>
+            <h3 className="mb-2 text-sm font-medium">
+              {t("dv.keywords", language)}
+            </h3>
             <div className="flex flex-wrap gap-2">
               {keywords.map((keyword) => {
                 const count = keywordCount[keyword] || 0;
-                const isDisabled = count === 0 && !filters.keywords.includes(keyword);
+                const isDisabled =
+                  count === 0 && !filters.keywords.includes(keyword);
                 return (
                   <Button
                     key={keyword}
-                    variant={filters.keywords.includes(keyword) ? 'default' : 'outline'}
+                    variant={filters.keywords.includes(keyword) ? "default" : "outline"}
                     className={`h-7 rounded-full text-xs ${
-                      isDisabled ? 'opacity-50 cursor-default' : ''
+                      isDisabled ? "opacity-50 cursor-default" : ""
                     }`}
                     onClick={() => !isDisabled && toggleKeyword(keyword)}
                   >

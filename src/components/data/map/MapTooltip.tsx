@@ -5,14 +5,16 @@ import type { Language } from "@/lib/utils/translations";
 interface MapTooltipProps {
   regionName: string;
   value: number;
+  unit?: string;
+  source?: string;
   language: Language;
   x: number;
   y: number;
   visible: boolean;
 }
 
-export function MapTooltip({ regionName, value, language, x, y, visible }: MapTooltipProps) {
-  const formattedValue = new Intl.NumberFormat(language).format(value);
+export function MapTooltip({ regionName, value, unit, source, language, x, y, visible }: MapTooltipProps) {
+  const formattedValue = `${new Intl.NumberFormat(language).format(value)}${unit ? ` ${unit}` : ''}`;
 
   return (
     <div
@@ -43,6 +45,11 @@ export function MapTooltip({ regionName, value, language, x, y, visible }: MapTo
           <span className="text-sm font-medium">{t("dv.value", language)}:</span>
           <span className="text-sm">{formattedValue}</span>
         </div>
+        {source && (
+          <div className="text-xs text-muted-foreground mt-1 border-t pt-1">
+            {source}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { getRegionName } from "@/lib/utils/regions";
 import type { IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
@@ -27,8 +26,8 @@ interface DataTableProps {
 }
 
 interface ProcessedData {
-  regionCode: number;
-  regionName: string;
+  geo_entity_id: number;
+  geo_entity: string;
   latestYear: number;
   latestValue: number;
   minYear: number;
@@ -37,6 +36,8 @@ interface ProcessedData {
   maxValue: number;
   historicalValues: number[];
   historicalYears: number[];
+  unit: string;
+  source_detail: string;
 }
 
 const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
@@ -74,10 +75,13 @@ export function DataTable({ data, language }: DataTableProps) {
     const regionMap = new Map<number, ProcessedData>();
 
     data.forEach((item) => {
-      if (!regionMap.has(item.m49_code)) {
-        regionMap.set(item.m49_code, {
-          regionCode: item.m49_code,
-          regionName: getRegionName(item.m49_code),
+      // Skip items with null values
+      if (item.value === null || item.date_start === null) return;
+
+      if (!regionMap.has(item.geo_entity_id)) {
+        regionMap.set(item.geo_entity_id, {
+          geo_entity_id: item.geo_entity_id,
+          geo_entity: item.geo_entity,
           latestYear: item.date_start,
           latestValue: item.value,
           minYear: item.date_start,
@@ -85,10 +89,12 @@ export function DataTable({ data, language }: DataTableProps) {
           minValue: item.value,
           maxValue: item.value,
           historicalValues: [item.value],
-          historicalYears: [item.date_start]
+          historicalYears: [item.date_start],
+          unit: item.unit || '',
+          source_detail: item.attributes?.source_detail || ''
         });
       } else {
-        const region = regionMap.get(item.m49_code)!;
+        const region = regionMap.get(item.geo_entity_id)!;
         region.historicalValues.push(item.value);
         region.historicalYears.push(item.date_start);
         
@@ -120,7 +126,7 @@ export function DataTable({ data, language }: DataTableProps) {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('regionName', {
+      columnHelper.accessor('geo_entity', {
         header: () => t('dv.region', language),
         cell: info => (
           <div className="truncate" title={info.getValue()}>
@@ -130,32 +136,44 @@ export function DataTable({ data, language }: DataTableProps) {
         size: 200,
       }),
       columnHelper.accessor('minYear', {
-        header: 'Min Year',
+        header: () => t('dv.min_year', language),
         cell: info => info.getValue(),
         size: 100,
       }),
       columnHelper.accessor('latestYear', {
-        header: 'Latest Year',
+        header: () => t('dv.latest_year', language),
         cell: info => info.getValue(),
         size: 100,
       }),
       columnHelper.accessor('minValue', {
-        header: 'Min Value',
-        cell: info => info.getValue().toLocaleString(),
+        header: info => t('dv.min_value', language),
+        cell: info => (
+          <div title={info.row.original.source_detail}>
+            {info.getValue().toLocaleString()} {info.row.original.unit}
+          </div>
+        ),
         size: 120,
       }),
       columnHelper.accessor('latestValue', {
-        header: 'Latest Value',
-        cell: info => info.getValue().toLocaleString(),
+        header: () => t('dv.latest_value', language),
+        cell: info => (
+          <div title={info.row.original.source_detail}>
+            {info.getValue().toLocaleString()} {info.row.original.unit}
+          </div>
+        ),
         size: 120,
       }),
       columnHelper.accessor('maxValue', {
-        header: 'Max Value',
-        cell: info => info.getValue().toLocaleString(),
+        header: () => t('dv.max_value', language),
+        cell: info => (
+          <div title={info.row.original.source_detail}>
+            {info.getValue().toLocaleString()} {info.row.original.unit}
+          </div>
+        ),
         size: 120,
       }),
       columnHelper.accessor('historicalValues', {
-        header: '',
+        header: () => t('dv.trend', language),
         cell: info => <Sparkline data={info.getValue()} />,
         size: 80,
         enableSorting: false,
@@ -189,7 +207,7 @@ export function DataTable({ data, language }: DataTableProps) {
           <TableHeader className="bg-background">
             <TableRow className="border-b">
               {table.getFlatHeaders().map(header => {
-                const isNumeric = header.id !== 'regionName' && header.id !== 'historicalValues';
+                const isNumeric = header.id !== 'geo_entity' && header.id !== 'historicalValues';
                 return (
                   <TableHead
                     key={header.id}
@@ -219,13 +237,14 @@ export function DataTable({ data, language }: DataTableProps) {
               {table.getRowModel().rows.map(row => (
                 <TableRow key={row.id} className="border-b">
                   {row.getVisibleCells().map(cell => {
-                    const isNumeric = cell.column.id !== 'regionName' && cell.column.id !== 'historicalValues';
+                    const isNumeric = cell.column.id !== 'geo_entity' && cell.column.id !== 'historicalValues';
                     return (
                       <TableCell
                         key={cell.id}
                         className={`border-r ${
                           cell.column.id === 'latestValue' ? 'font-medium' : ''
                         } ${isNumeric ? 'text-right' : 'text-left'}`}
+                        title={isNumeric && cell.column.id !== 'minYear' && cell.column.id !== 'latestYear' ? cell.row.original.source_detail : undefined}
                         style={{ 
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),

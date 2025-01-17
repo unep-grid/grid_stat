@@ -47,9 +47,9 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
           >
             <div className="space-y-6 p-4">
               <div>
-                <h2 className="text-2xl font-semibold mb-2">{indicator.title}</h2>
+                <h2 className="text-2xl font-semibold mb-2">{indicator.name}</h2>
               </div>
-              <MetaDataPanel indicator={indicator} language={language} />
+              <MetaDataPanel indicator={indicator} language={language} data={data} />
             </div>
           </TabsContent>
 

@@ -13,6 +13,7 @@ interface LegendProps {
   colorScale: (value: number) => string;
   steps?: number;
   title?: string;
+  unit?: string;
   language?: Language;
 }
 
@@ -21,6 +22,7 @@ export function Legend({
   colorScale,
   steps = 5,
   title = "Legend",
+  unit,
   language = DEFAULT_LANGUAGE,
 }: LegendProps) {
   const { colors } = useTheme();
@@ -44,7 +46,9 @@ export function Legend({
               className="w-4 h-4"
               style={{ backgroundColor: colorScale(step) }}
             />
-            <span className="text-xs">{step.toFixed(2)}</span>
+            <span className="text-xs">
+              {step.toFixed(2)}{unit ? ` ${unit}` : ''}
+            </span>
           </div>
         ))}
       </div>
@@ -72,10 +76,12 @@ export function ProportionalSymbolLegend({
   globalExtent,
   colors,
   title,
+  unit,
 }: {
   globalExtent: [number, number];
   colors: { foreground: string; background: string };
   title: string;
+  unit?: string;
 }) {
   const [minValue, maxValue] = globalExtent;
   const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
@@ -133,7 +139,7 @@ export function ProportionalSymbolLegend({
                 className="text-xs"
                 fill={colors.foreground}
               >
-                {format(value)}
+                {format(value)}{unit ? ` ${unit}` : ''}
               </text>
             </g>
           );

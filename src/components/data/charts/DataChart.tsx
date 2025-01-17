@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { RegionSelector } from './RegionSelector';
-import { getRegionName } from '@/lib/utils/regions';
 import type { IndicatorData } from '@/lib/types';
 import type { Language } from '@/lib/utils/translations';
 import { t } from '@/lib/utils/translations';
@@ -27,9 +26,14 @@ export function DataChart({ data, language }: DataChartProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
 
-  // Get unique regions and sort them
+  // Get unique regions and sort them by name
   const allRegions = useMemo(() => {
-    return [...new Set(data.map(item => item.m49_code))].sort((a, b) => a - b);
+    const uniqueRegions = [...new Set(data.map(item => item.geo_entity_id))];
+    return uniqueRegions.sort((a, b) => {
+      const nameA = data.find(d => d.geo_entity_id === a)?.geo_entity || '';
+      const nameB = data.find(d => d.geo_entity_id === b)?.geo_entity || '';
+      return nameA.localeCompare(nameB);
+    });
   }, [data]);
 
   // Select initial regions
@@ -39,22 +43,26 @@ export function DataChart({ data, language }: DataChartProps) {
     }
   }, [allRegions, selectedRegions.length]);
 
+  // Get unit from data
+  const unit = useMemo(() => {
+    return data[0]?.unit || '';
+  }, [data]);
+
   // Transform data for the chart
   const chartData = useMemo(() => {
     const yearMap = new Map();
     
     data.forEach(item => {
-      if (!selectedRegions.includes(item.m49_code)){
-        return
-      };
+      if (!selectedRegions.includes(item.geo_entity_id)){
+        return;
+      }
       
       if (!yearMap.has(item.date_start)) {
         yearMap.set(item.date_start, { year: item.date_start });
       }
       
       const yearData = yearMap.get(item.date_start);
-      const regionName = getRegionName(item.m49_code);
-      yearData[regionName] = item.value;
+      yearData[item.geo_entity] = item.value;
     });
 
     return Array.from(yearMap.values()).sort((a, b) => a.year - b.year);
@@ -97,6 +105,7 @@ export function DataChart({ data, language }: DataChartProps) {
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               onClose={() => setOpen(false)}
+              data={data}
             />
           </PopoverContent>
         </Popover>
@@ -134,7 +143,7 @@ export function DataChart({ data, language }: DataChartProps) {
             <YAxis
               width={60}
               tick={{ fontSize: 12 }}
-              tickFormatter={(value) => value.toLocaleString()}
+              tickFormatter={(value) => `${value.toLocaleString()}${unit ? ` ${unit}` : ''}`}
             />
             <Tooltip
               contentStyle={{ 
@@ -143,20 +152,37 @@ export function DataChart({ data, language }: DataChartProps) {
                 border: '1px solid var(--border)' 
               }}
               labelStyle={{ color: 'var(--foreground)' }}
-              formatter={(value: number) => value.toLocaleString()}
+              formatter={(value: number, name: string) => {
+                const itemData = data.find(d => d.geo_entity === name && d.value === value);
+                return [
+                  `${value.toLocaleString()}${unit ? ` ${unit}` : ''}`,
+                  <>
+                    <div>{name}</div>
+                    {itemData?.attributes?.source_detail && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {itemData.attributes.source_detail}
+                      </div>
+                    )}
+                  </>
+                ];
+              }}
             />
             <Legend />
-            {selectedRegions.map((region, index) => (
-              <Line
-                key={region}
-                type="monotone"
-                dataKey={getRegionName(region)}
-                stroke={colorPalette[index % colorPalette.length]}
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            ))}
+            {selectedRegions.map((regionId, index) => {
+              const regionName = data.find(d => d.geo_entity_id === regionId)?.geo_entity;
+              if (!regionName) return null;
+              return (
+                <Line
+                  key={regionId}
+                  type="monotone"
+                  dataKey={regionName}
+                  stroke={colorPalette[index % colorPalette.length]}
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              );
+            })}
           </LineChart>
         </ResponsiveContainer>
       </div>

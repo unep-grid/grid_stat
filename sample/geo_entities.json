@@ -1,0 +1,28 @@
+[
+    {
+        "id": 278,
+        "m49": 894,
+        "iso2": "ZM",
+        "iso3": "ZMB",
+        "iso3_adm": "ZMB",
+        "name": "赞比亚",
+        "geographic_levels": [
+            "国家"
+        ],
+        "source": "unstats",
+        "language": "zh"
+    },
+    {
+        "id": 279,
+        "m49": 9991,
+        "iso2": null,
+        "iso3": null,
+        "iso3_adm": null,
+        "name": "经合组织地区",
+        "geographic_levels": [
+            "地区"
+        ],
+        "source": "oecd",
+        "language": "zh"
+    }
+]

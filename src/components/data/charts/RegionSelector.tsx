@@ -3,10 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
-import { getRegionName } from '@/lib/utils/regions';
 import { Search, X } from 'lucide-react';
 import type { Language } from '@/lib/utils/translations';
 import { t } from '@/lib/utils/translations';
+import type { IndicatorData } from '@/lib/types';
 
 interface RegionSelectorProps {
   allRegions: number[];
@@ -16,6 +16,7 @@ interface RegionSelectorProps {
   setSearchQuery: (query: string) => void;
   onClose: () => void;
   language: Language;
+  data: IndicatorData[]; // Add data prop to get region names
 }
 
 export function RegionSelector({ 
@@ -25,7 +26,8 @@ export function RegionSelector({
   searchQuery,
   setSearchQuery,
   onClose,
-  language
+  language,
+  data
 }: RegionSelectorProps) {
   const toggleRegion = (region: number) => {
     setSelectedRegions(
@@ -35,11 +37,10 @@ export function RegionSelector({
     );
   };
 
-  const filteredRegions = allRegions.filter(region => 
-    getRegionName(region)
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
-  );
+  const filteredRegions = allRegions.filter(regionId => {
+    const regionName = data.find(d => d.geo_entity_id === regionId)?.geo_entity || '';
+    return regionName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className="flex flex-col">
@@ -71,7 +72,7 @@ export function RegionSelector({
                 htmlFor={`region-${region}`}
                 className="text-xs cursor-pointer flex-1"
               >
-                {getRegionName(region)}
+                {data.find(d => d.geo_entity_id === region)?.geo_entity || ''}
               </Label>
             </div>
           ))}

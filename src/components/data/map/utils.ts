@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { unM49 } from "../../../lib/utils/regions";
 import type { IndicatorData } from "../../../lib/types";
 
 // Throttle function to limit the rate of function calls
@@ -21,32 +20,29 @@ export const processRegionData = (data: IndicatorData[], selectedYear: number, l
   if (latest) {
     const latestData = new Map();
     data.forEach((d) => {
-      const existing = latestData.get(d.m49_code);
+      const existing = latestData.get(d.geo_entity_id);
       if (!existing || d.date_start > existing.date_start) {
-        latestData.set(d.m49_code, d);
+        latestData.set(d.geo_entity_id, d);
       }
     });
     latestData.forEach((d) => {
-      const m49Code = d.m49_code.toString().padStart(3, "0");
-      const region = unM49.find((r) => r.code === m49Code);
-      if (region?.iso3166) {
-        dataMap.set(region.iso3166, {
-          value: d.value,
-          name: region.name,
-        });
-      }
+      // The map uses ISO3 codes as IDs
+      dataMap.set(d.geo_entity, {
+        value: d.value,
+        name: d.geo_entity,
+        unit: d.unit,
+        source: d.attributes?.source_detail
+      });
     });
   } else {
     const yearData = data.filter((d) => d.date_start === selectedYear);
     yearData.forEach((d) => {
-      const m49Code = d.m49_code.toString().padStart(3, "0");
-      const region = unM49.find((r) => r.code === m49Code);
-      if (region?.iso3166) {
-        dataMap.set(region.iso3166, {
-          value: d.value,
-          name: region.name,
-        });
-      }
+      dataMap.set(d.geo_entity, {
+        value: d.value,
+        name: d.geo_entity,
+        unit: d.unit,
+        source: d.attributes?.source_detail
+      });
     });
   }
 
@@ -55,8 +51,15 @@ export const processRegionData = (data: IndicatorData[], selectedYear: number, l
 
 // Calculate global extent from data
 export const calculateGlobalExtent = (data: IndicatorData[]): [number, number] => {
-  const allValues = data.map((d) => d.value);
-  return d3.extent(allValues) as [number, number];
+  const allValues = data
+    .filter(d => d.value !== null)
+    .map(d => d.value as number);
+  
+  const extent = d3.extent(allValues);
+  return [
+    extent[0] ?? 0,
+    extent[1] ?? 0
+  ];
 };
 
 // Create color scale
