@@ -1,6 +1,8 @@
-# GHG Portal Project
+# HT Portal Project
 
 ## Context
+
+Part of a large refactor migrating from V1 api to V2 and custom meilisearch end point. The user select an indicator and the various visualisation update accordingly after the values fetch from the api
 
 ### Project Overview
 The GHG Portal is a web application for visualizing greenhouse gas emissions data through interactive maps, charts, and data tables.
@@ -14,9 +16,9 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
 - Testing: Vitest
 
 ### Data Structure
-- Indicators contain metadata and time series data
-- Geographic entities are linked to regions
-- Data includes measure_scale property for visualization type
+- Indicators contain metadata and time series data. Example in ./sample/indicator_example.json
+- Geographic entities are linked to regions. The topojson of the world (example in .sample/world-110m_head.json) contain attribute 'id' that represent iso3 code. The api return geo_entity_id that is maped with the iso3 using src/lib/utils/geo_entities.json 
+- Data includes measure_scale property for visualization type. Allowed measure scales are listed in ./sample/measure_scales.json 
 - Temporal data spans multiple years
 
 ### API Information
@@ -35,11 +37,9 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
 
 #### 1. Color Scale and Visualization Type Refactor
 - [ ] Implement smart color scale selection based on measure_scale
-  - Use palettes.json for mapping scales to visualization types
-  - Support scales: ordinal, nominal, interval, ratio_count, ratio_index
 - [ ] Implement statistical methods for binning
-  - Add support for quantiles
-  - Add support for Jenks natural breaks
+  - Add support for quantiles using d3 scale system
+  - Add support for Jenks natural breaks when highly skewed data
   - Select method based on data distribution
 - [ ] Implement diverging/sequential color palette selection
   - Use measure_scale to determine appropriate palette
@@ -47,32 +47,7 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
   - Consider colorblind-friendly options
 
 #### 2. Map Visualization Types
-- [ ] Implement proper visualization type selection
+- [ ] Update proper visualization type selection
   - Replace hardcoded useChoropleth with measure_scale based logic
-  - Add support for proportional symbols
+  - Handle support for proportional symbols
   - Consider additional visualization types based on measure_scale
-
-### Upcoming Tasks
-
-#### UI Enhancement
-- Improve overall user experience
-- Ensure consistent styling
-- Implement responsive design patterns
-- Enhance accessibility features
-- Optimize component interactions
-
-#### Cartography Design
-- Implement advanced map projections
-- Design effective color schemes
-- Create intuitive legends
-- Optimize map performance
-- Implement smooth transitions
-
-## Development Guidelines
-1. Use TypeScript for all components
-2. Follow React best practices
-3. Implement unit tests
-4. Maintain consistent code formatting
-5. Document complex logic
-6. Ensure proper error handling
-7. Follow accessibility guidelines
