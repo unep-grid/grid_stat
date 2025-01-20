@@ -33,21 +33,36 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
 
 ## Tasks
 
+### Development Principles
+
+#### Code Quality Standards
+- Leverage existing D3 methods and functionality where available
+- Use established statistical libraries (e.g., SimpleStatistics) for complex calculations
+- Follow functional programming principles for data transformations
+- Ensure proper type safety and error handling
+- Write comprehensive documentation for complex logic
+- Use meaningful variable names and clear function signatures
+- Implement proper unit tests for statistical functions
+
 ### Current Focus: Map Visualization Enhancement
 
 #### 1. Color Scale and Visualization Type Refactor
 - [ ] Implement smart color scale selection based on measure_scale
+  - Leverage D3's built-in scale systems (d3.scaleQuantile, d3.scaleQuantize, etc.)
+  - Use appropriate D3 color schemes (d3.interpolateRdBu, d3.schemePaired, etc.)
+  - Handle different data types with proper scale types
 - [ ] Implement statistical methods for binning
-  - Add support for quantiles using d3 scale system
-  - Add support for Jenks natural breaks when highly skewed data
-  - Select method based on data distribution
+  - Use d3.scaleQuantile for quantile-based binning
+  - Leverage SimpleStatistics for advanced statistical analysis
+  - Select method based on data distribution using D3's statistical methods
 - [ ] Implement diverging/sequential color palette selection
-  - Use measure_scale to determine appropriate palette
-  - Handle positive/negative value ranges
-  - Consider colorblind-friendly options
+  - Use D3's built-in color interpolators
+  - Handle positive/negative value ranges with appropriate diverging scales
+  - Use colorblind-friendly schemes from D3's color modules
 
 #### 2. Map Visualization Types
 - [ ] Update proper visualization type selection
-  - Replace hardcoded useChoropleth with measure_scale based logic
-  - Handle support for proportional symbols
+  - Implement measure_scale based logic using clear type definitions
+  - Use D3's symbol generators for proportional symbols
+  - Leverage D3's projection system for proper symbol scaling
   - Consider additional visualization types based on measure_scale
