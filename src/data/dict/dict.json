@@ -193,6 +193,50 @@
     "download_json": {
       "en": "Download as JSON",
       "fr": "Télécharger en JSON"
+    },
+    "metadata_topics": {
+      "en": "Topics",
+      "fr": "Thèmes"
+    },
+    "metadata_sources": {
+      "en": "Sources",
+      "fr": "Sources"
+    },
+    "metadata_contact": {
+      "en": "Contact",
+      "fr": "Contact"
+    },
+    "metadata_additional": {
+      "en": "Additional Information",
+      "fr": "Informations supplémentaires"
+    },
+    "metadata_type": {
+      "en": "Type",
+      "fr": "Type"
+    },
+    "metadata_source_url": {
+      "en": "Source URL",
+      "fr": "URL de la source"
+    },
+    "metadata_visit_source": {
+      "en": "Visit Source",
+      "fr": "Visiter la source"
+    },
+    "metadata_dimensions": {
+      "en": "Dimensions",
+      "fr": "Dimensions"
+    },
+    "download_metadata": {
+      "en": "Download Metadata",
+      "fr": "Télécharger les métadonnées"
+    },
+    "download_metadata_description": {
+      "en": "Download detailed metadata in JSON format",
+      "fr": "Télécharger les métadonnées détaillées au format JSON"
+    },
+    "download_citation": {
+      "en": "Citation",
+      "fr": "Citation"
     }
   }
 }

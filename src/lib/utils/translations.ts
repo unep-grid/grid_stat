@@ -4,6 +4,8 @@ export type Language = 'en' | 'fr' | 'ar' | 'zh' | 'ru' | 'es';
 export const DEFAULT_LANGUAGE: Language = 'en';
 export const SUPPORTED_LANGUAGES: Language[] = ['en', 'fr'];
 
+const not_found = new Set();
+
 type TranslationKey = string;
 type TranslationDict = typeof dict;
 
@@ -14,7 +16,9 @@ export function t(key: TranslationKey, language: Language = DEFAULT_LANGUAGE): s
   // Navigate through the dictionary using the key path
   for (const k of keys) {
     if (!current[k]) {
+      not_found.add(k);
       console.warn(`Translation key not found: ${key}`);
+      console.log(not_found);
       return key;
     }
     current = current[k];
