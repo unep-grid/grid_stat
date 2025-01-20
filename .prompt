@@ -1,119 +1,25 @@
-# GHG Portal Refactor Status
+# GHG Portal Project
 
-## Introduction
-This refactor involves upgrading the GHG Portal to use:
-1. Meilisearch for multilingual search (replacing /indicators endpoint)
-2. V2 API with enhanced data structure
-3. geo_entity_id system (replacing m49_code)
+## Context
 
-Key files to understand:
-- sample/meilisearch_value_example.json: New indicator structure
-- sample/indicator_example.json: New data structure
-- src/lib/utils/geo_entities.json: ID mapping system
+### Project Overview
+The GHG Portal is a web application for visualizing greenhouse gas emissions data through interactive maps, charts, and data tables.
 
-To resume work:
-1. Check the Current Position section
-2. Follow Implementation Strategy phases
-3. Update this file after each component completion
-4. Test components in order: Chart → Table → Map → Metadata → Download
+### Technical Stack
+- Framework: Astro.js + React
+- UI: Tailwind + shadcn/ui
+- Data Visualization: D3.js
+- Maps: D3-geo
+- Search: Meilisearch
+- Testing: Vitest
 
+### Data Structure
+- Indicators contain metadata and time series data
+- Geographic entities are linked to regions
+- Data includes measure_scale property for visualization type
+- Temporal data spans multiple years
 
-## Current Position
-
-### Completed Components
-1. Core Data Structures (`types.ts`)
-   - Updated Indicator interface for Meilisearch
-   - Added Source and Collection interfaces
-   - Updated IndicatorData for v2 API with geo_entity_id
-
-2. Meilisearch Integration (`meilisearch.ts`)
-   - Added searchIndicators function
-   - Added getIndicatorData function
-   - Configured endpoint and API key
-
-3. Updated Components
-   - DataExplorer.tsx: Switched to Meilisearch API
-   - FilterPanel.tsx: Updated for faceted search
-   - IndicatorCard.tsx: Updated display for new fields
-   - VisualizationPanel.tsx: Basic update (title → name)
-   - DataChart.tsx: Complete refactor
-     - Switched to geo_entity_id system
-     - Added unit display and enhanced tooltips
-     - Updated region selection with new data structure
-     - Added source attribution in tooltips
-   - DataTable.tsx: Complete refactor
-     - Switched to geo_entity_id system
-     - Added unit display to value columns
-     - Added source attribution tooltips
-     - Enhanced data processing with null handling
-
-### Data Structure Changes
-1. Indicator Changes:
-   - title → name
-   - Added topics array
-   - Enhanced collections with id and description
-   - Added sources array with detailed info
-   - Added type and language fields
-
-2. IndicatorData Changes:
-   - m49_code → geo_entity_id
-   - Added date_end field
-   - Added unit field
-   - Added dimensions array
-   - Added attributes object
-   - Added measure_scale field
-
-## Remaining Tasks
-
-### 1. MetaDataPanel Component ✓
-- Added source information with citation and contact
-- Added topics list with distinct styling
-- Enhanced collection display with descriptions
-- Added dimension information with grouping
-
-### 5. DownloadPanel Component ✓
-- Updated CSV format with all fields (dimensions, unit, source)
-- Added metadata export with indicator details
-- Added source attribution and citations
-- Enhanced file naming and descriptions
-
-## Implementation Strategy
-
-### Phase 1: Core Visualization
-1. DataChart Component ✓
-   - Focus on time series with date_end
-   - Implement unit display
-   - Basic dimension support
-
-2. DataTable Component ✓
-   - Basic field updates
-   - Geo entity mapping
-
-### Phase 2: Enhanced Features
-1. MapPanel Component ✓
-   - Switched to geo_entity_id system
-   - Added unit display and source attribution
-   - Enhanced legend with unit info
-   - Added measure_scale support
-
-2. MetaDataPanel Component ✓
-   - Complete metadata display with dimensions
-   - Enhanced source information with citations
-   - Added topics and collection descriptions
-
-### Phase 3: Export Features
-1. DownloadPanel Component ✓
-   - Updated CSV format with all fields
-   - Added metadata export option
-   - Enhanced file naming and descriptions
-   - Added source citations
-
-## Dependencies
-- geo_entities.json for mapping
-- Meilisearch API for search and facets
-- V2 API for indicator data
-
-## API Information
+### API Information
 1. Meilisearch:
    - Endpoint: https://api-search.unepgrid.ch
    - Index format: statistical_{language}
@@ -123,8 +29,50 @@ To resume work:
    - Endpoint: https://api.unepgrid.ch/stats/v2
    - Data endpoint: /indicators/{id}/data
 
-## Notes
-- Keep language-specific indices in mind
-- Consider caching strategy if needed
-- Maintain backward URL compatibility
-- Consider error states and loading states
+## Tasks
+
+### Current Focus: Map Visualization Enhancement
+
+#### 1. Color Scale and Visualization Type Refactor
+- [ ] Implement smart color scale selection based on measure_scale
+  - Use palettes.json for mapping scales to visualization types
+  - Support scales: ordinal, nominal, interval, ratio_count, ratio_index
+- [ ] Implement statistical methods for binning
+  - Add support for quantiles
+  - Add support for Jenks natural breaks
+  - Select method based on data distribution
+- [ ] Implement diverging/sequential color palette selection
+  - Use measure_scale to determine appropriate palette
+  - Handle positive/negative value ranges
+  - Consider colorblind-friendly options
+
+#### 2. Map Visualization Types
+- [ ] Implement proper visualization type selection
+  - Replace hardcoded useChoropleth with measure_scale based logic
+  - Add support for proportional symbols
+  - Consider additional visualization types based on measure_scale
+
+### Upcoming Tasks
+
+#### UI Enhancement
+- Improve overall user experience
+- Ensure consistent styling
+- Implement responsive design patterns
+- Enhance accessibility features
+- Optimize component interactions
+
+#### Cartography Design
+- Implement advanced map projections
+- Design effective color schemes
+- Create intuitive legends
+- Optimize map performance
+- Implement smooth transitions
+
+## Development Guidelines
+1. Use TypeScript for all components
+2. Follow React best practices
+3. Implement unit tests
+4. Maintain consistent code formatting
+5. Document complex logic
+6. Ensure proper error handling
+7. Follow accessibility guidelines
