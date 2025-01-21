@@ -218,8 +218,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .rotate(currentRotation)
         .precision(0.1);
 
+      // Set clipAngle for Orthographic projection
       if (newProjection === "Orthographic") {
         projection.clipAngle(90);
+      } else {
+        projection.clipAngle(null);
       }
 
       // Update refs
@@ -243,7 +246,6 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .scaleExtent([0.5, 8])
         .onMove(() => {
           if (projectionRef.current) {
-            // Update state on move
             projectionStateRef.current = {
               scale: projectionRef.current.scale(),
               rotation: projectionRef.current.rotate(),
@@ -444,8 +446,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .rotate(currentState.rotation)
           .precision(0.1);
 
+        // Set clipAngle for Orthographic projection
         if (currentProjection === "Orthographic") {
           projection.clipAngle(90);
+        } else {
+          projection.clipAngle(null);
         }
 
         projectionRef.current = projection;
