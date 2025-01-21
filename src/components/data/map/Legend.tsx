@@ -1,5 +1,4 @@
 import React from "react";
-import type { ScaleLinear, ScaleLogarithmic } from "d3";
 import { useTheme } from "../../layout/ThemeProvider";
 import {
   t,
@@ -7,19 +6,64 @@ import {
   DEFAULT_LANGUAGE,
 } from "../../../lib/utils/translations";
 import * as d3 from "d3";
+import { type MeasureScale } from "@/lib/utils/visualization_scales";
+import { createSizeScale } from "./utils";
+
+interface D3Scale {
+  (value: number): string;
+  domain(): number[];
+}
+
+interface D3QuantileScale extends D3Scale {
+  quantiles(): number[];
+}
+
+type ColorScale = 
+  | ((value: number) => string)
+  | d3.ScaleOrdinal<number, string>
+  | D3QuantileScale;
+
+function isD3Scale(scale: ColorScale): scale is D3Scale {
+  return typeof scale !== 'function' || 'domain' in scale;
+}
+
+function isQuantileScale(scale: D3Scale): scale is D3QuantileScale {
+  return 'quantiles' in scale;
+}
 
 interface LegendProps {
   globalExtent: [number, number];
-  colorScale: (value: number) => string;
+  colorScale: ColorScale;
+  measureScale?: MeasureScale;
   steps?: number;
   title?: string;
   unit?: string;
   language?: Language;
 }
 
+// Helper function to format values based on measure scale
+const formatValue = (value: number, measureScale?: MeasureScale): string => {
+  if (!measureScale) return value.toFixed(2);
+
+  switch (measureScale) {
+    case 'ratio_count':
+      return d3.format(",.0f")(value); // No decimals for counts
+    case 'ratio_index':
+      return d3.format(".2~f")(value); // 2 decimals for indices
+    case 'interval':
+      return d3.format(".1f")(value); // 1 decimal for intervals
+    case 'ordinal':
+    case 'nominal':
+      return value.toString(); // Direct values for categorical
+    default:
+      return d3.format(".2~s")(value); // SI notation as fallback
+  }
+};
+
 export function Legend({
   globalExtent,
   colorScale,
+  measureScale,
   steps = 5,
   title = "Legend",
   unit,
@@ -27,30 +71,52 @@ export function Legend({
 }: LegendProps) {
   const { colors } = useTheme();
 
-  // Generate legend steps based on global extent
-  const legendSteps = Array.from(
-    { length: steps },
-    (_, i) =>
-      globalExtent[0] + (globalExtent[1] - globalExtent[0]) * (i / (steps - 1))
-  );
+  // Generate legend steps based on scale type
+  const legendSteps = React.useMemo(() => {
+    if (isD3Scale(colorScale)) {
+      if (measureScale === 'ordinal' || measureScale === 'nominal') {
+        return Array.from(colorScale.domain());
+      }
+      
+      if (isQuantileScale(colorScale)) {
+        return colorScale.quantiles();
+      }
+    }
+
+    // Default linear steps
+    return Array.from(
+      { length: steps },
+      (_, i) => globalExtent[0] + (globalExtent[1] - globalExtent[0]) * (i / (steps - 1))
+    );
+  }, [globalExtent, colorScale, steps, measureScale]);
 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 space-y-2 shadow-md">
       <div className="text-sm font-semibold mb-1">{title}</div>
 
-      {/* Color gradient legend */}
+      {/* Color legend */}
       <div className="flex items-center space-x-2">
-        {legendSteps.map((step, index) => (
-          <div key={index} className="flex items-center space-x-1">
-            <div
-              className="w-4 h-4"
-              style={{ backgroundColor: colorScale(step) }}
-            />
-            <span className="text-xs">
-              {step.toFixed(2)}{unit ? ` ${unit}` : ''}
-            </span>
-          </div>
-        ))}
+        {legendSteps.map((step: number, index: number) => {
+          let color: string;
+          if (isD3Scale(colorScale)) {
+            color = colorScale(step);
+          } else {
+            color = colorScale(step);
+          }
+          const label = formatValue(step, measureScale);
+          
+          return (
+            <div key={index} className="flex items-center space-x-1">
+              <div
+                className="w-4 h-4"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-xs">
+                {label}{unit ? ` ${unit}` : ''}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Missing values legend item */}
@@ -147,8 +213,4 @@ export function ProportionalSymbolLegend({
       </svg>
     </div>
   );
-}
-
-export function createSizeScale(extent: [number, number]) {
- return d3.scaleSqrt().domain(extent).range([3, 15]); // Reduced maximum size
 }

@@ -4,7 +4,7 @@ import type { GeoPermissibleObjects, GeoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import type { Feature, Geometry } from "geojson";
 import { interpolateProjection } from "@/lib/utils/projection";
-import { createSizeScale, Legend, ProportionalSymbolLegend } from "./Legend";
+import { Legend, ProportionalSymbolLegend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import { MapTooltip } from "./MapTooltip";
 import { useTheme } from "@/components/layout/ThemeProvider";
@@ -13,8 +13,15 @@ import {
   processRegionData,
   calculateGlobalExtent,
   createColorScale,
+  shouldUseChoropleth,
+  createSizeScale,
 } from "./utils";
-import type { MapPanelProps, WorldTopology, ProjectionType, CountryGeometry } from "./types";
+import type {
+  MapPanelProps,
+  WorldTopology,
+  ProjectionType,
+  CountryGeometry,
+} from "./types";
 import { projections } from "./projections";
 import { geoZoom } from "@fxi/d3-geo-zoom";
 
@@ -43,7 +50,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
-  const pathGeneratorRef = useRef<GeoPath<any, GeoPermissibleObjects> | null>(null);
+  const pathGeneratorRef = useRef<GeoPath<any, GeoPermissibleObjects> | null>(
+    null
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
   const shouldRecreateProjectionRef = useRef(true);
@@ -109,8 +118,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
     return processRegionData(data, selectedYear, isLatestMode);
   }, [data, selectedYear, isLatestMode]);
 
-  // Determine visualization type based on measure_scale
-  const useChoropleth = data[0]?.measure_scale === 'choropleth';
+  // Determine visualization type based on measure scale
+  const useChoropleth = shouldUseChoropleth(data);
 
   // Update world bounds
   const updateWorldBounds = useCallback((projection: d3.GeoProjection) => {
@@ -118,7 +127,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     const path = d3.geoPath(projection);
     d3.select(svgRef.current)
       .select("path.world-bounds")
-      .attr("d", path({ type: "Sphere" } as GeoPermissibleObjects) || '');
+      .attr("d", path({ type: "Sphere" } as GeoPermissibleObjects) || "");
   }, []);
 
   // Update region paths with state preservation
@@ -138,18 +147,23 @@ export function MapPanel({ data, language }: MapPanelProps) {
     const graticuleData = graticuleRef.current();
     d3.select(svgRef.current)
       .select("path.graticule")
-      .attr("d", pathGeneratorRef.current(graticuleData) || '');
+      .attr("d", pathGeneratorRef.current(graticuleData) || "");
 
     // Update regions
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
-      .attr("d", (d) => pathGeneratorRef.current!(d as GeoPermissibleObjects) || '');
+      .attr(
+        "d",
+        (d) => pathGeneratorRef.current!(d as GeoPermissibleObjects) || ""
+      );
 
     // Update point symbols if they exist
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
       .attr("transform", (d) => {
-        const centroid = pathGeneratorRef.current!.centroid(d as GeoPermissibleObjects);
+        const centroid = pathGeneratorRef.current!.centroid(
+          d as GeoPermissibleObjects
+        );
         return `translate(${centroid[0]},${centroid[1]})`;
       });
 
@@ -276,7 +290,9 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attrTween("transform", function (d) {
           return (t: number) => {
             projection.alpha(t);
-            const [x, y] = d3.geoPath(projection).centroid(d as GeoPermissibleObjects);
+            const [x, y] = d3
+              .geoPath(projection)
+              .centroid(d as GeoPermissibleObjects);
             return `translate(${x}, ${y})`;
           };
         });
@@ -287,9 +303,11 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .attrTween("d", () => {
           return (t: number) => {
             projection.alpha(t);
-            return d3.geoPath(projection)({
-              type: "Sphere",
-            } as GeoPermissibleObjects) || '';
+            return (
+              d3.geoPath(projection)({
+                type: "Sphere",
+              } as GeoPermissibleObjects) || ""
+            );
           };
         })
         .on("end", () => {
@@ -308,7 +326,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
   // Helper functions for hover events
   const handleRegionHover = (event: any, d: Feature<Geometry>) => {
-    const regionInfo = regionData.get((d.properties as CountryGeometry).id);
+    const regionInfo = regionData.get(d.id);
+
     if (regionInfo && containerRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();
       const mouseX = event.clientX - containerRect.left;
@@ -445,7 +464,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
               scheduleUpdate();
             }
           })
-          .northUp(currentProjection === "Orthographic");
+          .northUp(true);
 
         // Apply zoom behavior to SVG
         zoom(svg.node());
@@ -486,15 +505,18 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .data(regions.features)
           .join("path")
           .attr("class", "region")
-          .attr("d", (d) => pathGeneratorRef.current?.(d as GeoPermissibleObjects) || '')
+          .attr(
+            "d",
+            (d) => pathGeneratorRef.current?.(d as GeoPermissibleObjects) || ""
+          )
           .attr("fill", (d) => {
-            const data = regionData.get((d.properties as CountryGeometry).id);
-            return data ? colorScale(data.value) : "url(#hatch)";
+            const regionInfo = regionData.get(d.id);
+            return regionInfo ? colorScale(regionInfo.value) : "url(#hatch)";
           })
           .attr("stroke", colors.foreground)
           .attr("stroke-width", 0.3)
           .style("cursor", (d) =>
-            regionData.get((d.properties as CountryGeometry).id) ? "pointer" : "default"
+            regionData.get(d.id) ? "pointer" : "default"
           )
           .style("transition", "fill 0.2s ease-in-out")
           .on("mouseover", function (event, d) {
@@ -513,10 +535,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .data(regions.features)
           .join("path")
           .attr("class", "region")
-          .attr("d", (d) => pathGeneratorRef.current?.(d as GeoPermissibleObjects) || '')
+          .attr(
+            "d",
+            (d) => pathGeneratorRef.current?.(d as GeoPermissibleObjects) || ""
+          )
           .attr("fill", (d) => {
-            const data = regionData.get((d.properties as CountryGeometry).id);
-            return data ? "none" : "url(#hatch)";
+            const regionInfo = regionData.get(d.id);
+            return regionInfo ? "none" : "url(#hatch)";
           })
           .attr("stroke", colors.foreground)
           .attr("stroke-width", 0.3);
@@ -529,10 +554,10 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
         // Sort features by value in descending order
         const sortedFeatures = regions.features
-          .filter((d) => regionData.get((d.properties as CountryGeometry).id))
+          .filter((d) => regionData.get(d.id))
           .sort((a, b) => {
-            const valueA = regionData.get((a.properties as CountryGeometry).id)?.value || 0;
-            const valueB = regionData.get((b.properties as CountryGeometry).id)?.value || 0;
+            const valueA = regionData.get(a.id)?.value || 0;
+            const valueB = regionData.get(b.id)?.value || 0;
             return valueB - valueA;
           });
 
@@ -542,12 +567,14 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .join("path")
           .attr("class", "region-point")
           .attr("transform", (d) => {
-            const centroid = pathGeneratorRef.current!.centroid(d as GeoPermissibleObjects);
+            const centroid = pathGeneratorRef.current!.centroid(
+              d as GeoPermissibleObjects
+            );
             return `translate(${centroid[0]},${centroid[1]})`;
           })
           .attr("d", (d) => {
-            const data = regionData.get((d.properties as CountryGeometry).id);
-            const radius = sizeScale(data ? data.value : 0);
+            const regionInfo = regionData.get(d.id);
+            const radius = sizeScale(regionInfo ? regionInfo.value : 0);
             return symbolGenerator.size(Math.PI * radius * radius)();
           })
           .attr("fill", colors.foreground)
@@ -557,7 +584,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .on("mouseover", function (event, d) {
             d3.select(this).attr("stroke-width", 2);
             baseMap
-              .filter((region) => (region.properties as CountryGeometry).id === (d.properties as CountryGeometry).id)
+              .filter((region) => region.id === d.id)
               .attr("stroke-width", 1.5);
             handleRegionHover(event, d);
           })
@@ -565,7 +592,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .on("mouseout", function (event, d) {
             d3.select(this).attr("stroke-width", 1);
             baseMap
-              .filter((region) => (region.properties as CountryGeometry).id === (d.properties as CountryGeometry).id)
+              .filter((region) => region.id === d.id)
               .attr("stroke-width", 0.3);
             handleRegionOut();
           });
@@ -577,7 +604,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
         .append("path")
         .datum(graticuleData)
         .attr("class", "graticule")
-        .attr("d", pathGeneratorRef.current?.(graticuleData) || '')
+        .attr("d", pathGeneratorRef.current?.(graticuleData) || "")
         .attr("fill", "none")
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.2)
