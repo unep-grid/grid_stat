@@ -11,15 +11,44 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
 - Framework: Astro.js + React
 - UI: Tailwind + shadcn/ui
 - Data Visualization: D3.js
-- Maps: D3-geo
+- Maps: 
+  - D3-geo for projections and path generation
+  - D3-geo-zoom for interactive map navigation
+  - Projection considerations:
+    * Each projection type affects symbol visibility differently
+    * Orthographic requires special handling for point visibility
+    * Symbol scaling needs to account for projection distortion
 - Search: Meilisearch
 - Testing: Vitest
 
 ### Data Structure
 - Indicators contain metadata and time series data. Example in ./sample/indicator_example.json
-- Geographic entities are linked to regions. The topojson of the world (example in .sample/world-110m_head.json) contain attribute 'id' that represent iso3 code. The api return geo_entity_id that is maped with the iso3 using src/lib/utils/geo_entities.json 
+- Geographic entities mapping:
+  - The topojson world map uses ISO3 codes as feature IDs (d.id, not d.properties.id)
+  - API returns geo_entity_id which is mapped to ISO3 using src/lib/utils/geo_entities.json
+  - The geo_entities.json file contains a comprehensive mapping of all available codes
 - Data includes measure_scale property for visualization type. Allowed measure scales are listed in ./sample/measure_scales.json 
 - Temporal data spans multiple years
+
+### Recent Fixes and Known Issues
+#### Fixed
+- Corrected topology ID mapping (using d.id instead of d.properties.id)
+- Updated geo_entities.json with comprehensive code mapping
+- Improved measure scale based visualization selection
+
+#### Known Issues
+1. Proportional Symbol Issues:
+   - Legend symbols don't match actual sizes on map
+   - Points need proper visibility culling:
+     * Points should be hidden when outside any projection's valid area
+     * For Orthographic: also hide points behind the globe
+     * For other projections: hide points beyond projection boundaries
+     * Use D3's projection methods to determine point visibility
+
+2. Future Improvements:
+   - Implement proper symbol scaling across different projections
+   - Add visibility checks for points based on projection angle
+   - Consider alternative symbol placement strategies for dense data areas
 
 ### API Information
 1. Meilisearch:
@@ -61,8 +90,8 @@ The GHG Portal is a web application for visualizing greenhouse gas emissions dat
   - Use colorblind-friendly schemes from D3's color modules
 
 #### 2. Map Visualization Types
-- [ ] Update proper visualization type selection
-  - Implement measure_scale based logic using clear type definitions
-  - Use D3's symbol generators for proportional symbols
-  - Leverage D3's projection system for proper symbol scaling
-  - Consider additional visualization types based on measure_scale
+- [ ] Fix proportional symbol visualization
+  - Implement consistent symbol sizing between map and legend
+  - Add proper point visibility handling for different projections
+  - Use D3's projection.clipAngle() for point culling
+  - Consider symbol overlap handling for dense data areas
