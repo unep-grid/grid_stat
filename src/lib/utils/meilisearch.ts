@@ -46,20 +46,3 @@ export async function searchIndicators(
 
   return response.json() as Promise<MeilisearchResponse<any>>;
 }
-
-export async function getIndicatorData(indicatorId: number) {
-  const response = await fetch(
-    `https://api.unepgrid.ch:443/stats/v2/indicatorsValues?indicator_id=eq.${indicatorId}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`API error: ${response.statusText}`);
-  }
-
-  return response.json();
-}

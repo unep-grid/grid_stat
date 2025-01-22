@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { FilterPanel } from "./FilterPanel";
 import { IndicatorList } from "./IndicatorList";
 import { VisualizationPanel } from "./VisualizationPanel";
-import type { Indicator, IndicatorData, FilterState } from "../../lib/types";
-import type { Language } from "../../lib/utils/translations";
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "../../lib/utils/translations";
-import { t } from "../../lib/utils/translations";
-import { searchIndicators, getIndicatorData } from "../../lib/utils/meilisearch";
+import type { Indicator, IndicatorData, FilterState } from "@/lib/types";
+import type { Language } from "@/lib/utils/translations";
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "@/lib/utils/translations";
+import { t } from "@/lib/utils/translations";
+import { searchIndicators } from "@/lib/utils/meilisearch";
+import { getIndicatorData } from "@/lib/utils/data_fetch";
+
 
 const initialFilters: FilterState = {
   search: "",

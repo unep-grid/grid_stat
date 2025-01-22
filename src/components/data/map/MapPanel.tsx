@@ -15,6 +15,9 @@ import {
   createColorScale,
   shouldUseChoropleth,
   createSizeScale,
+  computeRegionCentroids,
+  transformPoint,
+  type CentroidData,
 } from "./utils";
 import type {
   MapPanelProps,
@@ -53,6 +56,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
   const pathGeneratorRef = useRef<GeoPath<any, GeoPermissibleObjects> | null>(
     null
   );
+  const centroidsRef = useRef<Map<string, CentroidData>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
   const shouldRecreateProjectionRef = useRef(true);
@@ -157,14 +161,13 @@ export function MapPanel({ data, language }: MapPanelProps) {
         (d) => pathGeneratorRef.current!(d as GeoPermissibleObjects) || ""
       );
 
-    // Update point symbols if they exist
+    // Update point symbols using pre-computed centroids
     d3.select(svgRef.current)
       .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
-      .attr("transform", (d) => {
-        const centroid = pathGeneratorRef.current!.centroid(
-          d as GeoPermissibleObjects
-        );
-        return `translate(${centroid[0]},${centroid[1]})`;
+      .attr("transform", (d: Feature<Geometry>) => {
+        const centroidData = centroidsRef.current.get(String(d.id));
+        if (!centroidData) return "translate(0,0)";
+        return transformPoint(centroidData.coordinates, projectionRef.current!);
       });
 
     updateWorldBounds(projectionRef.current);
@@ -267,9 +270,22 @@ export function MapPanel({ data, language }: MapPanelProps) {
 
       // Update all elements
       d3.select(svgRef.current)
-        .select("path.graticule")
+        .select<SVGPathElement, GeoPermissibleObjects>("path.graticule")
         .transition(transition)
-        .attrTween("d", (d) => {
+        .attrTween(
+          "d",
+          function (this: SVGPathElement, d: GeoPermissibleObjects) {
+            return (t: number) => {
+              projection.alpha(t);
+              return d3.geoPath(projection)(d) || "";
+            };
+          }
+        );
+
+      d3.select(svgRef.current)
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
+        .transition(transition)
+        .attrTween("d", function (this: SVGPathElement, d: Feature<Geometry>) {
           return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(d as GeoPermissibleObjects) || "";
@@ -277,27 +293,19 @@ export function MapPanel({ data, language }: MapPanelProps) {
         });
 
       d3.select(svgRef.current)
-        .selectAll("path.region")
+        .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
         .transition(transition)
-        .attrTween("d", function (d) {
-          return (t: number) => {
-            projection.alpha(t);
-            return d3.geoPath(projection)(d as GeoPermissibleObjects) || "";
-          };
-        });
-
-      d3.select(svgRef.current)
-        .selectAll("path.region-point")
-        .transition(transition)
-        .attrTween("transform", function (d) {
-          return (t: number) => {
-            projection.alpha(t);
-            const [x, y] = d3
-              .geoPath(projection)
-              .centroid(d as GeoPermissibleObjects);
-            return `translate(${x}, ${y})`;
-          };
-        });
+        .attrTween(
+          "transform",
+          function (this: SVGPathElement, d: Feature<Geometry>) {
+            return (t: number) => {
+              projection.alpha(t);
+              const centroidData = centroidsRef.current.get(String(d.id));
+              if (!centroidData) return "translate(0,0)";
+              return transformPoint(centroidData.coordinates, projection);
+            };
+          }
+        );
 
       d3.select(svgRef.current)
         .select("path.world-bounds")
@@ -384,6 +392,8 @@ export function MapPanel({ data, language }: MapPanelProps) {
           throw new Error("Failed to load world map data");
         }
         worldDataRef.current = response;
+        // Pre-compute centroids when topology is loaded
+        centroidsRef.current = computeRegionCentroids(response);
       }
 
       // Store current zoom state if it exists
@@ -572,14 +582,15 @@ export function MapPanel({ data, language }: MapPanelProps) {
           .join("path")
           .attr("class", "region-point")
           .attr("transform", (d) => {
-            const centroid = pathGeneratorRef.current!.centroid(
-              d as GeoPermissibleObjects
-            );
-            return `translate(${centroid[0]},${centroid[1]})`;
+            const centroidData = centroidsRef.current.get(String(d.id));
+            if (!centroidData) return "translate(0,0)";
+            const point = projectionRef.current!(centroidData.coordinates);
+            if (!point) return "translate(0,0)";
+            return `translate(${point[0]},${point[1]})`;
           })
           .attr("d", (d) => {
             const regionInfo = regionData.get(d.id);
-            const radius = sizeScale(regionInfo ? regionInfo.value : 0);
+            const radius = sizeScale(regionInfo ? regionInfo.value ?? 0 : 0);
             return symbolGenerator.size(Math.PI * radius * radius)();
           })
           .attr("fill", colors.foreground)

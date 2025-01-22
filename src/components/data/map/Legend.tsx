@@ -173,7 +173,7 @@ export function ProportionalSymbolLegend({
   // Calculate vertical spacing
   const verticalSpacing =
     (height - margin.top - margin.bottom) / (steps.length - 1);
-
+ 
   return (
     <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
       <div className="text-sm font-semibold mb-1">{title}</div>
