@@ -44,14 +44,49 @@ const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
   const width = 60;
   const height = 20;
   const padding = 2;
+
+  // Handle empty data or data with invalid values
+  if (!data.length || data.some(v => isNaN(v) || !isFinite(v))) {
+    return (
+      <svg width={width} height={height} className="text-gray-300">
+        <line
+          x1={padding}
+          y1={height / 2}
+          x2={width - padding}
+          y2={height / 2}
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="2,2"
+        />
+      </svg>
+    );
+  }
+
   const maxValue = Math.max(...data);
   const minValue = Math.min(...data);
   const range = maxValue - minValue;
   
+  // If all values are the same, draw a horizontal line
+  if (range === 0) {
+    return (
+      <svg width={width} height={height} className="text-red-500">
+        <line
+          x1={padding}
+          y1={height / 2}
+          x2={width - padding}
+          y2={height / 2}
+          stroke="currentColor"
+          strokeWidth="1"
+        />
+      </svg>
+    );
+  }
+
+  // Calculate points with valid range
   const points = data.map((value, index) => {
     const x = (index / (data.length - 1)) * (width - 2 * padding) + padding;
     const y = height - ((value - minValue) / range) * (height - 2 * padding) - padding;
-    return `${x},${y}`;
+    return `${x},${Number.isFinite(y) ? y : height / 2}`;
   }).join(' ');
 
   return (
@@ -75,48 +110,77 @@ export function DataTable({ data, language }: DataTableProps) {
     const regionMap = new Map<number, ProcessedData>();
 
     data.forEach((item) => {
-      // Skip items with null values
-      if (item.value === null || item.date_start === null) return;
+      // Skip items with invalid values
+      if (
+        item.value === null || 
+        item.date_start === null || 
+        !Number.isFinite(item.value) || 
+        !Number.isFinite(item.date_start)
+      ) return;
+
+      const value = Number(item.value);
+      const year = Number(item.date_start);
+
+      if (!Number.isFinite(value) || !Number.isFinite(year)) return;
 
       if (!regionMap.has(item.geo_entity_id)) {
         regionMap.set(item.geo_entity_id, {
           geo_entity_id: item.geo_entity_id,
           geo_entity: item.geo_entity,
-          latestYear: item.date_start,
-          latestValue: item.value,
-          minYear: item.date_start,
-          maxYear: item.date_start,
-          minValue: item.value,
-          maxValue: item.value,
-          historicalValues: [item.value],
-          historicalYears: [item.date_start],
+          latestYear: year,
+          latestValue: value,
+          minYear: year,
+          maxYear: year,
+          minValue: value,
+          maxValue: value,
+          historicalValues: [value],
+          historicalYears: [year],
           unit: item.unit || '',
           source_detail: item.attributes?.source_detail || ''
         });
       } else {
         const region = regionMap.get(item.geo_entity_id)!;
-        region.historicalValues.push(item.value);
-        region.historicalYears.push(item.date_start);
+        region.historicalValues.push(value);
+        region.historicalYears.push(year);
         
-        if (item.date_start > region.latestYear) {
-          region.latestYear = item.date_start;
-          region.latestValue = item.value;
+        if (year > region.latestYear) {
+          region.latestYear = year;
+          region.latestValue = value;
         }
         
-        region.minYear = Math.min(region.minYear, item.date_start);
-        region.maxYear = Math.max(region.maxYear, item.date_start);
-        region.minValue = Math.min(region.minValue, item.value);
-        region.maxValue = Math.max(region.maxValue, item.value);
+        region.minYear = Math.min(region.minYear, year);
+        region.maxYear = Math.max(region.maxYear, year);
+        region.minValue = Math.min(region.minValue, value);
+        region.maxValue = Math.max(region.maxValue, value);
       }
     });
 
     let processedArray = Array.from(regionMap.values());
     processedArray.forEach(region => {
-      const sorted = region.historicalYears
+      // Filter out any invalid year-value pairs before sorting
+      const validPairs = region.historicalYears
         .map((year, i) => ({ year, value: region.historicalValues[i] }))
+        .filter(pair => 
+          Number.isFinite(pair.year) && 
+          Number.isFinite(pair.value)
+        );
+
+      // Sort by year and extract values
+      const sorted = validPairs
         .sort((a, b) => a.year - b.year);
       
       region.historicalValues = sorted.map(item => item.value);
+      
+      // Update min/max/latest values based on cleaned data
+      if (sorted.length > 0) {
+        const latestPair = sorted[sorted.length - 1];
+        region.latestYear = latestPair.year;
+        region.latestValue = latestPair.value;
+        region.minYear = sorted[0].year;
+        region.maxYear = latestPair.year;
+        region.minValue = Math.min(...sorted.map(p => p.value));
+        region.maxValue = Math.max(...sorted.map(p => p.value));
+      }
     });
 
     return processedArray;
