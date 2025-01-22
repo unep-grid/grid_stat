@@ -39,8 +39,8 @@
       "fr": "Visualisation"
     },
     "select_region": {
-      "en": "Select Region",
-      "fr": "Sélectionner une région"
+      "en": "Select Country",
+      "fr": "Sélectionner un pays"
     },
     "select_indicator": {
       "en": "Select Indicator",
@@ -103,8 +103,8 @@
       "fr": "Télécharger"
     },
     "filter_regions": {
-      "en": "Filter Regions",
-      "fr": "Filtrer les régions"
+      "en": "Filter Countries",
+      "fr": "Filtrer les pays"
     },
     "select_all": {
       "en": "Select All",
@@ -115,20 +115,20 @@
       "fr": "Effacer"
     },
     "select_all_regions": {
-      "en": "Select All Regions",
-      "fr": "Sélectionner toutes les régions"
+      "en": "Select All Countries",
+      "fr": "Sélectionner tous les pays"
     },
     "clear_selection": {
       "en": "Clear Selection",
       "fr": "Effacer la sélection"
     },
     "search_regions": {
-      "en": "Search regions...",
-      "fr": "Rechercher des régions..."
+      "en": "Search countries...",
+      "fr": "Rechercher des pays..."
     },
     "no_regions_found": {
-      "en": "No regions found",
-      "fr": "Aucune région trouvée"
+      "en": "No countries found",
+      "fr": "Aucun pays trouvé"
     },
     "close": {
       "en": "Close",
@@ -143,8 +143,8 @@
       "fr": "Valeur"
     },
     "region": {
-      "en": "Region",
-      "fr": "Région"
+      "en": "Country",
+      "fr": "Pays"
     },
     "legend": {
       "en": "Legend",

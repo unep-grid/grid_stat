@@ -95,8 +95,8 @@ export function Legend({
       <div className="text-sm font-semibold mb-1">{title}</div>
 
       {/* Color legend */}
-      <div className="flex items-center space-x-2">
-        {legendSteps.map((step: number, index: number) => {
+      <div className="flex flex-col space-y-2">
+        {[...legendSteps].reverse().map((step: number, index: number) => {
           let color: string;
           if (isD3Scale(colorScale)) {
             color = colorScale(step);
@@ -106,49 +106,47 @@ export function Legend({
           const label = formatValue(step, measureScale);
           
           return (
-            <div key={index} className="flex items-center space-x-1">
+            <div key={index} className="flex items-center space-x-2">
               <div
-                className="w-4 h-4"
+                className="w-4 h-4 flex-shrink-0"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-xs">
+              <span className="text-xs whitespace-nowrap">
                 {label}{unit ? ` ${unit}` : ''}
               </span>
             </div>
           );
         })}
-      </div>
 
-      {/* Missing values legend item */}
-      <div className="flex items-center space-x-2 mt-1">
-        <div
-          className="w-4 h-4 bg-background"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2' stroke='" +
-              encodeURIComponent(colors.foreground) +
-              "' stroke-width='0.5' stroke-opacity='0.5' /%3E%3C/svg%3E\")",
-            backgroundRepeat: "repeat",
-          }}
-        />
-        <span className="text-xs">{t("dv.missing_values", language)}</span>
+        {/* Missing values legend item */}
+        <div className="flex items-center space-x-2">
+          <div
+            className="w-4 h-4 bg-background"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2' stroke='" +
+                encodeURIComponent(colors.foreground) +
+                "' stroke-width='0.5' stroke-opacity='0.5' /%3E%3C/svg%3E\")",
+              backgroundRepeat: "repeat",
+            }}
+          />
+          <span className="text-xs">{t("dv.missing_values", language)}</span>
+        </div>
       </div>
     </div>
   );
 }
 
-// Custom Legend for proportional symbols
-export function ProportionalSymbolLegend({
-  globalExtent,
-  colors,
-  title,
-  unit,
-}: {
+interface ProportionalSymbolLegendProps {
   globalExtent: [number, number];
   colors: { foreground: string; background: string };
   title: string;
   unit?: string;
-}) {
+}
+
+// Custom Legend for proportional symbols
+export const ProportionalSymbolLegend: React.FC<ProportionalSymbolLegendProps> = (props) => {
+  const { globalExtent, colors, title, unit } = props;
   const [minValue, maxValue] = globalExtent;
   const format = d3.format(".2~s"); // Use d3 SI-prefix formatting with 2 significant digits
 
