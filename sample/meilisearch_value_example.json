@@ -1,24 +1,258 @@
 {
     "hits": [
         {
-            "description": "The indicator describes the number of local governments. This indicator is based on the series SG GOV LOGV which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "description": "The indicator describes the maximum extent of reservoir water area. This indicator is based on the series EN RSRV MXWAP which is part of the SDG indicators 6.6.1.\r\n",
             "keywords": [
-                "local government"
+                "surveillance de l'eau"
             ],
             "topics": [
-                "Political Stability"
+                "Terre"
             ],
             "collections": [
                 {
-                    "id": 4,
-                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
+                    "id": 8,
+                    "name": "SDG Goal 6: Ensure availability and sustainable management of water and sanitation for all",
                     "description": "SDG indicators provided by UN STATS"
-                },
+                }
+            ],
+            "sources": [
                 {
-                    "id": 5,
-                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11667,
+            "name": "Reservoir maximum water area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11667",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the extent of lakes and rivers seasonal water area. This indicator is based on the series EN LKRV SWAP which is part of the SDG indicators 6.6.1.",
+            "keywords": [
+                "surveillance de l'eau"
+            ],
+            "topics": [
+                "Terre"
+            ],
+            "collections": [
+                {
+                    "id": 8,
+                    "name": "SDG Goal 6: Ensure availability and sustainable management of water and sanitation for all",
                     "description": "SDG indicators provided by UN STATS"
-                },
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11575,
+            "name": "Lakes and rivers seasonal water area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11575",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the reservoir minimum water area change. This indicator is based on the series EN RSRV MNWAC which is part of the SDG indicators 6.6.1.",
+            "keywords": [
+                "surveillance de l'eau"
+            ],
+            "topics": [
+                "Eau"
+            ],
+            "collections": [
+                {
+                    "id": 8,
+                    "name": "SDG Goal 6: Ensure availability and sustainable management of water and sanitation for all",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11664,
+            "name": "Reservoir minimum water area change",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11664",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the extent of inland wetlands. This indicator is based on the series EN WBE INWTL which is part of the SDG indicators 6.6.1.",
+            "keywords": [
+                "zone humide"
+            ],
+            "topics": [
+                "Terre"
+            ],
+            "collections": [
+                {
+                    "id": 8,
+                    "name": "SDG Goal 6: Ensure availability and sustainable management of water and sanitation for all",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11673,
+            "name": "Extent of inland wetlands",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11673",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the proportion of land that is degraded over total land area. This indicator is based on the series AG LND DGRD which is part of the SDG indicators 15.3.1.",
+            "keywords": [
+                "pays",
+                "dégradation des sols"
+            ],
+            "topics": [
+                "Terre"
+            ],
+            "collections": [
+                {
+                    "id": 15,
+                    "name": "SDG Goal 15: Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11537,
+            "name": "Proportion of land that is degraded over total land area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11537",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the extent of forest area as a proportion of total land area. This indicator is based on the series AG LND FRST which is part of the SDG indicators 15.1.1.",
+            "keywords": [
+                "pays",
+                "forêt"
+            ],
+            "topics": [
+                "Forêt"
+            ],
+            "collections": [
+                {
+                    "id": 15,
+                    "name": "SDG Goal 15: Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11538,
+            "name": "Forest area as a proportion of total land area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11538",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the extent of forest area. This indicator is based on the series AG LND FRSTN which is part of the SDG indicators 15.1.1.",
+            "keywords": [
+                "pays",
+                "forêt"
+            ],
+            "topics": [
+                "Forêt"
+            ],
+            "collections": [
+                {
+                    "id": 15,
+                    "name": "SDG Goal 15: Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11539,
+            "name": "Forest area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11539",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the extent of land area. This indicator is based on the series AG LND TOTL which is part of the SDG indicators 15.1.1.",
+            "keywords": [
+                "pays"
+            ],
+            "topics": [
+                "Terre"
+            ],
+            "collections": [
+                {
+                    "id": 15,
+                    "name": "SDG Goal 15: Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11540,
+            "name": "Land area",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11540",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the climate-specific financial adaptation support provided via bilateral, regional and other channels. This indicator is based on the series DC FIN CLIMB which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "climat",
+                "finance durable"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
                 {
                     "id": 6,
                     "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
@@ -35,31 +269,21 @@
                 }
             ],
             "type": "statistical",
-            "id": 11750,
-            "name": "Number of local governments",
-            "source_url": "https://unep-grid.github.io/grid_stat/data/11750",
-            "language": "en"
+            "id": 11541,
+            "name": "Climate-specific financial support provided via bilateral, regional and other channels, by type of support (type of support: Adaptation)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11541",
+            "language": "fr"
         },
         {
-            "description": "The indicator describes the number of local governments that adopt and implement local DRR strategies in line with national strategies. This indicator is based on the series SG DSR SILN which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "description": "The indicator describes the climate-specific cross-cutting financial support provided via bilateral, regional and other channels. This indicator is based on the series DC FIN CLIMB which is part of the SDG indicators 13.a.1.",
             "keywords": [
-                "disaster risk",
-                "risk reduction"
+                "climat",
+                "finance durable"
             ],
             "topics": [
-                "Political Stability"
+                "Finance Durable"
             ],
             "collections": [
-                {
-                    "id": 4,
-                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
-                    "description": "SDG indicators provided by UN STATS"
-                },
-                {
-                    "id": 5,
-                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
-                    "description": "SDG indicators provided by UN STATS"
-                },
                 {
                     "id": 6,
                     "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
@@ -76,35 +300,25 @@
                 }
             ],
             "type": "statistical",
-            "id": 11745,
-            "name": "Number of local governments that adopt and implement local DRR strategies in line with national strategies",
-            "source_url": "https://unep-grid.github.io/grid_stat/data/11745",
-            "language": "en"
+            "id": 11542,
+            "name": "Climate-specific financial support provided via bilateral, regional and other channels, by type of support (type of support: Cross-cutting)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11542",
+            "language": "fr"
         },
         {
-            "description": "The indicator describes the proportion of local governments that adopt and implement local disaster risk reduction strategies in line with national disaster risk reduction strategies. This indicator is based on the series SG DSR SILS which is part of the SDG indicators 1.5.4, 11.b.2, 13.1.3.",
+            "description": "The indicator describes the climate-specific mitigation financial support provided via bilateral, regional and other channels. This indicator is based on the series DC FIN CLIMB which is part of the SDG indicators 13.a.1.",
             "keywords": [
-                "disaster risk",
-                "risk reduction"
+                "climat",
+                "finance durable"
             ],
             "topics": [
-                "Political Stability"
+                "Finance Durable"
             ],
             "collections": [
-                {
-                    "id": 4,
-                    "name": "SDG Goal 1: End poverty in all its forms everywhere",
-                    "description": "SDG indicators provided by UN STATS"
-                },
                 {
                     "id": 6,
                     "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
                     "description": "SDG indicators provided by UN STATS"
-                },
-                {
-                    "id": 5,
-                    "name": "SDG Goal 11: Make cities and human settlements inclusive, safe, resilient and sustainable",
-                    "description": "SDG indicators provided by UN STATS"
                 }
             ],
             "sources": [
@@ -117,23 +331,24 @@
                 }
             ],
             "type": "statistical",
-            "id": 11746,
-            "name": "Proportion of local governments that adopt and implement local disaster risk reduction strategies in line with national disaster risk reduction strategies",
-            "source_url": "https://unep-grid.github.io/grid_stat/data/11746",
-            "language": "en"
+            "id": 11543,
+            "name": "Climate-specific financial support provided via bilateral, regional and other channels, by type of support (type of support: Mitigation)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11543",
+            "language": "fr"
         },
         {
-            "description": "The indicator describes the current number of seats in national parliaments. This indicator is based on the series SG GEN PARLNT which is part of the SDG indicators 5.5.1.",
+            "description": "The indicator describes the climate-specific other financial support provided via bilateral, regional and other channels. This indicator is based on the series DC FIN CLIMB which is part of the SDG indicators 13.a.1.",
             "keywords": [
-                "local government"
+                "finance durable",
+                "climat"
             ],
             "topics": [
-                "Oceans and Seas"
+                "Finance Durable"
             ],
             "collections": [
                 {
-                    "id": 7,
-                    "name": "SDG Goal 5: Achieve gender equality and empower all women and girls",
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
                     "description": "SDG indicators provided by UN STATS"
                 }
             ],
@@ -147,31 +362,346 @@
                 }
             ],
             "type": "statistical",
-            "id": 11749,
-            "name": "Current number of seats in national parliaments",
-            "source_url": "https://unep-grid.github.io/grid_stat/data/11749",
-            "language": "en"
+            "id": 11544,
+            "name": "Climate-specific financial support provided via bilateral, regional and other channels, by type of support (type of support: Other)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11544",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the total climate-specific financial support provided via bilateral, regional and other channels. This indicator is based on the series DC FIN CLIMB which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "climat",
+                "finance durable"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11545,
+            "name": "Climate-specific financial support provided via bilateral, regional and other channels, by type of support (type of support: Total)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11545",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the climate-specific adaptation financial support provided via multilateral channels. This indicator is based on the series DC FIN CLIMM which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "finance durable",
+                "climat"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11546,
+            "name": "Climate-specific financial support provided via multilateral channels, by type of support (type of support: Adaptation)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11546",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the climate-specific cross-cutting financial support provided via multilateral channels. This indicator is based on the series DC FIN CLIMM which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "finance durable",
+                "climat"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11547,
+            "name": "Climate-specific financial support provided via multilateral channels, by type of support (type of support: Cross-cutting)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11547",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the climate-specific mitigation financial support provided via multilateral channels. This indicator is based on the series DC FIN CLIMM which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "finance durable",
+                "climat"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11548,
+            "name": "Climate-specific financial support provided via multilateral channels, by type of support (type of support: Mitigation)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11548",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the climate-specific other financial support provided via multilateral channels. This indicator is based on the series DC FIN CLIMM which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "climat",
+                "finance durable"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11549,
+            "name": "Climate-specific financial support provided via multilateral channels, by type of support (type of support: Other)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11549",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the total climate-specific financial support provided via multilateral channels. This indicator is based on the series DC FIN CLIMM which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "climat",
+                "finance durable"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11550,
+            "name": "Climate-specific financial support provided via multilateral channels, by type of support (type of support: Total)",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11550",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the total climate-specific financial support provided. This indicator is based on the series DC FIN CLIMT which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "finance durable",
+                "climat"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11551,
+            "name": "Total climate-specific financial support provided",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11551",
+            "language": "fr"
+        },
+        {
+            "description": "The indicator describes the core/general contributions provided to multilateral institutions. This indicator is based on the series DC FIN GEN which is part of the SDG indicators 13.a.1.",
+            "keywords": [
+                "finance durable"
+            ],
+            "topics": [
+                "Finance Durable"
+            ],
+            "collections": [
+                {
+                    "id": 6,
+                    "name": "SDG Goal 13: Take urgent action to combat climate change and its impacts",
+                    "description": "SDG indicators provided by UN STATS"
+                }
+            ],
+            "sources": [
+                {
+                    "url": "https://unstats.un.org/",
+                    "name": "United Nations Statistics Division - multiple sources",
+                    "contact": "statistics@un.org",
+                    "citation": null,
+                    "name_short": "UNSD-aggr"
+                }
+            ],
+            "type": "statistical",
+            "id": 11552,
+            "name": "Core/general contributions provided to multilateral institutions",
+            "source_url": "https://unep-grid.github.io/grid_stat/data/11552",
+            "language": "fr"
         }
     ],
-    "query": "local",
-    "processingTimeMs": 1,
+    "query": "",
+    "processingTimeMs": 2,
     "limit": 20,
     "offset": 0,
-    "estimatedTotalHits": 4,
+    "estimatedTotalHits": 442,
     "facetDistribution": {
-        "sources": {},
-        "sources.citation": {},
-        "sources.contact": {
-            "statistics@un.org": 4
+        "keywords": {
+            "adaptation écologique": 4,
+            "adaptation strategy": 1,
+            "aquifère": 1,
+            "bassin fluvial international": 2,
+            "biodiversity conservation": 4,
+            "biodiversity protection": 1,
+            "catastrophe écologique": 17,
+            "changement climatique": 192,
+            "climat": 11,
+            "collectivité locale": 2,
+            "consommation intérieure de matières": 54,
+            "contribution financière": 6,
+            "déchets plastiques": 6,
+            "dégradation des sols": 1,
+            "développement durable": 7,
+            "diversité biologique": 3,
+            "eau douce": 5,
+            "eau usée": 20,
+            "eaux souterraines": 3,
+            "empreinte environnementale": 3,
+            "eutrophisation": 12,
+            "éducation": 6,
+            "égalité des sexes": 10,
+            "émissions de gaz à effet de serre": 194,
+            "finance durable": 17,
+            "fleuve": 1,
+            "forêt": 2,
+            "gestion de l'eau": 19,
+            "mangrove": 2,
+            "objectifs de développement durable": 3,
+            "ordures": 6,
+            "pauvreté": 3,
+            "pays": 4,
+            "politique": 4,
+            "pollution": 2,
+            "pollution de l'eau": 1,
+            "qualité de l'eau": 12,
+            "réduction des risques": 4,
+            "risque de catastrophe": 21,
+            "santé publique et assainissement": 12,
+            "secteur des services": 1,
+            "service de santé": 13,
+            "service social": 1,
+            "surveillance de l'eau": 33,
+            "tourisme": 1,
+            "traitement des eaux usées": 9,
+            "water efficiency": 4,
+            "water stress": 4,
+            "water use": 8,
+            "zone humide": 4
         },
         "sources.name": {
-            "United Nations Statistics Division - multiple sources": 4
+            "Climate Watch": 57,
+            "GCP": 6,
+            "PIK": 26,
+            "UNFCCC_AI": 36,
+            "UNFCCC_NAI": 37,
+            "United Nations Statistics Division - multiple sources": 250,
+            "US": 30
         },
-        "sources.name_short": {
-            "UNSD-aggr": 4
-        },
-        "sources.url": {
-            "https://unstats.un.org/": 4
+        "topics": {
+            "Autre": 3,
+            "Biodiversité": 8,
+            "Changement climatique": 195,
+            "Cohésion Sociale, équité et non-discrimination": 7,
+            "Connaissances autochtones": 1,
+            "Droits et gouvernance environnementaux": 3,
+            "Eau": 47,
+            "Économie et Population": 62,
+            "Éducation": 6,
+            "Finance Durable": 17,
+            "Forêt": 4,
+            "Océans et Mers": 18,
+            "Pollution": 4,
+            "Produits chimiques et déchets": 20,
+            "Risque": 17,
+            "Santé Publique": 13,
+            "Sécurité alimentaire, Agriculture": 1,
+            "Stabilité Politique": 4,
+            "Terre": 12
         }
     },
     "facetStats": {}

@@ -21,9 +21,8 @@ export async function searchIndicators(
     facets?: string[];
   } = {}
 ) {
-  const { limit = 20, offset = 0, facets = [] } = options;
+  const { limit = 50, offset = 0, facets = [] } = options;
 
-  debugger;
   const response = await fetch(
     `${MEILISEARCH_ENDPOINT}/indexes/statistical_${language}/search`,
     {
