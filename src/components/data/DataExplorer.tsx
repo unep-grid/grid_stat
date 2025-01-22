@@ -9,7 +9,6 @@ import { t } from "@/lib/utils/translations";
 import { searchIndicators } from "@/lib/utils/meilisearch";
 import { getIndicatorData } from "@/lib/utils/data_fetch";
 
-
 const initialFilters: FilterState = {
   search: "",
   topics: [],
@@ -30,7 +29,8 @@ export function DataExplorer() {
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
   const [indicatorData, setIndicatorData] = useState<IndicatorData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
   const [facets, setFacets] = useState<{
@@ -43,90 +43,90 @@ export function DataExplorer() {
     keywordCount: {},
   });
 
-  // Initialize language from localStorage on client-side
+  // Store initial facet order
+  const [orderedFacets, setOrderedFacets] = useState<{
+    topics: string[];
+    sources: string[];
+    keywords: string[];
+  }>({
+    topics: [],
+    sources: [],
+    keywords: [],
+  });
+
+  // Initialize app state and perform initial search
   useEffect(() => {
-    setLanguage(getInitialLanguage());
-  }, []);
-
-  // Check URL search parameter on mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const searchParam = params.get("search");
-
-    if (searchParam) {
-      setFilters((prev) => ({
-        ...prev,
-        search: searchParam,
-      }));
-    }
-  }, []);
-
-  // Listen for language changes
-  useEffect(() => {
-    const handleLanguageChange = (event: CustomEvent<Language>) => {
-      setLanguage(event.detail);
-    };
-
-    window.addEventListener("languageChange", handleLanguageChange as EventListener);
-    return () => {
-      window.removeEventListener(
-        "languageChange",
-        handleLanguageChange as EventListener
-      );
-    };
-  }, []);
-
-  // Search indicators using Meilisearch
-  useEffect(() => {
-    async function searchAndUpdateIndicators() {
+    async function initialize() {
+      // Get initial language and search param in one pass
+      const initialLang = getInitialLanguage();
+      const searchParam = new URLSearchParams(window.location.search).get("search");
+      
+      // Set initial state
+      const initialSearchQuery = searchParam || "";
+      
       try {
         setLoading(true);
-        const result = await searchIndicators(filters.search, language, {
-          facets: ["topics", "sources.name", "keywords"],
+        
+        // Perform initial search with correct language immediately
+        const result = await searchIndicators(initialSearchQuery, initialLang, {
+          facets: ["topics", "sources.name", "keywords"]
         });
 
+        // Set all state at once
+        setLanguage(initialLang);
+        setFilters(prev => ({
+          ...prev,
+          search: initialSearchQuery
+        }));
         setIndicators(result.hits);
-
-        // Update facets from Meilisearch response
-        const topicCount: Record<string, number> = {};
-        const sourceCount: Record<string, number> = {};
-        const keywordCount: Record<string, number> = {};
-
+        
         if (result.facetDistribution) {
-          if (result.facetDistribution["topics"]) {
-            Object.entries(result.facetDistribution["topics"]).forEach(
-              ([key, value]) => {
-                topicCount[key] = value;
-              }
-            );
-          }
-          if (result.facetDistribution["sources.name"]) {
-            Object.entries(result.facetDistribution["sources.name"]).forEach(
-              ([key, value]) => {
-                sourceCount[key] = value;
-              }
-            );
-          }
-          if (result.facetDistribution["keywords"]) {
-            Object.entries(result.facetDistribution["keywords"]).forEach(
-              ([key, value]) => {
-                keywordCount[key] = value;
-              }
-            );
-          }
-        }
+          const topics = Object.entries(result.facetDistribution["topics"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
+          const sources = Object.entries(result.facetDistribution["sources.name"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
+          const keywords = Object.entries(result.facetDistribution["keywords"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
 
-        setFacets({ topicCount, sourceCount, keywordCount });
+          setOrderedFacets({ topics, sources, keywords });
+          setFacets({
+            topicCount: result.facetDistribution["topics"] || {},
+            sourceCount: result.facetDistribution["sources.name"] || {},
+            keywordCount: result.facetDistribution["keywords"] || {},
+          });
+        }
       } catch (err) {
-        setError(t("dv.failed_load_indicators", language));
-        console.error("Error searching indicators:", err);
+        console.error("Error during initialization:", err);
+        setError(t("dv.failed_load_indicators", initialLang));
       } finally {
         setLoading(false);
+        setInitializing(false);
       }
     }
 
-    searchAndUpdateIndicators();
-  }, [language, filters.search]);
+    initialize();
+
+    // Set up language change listener
+    const handleLanguageChange = (event: Event) => {
+      const customEvent = event as CustomEvent<Language>;
+      const newLanguage = customEvent.detail;
+      
+      // Reset all state
+      setLanguage(newLanguage);
+      setFilters(initialFilters);
+      setSelectedIndicator(null);
+      setIndicatorData([]);
+      setInitializing(true);
+    };
+
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChange", handleLanguageChange);
+    };
+  }, []);
 
   // Fetch indicator data when selection changes
   useEffect(() => {
@@ -152,58 +152,62 @@ export function DataExplorer() {
     fetchIndicatorData();
   }, [selectedIndicator]);
 
-  // Extract unique topics, sources and keywords from all indicators
-  const topics = Array.from(
-    new Set(indicators.flatMap((indicator) => indicator.topics))
-  );
+  // Search effect for filter changes (not initial load)
+  useEffect(() => {
+    // Skip if we're still initializing
+    if (initializing) return;
+    
+    async function performSearch() {
+      try {
+        setLoading(true);
+        
+        const result = await searchIndicators(filters.search, language, {
+          facets: ["topics", "sources.name", "keywords"],
+          ...(filters.topics.length || filters.sources.length || filters.keywords.length ? {
+            filter: {
+              topics: filters.topics,
+              sources: filters.sources,
+              keywords: filters.keywords,
+            }
+          } : {})
+        });
 
-  const sources = Array.from(
-    new Set(indicators.flatMap((indicator) => 
-      indicator.sources.map(source => source.name)
-    ))
-  );
+        setIndicators(result.hits);
+        
+        if (result.facetDistribution) {
+          setFacets({
+            topicCount: result.facetDistribution["topics"] || {},
+            sourceCount: result.facetDistribution["sources.name"] || {},
+            keywordCount: result.facetDistribution["keywords"] || {},
+          });
+        }
 
-  const keywords = Array.from(
-    new Set(indicators.flatMap((indicator) => indicator.keywords))
-  );
+        // Clear selected indicator if it's not in the search results
+        if (selectedIndicator && !result.hits.some(hit => hit.id === selectedIndicator.id)) {
+          setSelectedIndicator(null);
+        }
+      } catch (err) {
+        console.error("Error performing search:", err);
+        setError(t("dv.failed_load_indicators", language));
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // Filter indicators based on topics, sources and keywords filters
-  const filteredIndicators = indicators.filter((indicator) => {
-    const matchesTopics =
-      filters.topics.length === 0 ||
-      filters.topics.some((topic) =>
-        indicator.topics.some((t) =>
-          t.toLowerCase().includes(topic.toLowerCase())
-        )
-      );
+    performSearch();
+  }, [language, filters.search, filters.topics, filters.sources, filters.keywords]);
 
-    const matchesSources =
-      filters.sources.length === 0 ||
-      filters.sources.some((source) =>
-        indicator.sources.some((s) =>
-          s.name.toLowerCase().includes(source.toLowerCase())
-        )
-      );
-
-    const matchesKeywords =
-      filters.keywords.length === 0 ||
-      filters.keywords.some((keyword) =>
-        indicator.keywords.some((k) =>
-          k.toLowerCase().includes(keyword.toLowerCase())
-        )
-      );
-
-    return matchesTopics && matchesSources && matchesKeywords;
-  });
+  // Show loading state during initialization or search
+  const isLoading = initializing || loading;
 
   return (
     <div className="flex h-[calc(100vh-4rem)] w-full">
       <div className="w-80 flex-none border-r overflow-hidden">
         <FilterPanel
           language={language}
-          topics={topics}
-          sources={sources}
-          keywords={keywords}
+          topics={orderedFacets.topics}
+          sources={orderedFacets.sources}
+          keywords={orderedFacets.keywords}
           filters={filters}
           onFilterChange={setFilters}
           topicCount={facets.topicCount}
@@ -215,10 +219,10 @@ export function DataExplorer() {
       <div className="w-[28rem] flex-none overflow-y-auto border-r">
         <IndicatorList
           language={language}
-          indicators={filteredIndicators}
+          indicators={indicators}
           selectedIndicator={selectedIndicator}
           onSelectIndicator={setSelectedIndicator}
-          loading={loading}
+          loading={isLoading}
           error={error}
         />
       </div>

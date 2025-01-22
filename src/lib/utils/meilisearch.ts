@@ -19,9 +19,29 @@ export async function searchIndicators(
     limit?: number;
     offset?: number;
     facets?: string[];
+    filter?: {
+      topics?: string[];
+      sources?: string[];
+      keywords?: string[];
+    };
   } = {}
-) {
-  const { limit = 50, offset = 0, facets = [] } = options;
+): Promise<MeilisearchResponse<any>> {
+  const { limit = 50, offset = 0, facets = [], filter } = options;
+
+  // Build filter conditions
+  const filterConditions: string[] = [];
+  
+  if (filter?.topics?.length) {
+    filterConditions.push(`topics IN [${filter.topics.map(t => `"${t}"`).join(',')}]`);
+  }
+  
+  if (filter?.sources?.length) {
+    filterConditions.push(`sources.name IN [${filter.sources.map(s => `"${s}"`).join(',')}]`);
+  }
+  
+  if (filter?.keywords?.length) {
+    filterConditions.push(`keywords IN [${filter.keywords.map(k => `"${k}"`).join(',')}]`);
+  }
 
   const response = await fetch(
     `${MEILISEARCH_ENDPOINT}/indexes/statistical_${language}/search`,
@@ -36,6 +56,7 @@ export async function searchIndicators(
         limit,
         offset,
         facets,
+        filter: filterConditions.length ? filterConditions.join(' AND ') : undefined,
       }),
     }
   );

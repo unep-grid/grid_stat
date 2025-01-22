@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,6 +34,9 @@ export function FilterPanel({
   keywordCount,
 }: FilterPanelProps) {
   const [searchInput, setSearchInput] = useState(filters.search);
+  const [showMoreTopics, setShowMoreTopics] = useState(false);
+  const [showMoreSources, setShowMoreSources] = useState(false);
+  const [showMoreKeywords, setShowMoreKeywords] = useState(false);
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
@@ -111,32 +114,51 @@ export function FilterPanel({
               {t("dv.metadata_topics", language)}
             </h3>
             <div className="space-y-1.5">
-              {topics.map((topic) => {
-                const count = topicCount[topic] || 0;
-                const isDisabled =
-                  count === 0 && !filters.topics.includes(topic);
-                return (
-                  <Card
-                    key={topic}
-                    className={`cursor-pointer p-2 transition-colors ${
-                      filters.topics.includes(topic)
-                        ? "bg-primary text-primary-foreground"
-                        : isDisabled
-                        ? "opacity-50 hover:bg-muted/50"
-                        : "hover:bg-muted"
-                    }`}
-                    onClick={() => !isDisabled && toggleTopic(topic)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm">{topic}</p>
-                      <Badge variant="secondary" className="ml-2">
-                        {count}
-                      </Badge>
-                    </div>
-                  </Card>
-                );
-              })}
+              {topics
+                .slice(0, showMoreTopics ? undefined : 6)
+                .map((topic) => {
+                  const count = topicCount[topic] || 0;
+                  const isSelected = filters.topics.includes(topic);
+                  const isDisabled = count === 0;
+                  return (
+                    <Card
+                      key={topic}
+                      className={`p-2 transition-colors ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground cursor-pointer"
+                          : isDisabled
+                          ? "opacity-40"
+                          : "hover:bg-muted cursor-pointer"
+                      }`}
+                      onClick={() => !isDisabled && toggleTopic(topic)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm">{topic}</p>
+                        <Badge variant="secondary" className="ml-2">
+                          {count}
+                        </Badge>
+                      </div>
+                    </Card>
+                  );
+                })}
             </div>
+            {topics.length > 6 && (
+              <Button
+                variant="ghost"
+                className="w-full mt-2 text-xs h-8"
+                onClick={() => setShowMoreTopics(!showMoreTopics)}
+              >
+                {showMoreTopics ? (
+                  <>
+                    Show less <ChevronUp className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Show {topics.length - 6} more <ChevronDown className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            )}
           </div>
 
           <Separator className="my-4" />
@@ -146,32 +168,51 @@ export function FilterPanel({
               {t("dv.metadata_sources", language)}
             </h3>
             <div className="space-y-1.5">
-              {sources.map((source) => {
-                const count = sourceCount[source] || 0;
-                const isDisabled =
-                  count === 0 && !filters.sources.includes(source);
-                return (
-                  <Card
-                    key={source}
-                    className={`cursor-pointer p-2 transition-colors ${
-                      filters.sources.includes(source)
-                        ? "bg-primary text-primary-foreground"
-                        : isDisabled
-                        ? "opacity-50 hover:bg-muted/50"
-                        : "hover:bg-muted"
-                    }`}
-                    onClick={() => !isDisabled && toggleSource(source)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm">{source}</p>
-                      <Badge variant="secondary" className="ml-2">
-                        {count}
-                      </Badge>
-                    </div>
-                  </Card>
-                );
-              })}
+              {sources
+                .slice(0, showMoreSources ? undefined : 6)
+                .map((source) => {
+                  const count = sourceCount[source] || 0;
+                  const isSelected = filters.sources.includes(source);
+                  const isDisabled = count === 0;
+                  return (
+                    <Card
+                      key={source}
+                      className={`p-2 transition-colors ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground cursor-pointer"
+                          : isDisabled
+                          ? "opacity-40"
+                          : "hover:bg-muted cursor-pointer"
+                      }`}
+                      onClick={() => !isDisabled && toggleSource(source)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm">{source}</p>
+                        <Badge variant="secondary" className="ml-2">
+                          {count}
+                        </Badge>
+                      </div>
+                    </Card>
+                  );
+                })}
             </div>
+            {sources.length > 6 && (
+              <Button
+                variant="ghost"
+                className="w-full mt-2 text-xs h-8"
+                onClick={() => setShowMoreSources(!showMoreSources)}
+              >
+                {showMoreSources ? (
+                  <>
+                    Show less <ChevronUp className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Show {sources.length - 6} more <ChevronDown className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            )}
           </div>
 
           <Separator className="my-4" />
@@ -181,30 +222,49 @@ export function FilterPanel({
               {t("dv.keywords", language)}
             </h3>
             <div className="flex flex-wrap gap-1.5">
-              {keywords.map((keyword) => {
-                const count = keywordCount[keyword] || 0;
-                const isDisabled =
-                  count === 0 && !filters.keywords.includes(keyword);
-                return (
-                  <Button
-                    key={keyword}
-                    variant={filters.keywords.includes(keyword) ? "default" : "outline"}
-                    className={`h-7 rounded-full text-xs ${
-                      isDisabled ? "opacity-50 cursor-default" : ""
-                    }`}
-                    onClick={() => !isDisabled && toggleKeyword(keyword)}
-                  >
-                    {keyword}
-                    <Badge
-                      variant="secondary"
-                      className="ml-1 h-4 rounded-full px-1 text-[10px]"
+              {keywords
+                .slice(0, showMoreKeywords ? undefined : 6)
+                .map((keyword) => {
+                  const count = keywordCount[keyword] || 0;
+                  const isSelected = filters.keywords.includes(keyword);
+                  const isDisabled = count === 0;
+                  return (
+                    <Button
+                      key={keyword}
+                      variant={isSelected ? "default" : "outline"}
+                      className={`h-7 rounded-full text-xs ${
+                        isDisabled ? "opacity-40 cursor-default" : "cursor-pointer"
+                      }`}
+                      onClick={() => !isDisabled && toggleKeyword(keyword)}
                     >
-                      {count}
-                    </Badge>
-                  </Button>
-                );
-              })}
+                      {keyword}
+                      <Badge
+                        variant="secondary"
+                        className="ml-1 h-4 rounded-full px-1 text-[10px]"
+                      >
+                        {count}
+                      </Badge>
+                    </Button>
+                  );
+                })}
             </div>
+            {keywords.length > 6 && (
+              <Button
+                variant="ghost"
+                className="w-full mt-2 text-xs h-8"
+                onClick={() => setShowMoreKeywords(!showMoreKeywords)}
+              >
+                {showMoreKeywords ? (
+                  <>
+                    Show less <ChevronUp className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Show {keywords.length - 6} more <ChevronDown className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </ScrollArea>

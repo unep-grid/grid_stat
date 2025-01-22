@@ -256,7 +256,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
             scheduleUpdate();
           }
         })
-        .northUp(true);
+        .northUp(currentProjection === "Orthographic");
 
       // Apply zoom behavior to SVG
       zoom(svgRef.current);
@@ -479,7 +479,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
               scheduleUpdate();
             }
           })
-          .northUp(true);
+          .northUp(currentProjection === "Orthographic");
 
         // Apply zoom behavior to SVG
         zoom(svg.node());
