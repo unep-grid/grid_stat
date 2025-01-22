@@ -12,21 +12,25 @@ import { t } from "@/lib/utils/translations";
 
 interface FilterPanelProps {
   language: Language;
-  categories: string[];
+  topics: string[];
+  sources: string[];
   keywords: string[];
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
-  categoryCount: Record<string, number>;
+  topicCount: Record<string, number>;
+  sourceCount: Record<string, number>;
   keywordCount: Record<string, number>;
 }
 
 export function FilterPanel({
   language,
-  categories,
+  topics,
+  sources,
   keywords,
   filters,
   onFilterChange,
-  categoryCount,
+  topicCount,
+  sourceCount,
   keywordCount,
 }: FilterPanelProps) {
   const [searchInput, setSearchInput] = useState(filters.search);
@@ -36,11 +40,18 @@ export function FilterPanel({
     onFilterChange({ ...filters, search: value });
   };
 
-  const toggleCategory = (category: string) => {
-    const newCategories = filters.categories.includes(category)
-      ? filters.categories.filter((c) => c !== category)
-      : [...filters.categories, category];
-    onFilterChange({ ...filters, categories: newCategories });
+  const toggleTopic = (topic: string) => {
+    const newTopics = filters.topics.includes(topic)
+      ? filters.topics.filter((t) => t !== topic)
+      : [...filters.topics, topic];
+    onFilterChange({ ...filters, topics: newTopics });
+  };
+
+  const toggleSource = (source: string) => {
+    const newSources = filters.sources.includes(source)
+      ? filters.sources.filter((s) => s !== source)
+      : [...filters.sources, source];
+    onFilterChange({ ...filters, sources: newSources });
   };
 
   const toggleKeyword = (keyword: string) => {
@@ -54,13 +65,17 @@ export function FilterPanel({
     setSearchInput("");
     onFilterChange({
       search: "",
-      categories: [],
+      topics: [],
+      sources: [],
       keywords: [],
     });
   };
 
   const hasActiveFilters =
-    filters.search || filters.categories.length > 0 || filters.keywords.length > 0;
+    filters.search || 
+    filters.topics.length > 0 || 
+    filters.sources.length > 0 || 
+    filters.keywords.length > 0;
 
   return (
     <div className="flex h-full flex-col border-r bg-background">
@@ -93,27 +108,62 @@ export function FilterPanel({
         <div className="space-y-4 p-4">
           <div>
             <h3 className="mb-2 text-sm font-medium">
-              {t("dv.categories", language)}
+              {t("dv.metadata_topics", language)}
             </h3>
             <div className="space-y-2">
-              {categories.map((category) => {
-                const count = categoryCount[category] || 0;
+              {topics.map((topic) => {
+                const count = topicCount[topic] || 0;
                 const isDisabled =
-                  count === 0 && !filters.categories.includes(category);
+                  count === 0 && !filters.topics.includes(topic);
                 return (
                   <Card
-                    key={category}
+                    key={topic}
                     className={`cursor-pointer p-2 transition-colors ${
-                      filters.categories.includes(category)
+                      filters.topics.includes(topic)
                         ? "bg-primary text-primary-foreground"
                         : isDisabled
                         ? "opacity-50 hover:bg-muted/50"
                         : "hover:bg-muted"
                     }`}
-                    onClick={() => !isDisabled && toggleCategory(category)}
+                    onClick={() => !isDisabled && toggleTopic(topic)}
                   >
                     <div className="flex items-center justify-between">
-                      <p className="text-sm">{category}</p>
+                      <p className="text-sm">{topic}</p>
+                      <Badge variant="secondary" className="ml-2">
+                        {count}
+                      </Badge>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h3 className="mb-2 text-sm font-medium">
+              {t("dv.metadata_sources", language)}
+            </h3>
+            <div className="space-y-2">
+              {sources.map((source) => {
+                const count = sourceCount[source] || 0;
+                const isDisabled =
+                  count === 0 && !filters.sources.includes(source);
+                return (
+                  <Card
+                    key={source}
+                    className={`cursor-pointer p-2 transition-colors ${
+                      filters.sources.includes(source)
+                        ? "bg-primary text-primary-foreground"
+                        : isDisabled
+                        ? "opacity-50 hover:bg-muted/50"
+                        : "hover:bg-muted"
+                    }`}
+                    onClick={() => !isDisabled && toggleSource(source)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm">{source}</p>
                       <Badge variant="secondary" className="ml-2">
                         {count}
                       </Badge>

@@ -12,7 +12,8 @@ import { getIndicatorData } from "@/lib/utils/data_fetch";
 
 const initialFilters: FilterState = {
   search: "",
-  categories: [],
+  topics: [],
+  sources: [],
   keywords: [],
 };
 
@@ -33,10 +34,12 @@ export function DataExplorer() {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
   const [facets, setFacets] = useState<{
-    categoryCount: Record<string, number>;
+    topicCount: Record<string, number>;
+    sourceCount: Record<string, number>;
     keywordCount: Record<string, number>;
   }>({
-    categoryCount: {},
+    topicCount: {},
+    sourceCount: {},
     keywordCount: {},
   });
 
@@ -79,20 +82,28 @@ export function DataExplorer() {
       try {
         setLoading(true);
         const result = await searchIndicators(filters.search, language, {
-          facets: ["collections.name", "keywords"],
+          facets: ["topics", "sources.name", "keywords"],
         });
 
         setIndicators(result.hits);
 
         // Update facets from Meilisearch response
-        const categoryCount: Record<string, number> = {};
+        const topicCount: Record<string, number> = {};
+        const sourceCount: Record<string, number> = {};
         const keywordCount: Record<string, number> = {};
 
         if (result.facetDistribution) {
-          if (result.facetDistribution["collections.name"]) {
-            Object.entries(result.facetDistribution["collections.name"]).forEach(
+          if (result.facetDistribution["topics"]) {
+            Object.entries(result.facetDistribution["topics"]).forEach(
               ([key, value]) => {
-                categoryCount[key] = value;
+                topicCount[key] = value;
+              }
+            );
+          }
+          if (result.facetDistribution["sources.name"]) {
+            Object.entries(result.facetDistribution["sources.name"]).forEach(
+              ([key, value]) => {
+                sourceCount[key] = value;
               }
             );
           }
@@ -105,7 +116,7 @@ export function DataExplorer() {
           }
         }
 
-        setFacets({ categoryCount, keywordCount });
+        setFacets({ topicCount, sourceCount, keywordCount });
       } catch (err) {
         setError(t("dv.failed_load_indicators", language));
         console.error("Error searching indicators:", err);
@@ -141,26 +152,36 @@ export function DataExplorer() {
     fetchIndicatorData();
   }, [selectedIndicator]);
 
-  // Extract unique categories and keywords from all indicators
-  const categories = Array.from(
-    new Set(
-      indicators.flatMap((indicator) =>
-        indicator.collections.map((collection) => collection.name)
-      )
-    )
+  // Extract unique topics, sources and keywords from all indicators
+  const topics = Array.from(
+    new Set(indicators.flatMap((indicator) => indicator.topics))
+  );
+
+  const sources = Array.from(
+    new Set(indicators.flatMap((indicator) => 
+      indicator.sources.map(source => source.name)
+    ))
   );
 
   const keywords = Array.from(
     new Set(indicators.flatMap((indicator) => indicator.keywords))
   );
 
-  // Filter indicators based on category and keyword filters
+  // Filter indicators based on topics, sources and keywords filters
   const filteredIndicators = indicators.filter((indicator) => {
-    const matchesCategories =
-      filters.categories.length === 0 ||
-      filters.categories.some((category) =>
-        indicator.collections.some((collection) =>
-          collection.name.toLowerCase().includes(category.toLowerCase())
+    const matchesTopics =
+      filters.topics.length === 0 ||
+      filters.topics.some((topic) =>
+        indicator.topics.some((t) =>
+          t.toLowerCase().includes(topic.toLowerCase())
+        )
+      );
+
+    const matchesSources =
+      filters.sources.length === 0 ||
+      filters.sources.some((source) =>
+        indicator.sources.some((s) =>
+          s.name.toLowerCase().includes(source.toLowerCase())
         )
       );
 
@@ -172,7 +193,7 @@ export function DataExplorer() {
         )
       );
 
-    return matchesCategories && matchesKeywords;
+    return matchesTopics && matchesSources && matchesKeywords;
   });
 
   return (
@@ -180,11 +201,13 @@ export function DataExplorer() {
       <div className="w-64 flex-none overflow-y-auto border-r">
         <FilterPanel
           language={language}
-          categories={categories}
+          topics={topics}
+          sources={sources}
           keywords={keywords}
           filters={filters}
           onFilterChange={setFilters}
-          categoryCount={facets.categoryCount}
+          topicCount={facets.topicCount}
+          sourceCount={facets.sourceCount}
           keywordCount={facets.keywordCount}
         />
       </div>

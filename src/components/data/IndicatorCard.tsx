@@ -1,5 +1,11 @@
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BarChart3 } from "lucide-react";
 import type { Indicator } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
@@ -26,18 +32,18 @@ export function IndicatorCard({
     >
       <CardHeader>
         <div className="flex flex-wrap items-start gap-2">
-          {indicator.collections.map((collection) => (
-            <Badge key={collection.id} variant="secondary">
-              {collection.name}
-            </Badge>
-          ))}
+          {indicator.type === "statistical" && (
+            <BarChart3 className="h-5 w-5 text-muted-foreground" />
+          )}
           {indicator.topics.map((topic) => (
             <Badge key={topic} variant="outline">
               {topic}
             </Badge>
           ))}
         </div>
-        <CardTitle className="text-lg">{indicator.name}</CardTitle>
+        <div className="flex items-center gap-2">
+          <CardTitle className="text-lg">{indicator.name}</CardTitle>
+        </div>
         <CardDescription className="line-clamp-2">
           {indicator.description}
         </CardDescription>

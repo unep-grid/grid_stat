@@ -23,6 +23,7 @@ export async function searchIndicators(
 ) {
   const { limit = 20, offset = 0, facets = [] } = options;
 
+  debugger;
   const response = await fetch(
     `${MEILISEARCH_ENDPOINT}/indexes/statistical_${language}/search`,
     {

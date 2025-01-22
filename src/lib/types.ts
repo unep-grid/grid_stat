@@ -52,7 +52,8 @@ export interface IndicatorData {
 
 export interface FilterState {
   search: string;
-  categories: string[];
+  topics: string[];
+  sources: string[];
   keywords: string[];
 }
 
