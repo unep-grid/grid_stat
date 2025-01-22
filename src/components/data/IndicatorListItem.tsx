@@ -14,15 +14,17 @@ export function IndicatorListItem({
 }: IndicatorListItemProps) {
   return (
     <div
-      className={`flex cursor-pointer items-center gap-2 rounded-md p-2 hover:bg-muted ${
+      className={`flex cursor-pointer items-center gap-2 rounded-md p-2 hover:bg-muted overflow-hidden ${
         isSelected ? "bg-muted" : ""
       }`}
       onClick={onClick}
     >
-      {indicator.type === 'statistical' && (
-        <BarChart3 className="h-4 w-4 shrink-0 text-muted-foreground" />
-      )}
-      <span className="truncate">{indicator.name}</span>
+      <div className="flex items-center gap-2 overflow-hidden">
+        {indicator.type === 'statistical' && (
+          <BarChart3 className="h-4 w-4 flex-none text-muted-foreground" />
+        )}
+        <span className="truncate overflow-hidden">{indicator.name}</span>
+      </div>
     </div>
   );
 }

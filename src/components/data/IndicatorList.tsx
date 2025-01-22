@@ -2,7 +2,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { LayoutGrid, List } from "lucide-react";
 import { IndicatorCard } from './IndicatorCard';
-import { IndicatorListItem } from './IndicatorListItem';
 import type { Indicator } from '@/lib/types';
 import type { Language } from '@/lib/utils/translations';
 import { t } from '@/lib/utils/translations';
@@ -17,6 +16,8 @@ interface IndicatorListProps {
   onSelectIndicator: (indicator: Indicator) => void;
   loading: boolean;
   error: string | null;
+  estimatedTotalHits?: number;
+  processingTimeMs?: number;
 }
 
 export function IndicatorList({
@@ -26,6 +27,8 @@ export function IndicatorList({
   onSelectIndicator,
   loading,
   error,
+  estimatedTotalHits,
+  processingTimeMs,
 }: IndicatorListProps) {
   if (loading) {
     return (
@@ -56,53 +59,55 @@ export function IndicatorList({
   const [viewMode, setViewMode] = useState<ViewMode>('card');
 
   return (
-    <div className="relative flex h-full flex-col">
+    <div className="relative flex h-full flex-col overflow-hidden">
       <ScrollArea className="flex-1">
-        <div className="p-4">
+        <div className="p-4 max-w-full">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">{t('dv.indicators', language)}</h2>
-              <span className="text-sm text-muted-foreground">
-                {indicators.length} {t('dv.results', language)}
-              </span>
+            <div className="sticky top-0 z-10 bg-background pb-4">
+              <div className="flex items-center gap-4">
+                <h2 className="text-lg font-semibold min-w-0 flex-1 truncate">{t('dv.indicators', language)}</h2>
+                <div className="flex-none">
+                  <ToggleGroup
+                    type="single"
+                    value={viewMode}
+                    onValueChange={(value) => value && setViewMode(value as ViewMode)}
+                    size="sm"
+                  >
+                    <ToggleGroupItem value="card" aria-label="Card view">
+                      <LayoutGrid className="h-4 w-4" />
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="list" aria-label="List view">
+                      <List className="h-4 w-4" />
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              </div>
             </div>
-            <div className={viewMode === 'card' ? 'space-y-4' : 'space-y-1'}>
+            <div className={`${viewMode === 'card' ? 'space-y-4' : 'space-y-1'}`}>
               {indicators.map((indicator) => (
-                viewMode === 'card' ? (
-                  <IndicatorCard
-                    key={indicator.id}
-                    language={language}
-                    indicator={indicator}
-                    isSelected={selectedIndicator?.id === indicator.id}
-                    onClick={() => onSelectIndicator(indicator)}
-                  />
-                ) : (
-                  <IndicatorListItem
-                    key={indicator.id}
-                    indicator={indicator}
-                    isSelected={selectedIndicator?.id === indicator.id}
-                    onClick={() => onSelectIndicator(indicator)}
-                  />
-                )
+                <IndicatorCard
+                  key={indicator.id}
+                  language={language}
+                  indicator={indicator}
+                  isSelected={selectedIndicator?.id === indicator.id}
+                  onClick={() => onSelectIndicator(indicator)}
+                  mode={viewMode}
+                />
               ))}
             </div>
           </div>
         </div>
       </ScrollArea>
-      <div className="sticky bottom-0 flex justify-center border-t bg-background p-2">
-        <ToggleGroup
-          type="single"
-          value={viewMode}
-          onValueChange={(value) => value && setViewMode(value as ViewMode)}
-          size="sm"
-        >
-          <ToggleGroupItem value="card" aria-label="Card view">
-            <LayoutGrid className="h-4 w-4" />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="list" aria-label="List view">
-            <List className="h-4 w-4" />
-          </ToggleGroupItem>
-        </ToggleGroup>
+      <div className="sticky bottom-0 border-t bg-background p-2">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>
+            {indicators.length} {t('dv.results', language)} 
+            {estimatedTotalHits !== undefined && estimatedTotalHits !== indicators.length && ` of ${estimatedTotalHits}`}
+          </span>
+          {processingTimeMs !== undefined && (
+            <span>{(processingTimeMs / 1000).toFixed(2)}s</span>
+          )}
+        </div>
       </div>
     </div>
   );

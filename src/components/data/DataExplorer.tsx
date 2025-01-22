@@ -33,6 +33,10 @@ export function DataExplorer() {
   const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
+  const [searchMetadata, setSearchMetadata] = useState<{
+    estimatedTotalHits?: number;
+    processingTimeMs?: number;
+  }>({});
   const [facets, setFacets] = useState<{
     topicCount: Record<string, number>;
     sourceCount: Record<string, number>;
@@ -79,6 +83,10 @@ export function DataExplorer() {
           search: initialSearchQuery
         }));
         setIndicators(result.hits);
+        setSearchMetadata({
+          estimatedTotalHits: result.estimatedTotalHits,
+          processingTimeMs: result.processingTimeMs,
+        });
         
         if (result.facetDistribution) {
           const topics = Object.entries(result.facetDistribution["topics"] || {})
@@ -110,16 +118,52 @@ export function DataExplorer() {
     initialize();
 
     // Set up language change listener
-    const handleLanguageChange = (event: Event) => {
+    const handleLanguageChange = async (event: Event) => {
       const customEvent = event as CustomEvent<Language>;
       const newLanguage = customEvent.detail;
       
-      // Reset all state
+      // Reset state
       setLanguage(newLanguage);
       setFilters(initialFilters);
       setSelectedIndicator(null);
       setIndicatorData([]);
-      setInitializing(true);
+      
+      try {
+        setLoading(true);
+        const result = await searchIndicators("", newLanguage, {
+          facets: ["topics", "sources.name", "keywords"]
+        });
+        
+        setIndicators(result.hits);
+        setSearchMetadata({
+          estimatedTotalHits: result.estimatedTotalHits,
+          processingTimeMs: result.processingTimeMs,
+        });
+        
+        if (result.facetDistribution) {
+          const topics = Object.entries(result.facetDistribution["topics"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
+          const sources = Object.entries(result.facetDistribution["sources.name"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
+          const keywords = Object.entries(result.facetDistribution["keywords"] || {})
+            .sort(([,a], [,b]) => b - a)
+            .map(([key]) => key);
+
+          setOrderedFacets({ topics, sources, keywords });
+          setFacets({
+            topicCount: result.facetDistribution["topics"] || {},
+            sourceCount: result.facetDistribution["sources.name"] || {},
+            keywordCount: result.facetDistribution["keywords"] || {},
+          });
+        }
+      } catch (err) {
+        console.error("Error during language change:", err);
+        setError(t("dv.failed_load_indicators", newLanguage));
+      } finally {
+        setLoading(false);
+      }
     };
 
     window.addEventListener("languageChange", handleLanguageChange);
@@ -173,6 +217,10 @@ export function DataExplorer() {
         });
 
         setIndicators(result.hits);
+        setSearchMetadata({
+          estimatedTotalHits: result.estimatedTotalHits,
+          processingTimeMs: result.processingTimeMs,
+        });
         
         if (result.facetDistribution) {
           setFacets({
@@ -224,6 +272,8 @@ export function DataExplorer() {
           onSelectIndicator={setSelectedIndicator}
           loading={isLoading}
           error={error}
+          estimatedTotalHits={searchMetadata.estimatedTotalHits}
+          processingTimeMs={searchMetadata.processingTimeMs}
         />
       </div>
 

@@ -15,6 +15,7 @@ interface IndicatorCardProps {
   isSelected: boolean;
   onClick: () => void;
   language: Language;
+  mode?: 'card' | 'list';
 }
 
 export function IndicatorCard({
@@ -22,7 +23,24 @@ export function IndicatorCard({
   isSelected,
   onClick,
   language,
+  mode = 'card'
 }: IndicatorCardProps) {
+  if (mode === 'list') {
+    return (
+      <div
+        className={`flex cursor-pointer items-start gap-2 rounded-md p-2 hover:bg-muted ${
+          isSelected ? "bg-muted" : ""
+        }`}
+        onClick={onClick}
+      >
+        {indicator.type === "statistical" && (
+          <BarChart3 className="h-4 w-4 flex-none mt-1 text-muted-foreground" />
+        )}
+        <div className="text-sm">{indicator.name}</div>
+      </div>
+    );
+  }
+
   return (
     <Card
       className={`cursor-pointer transition-all hover:shadow-md ${
