@@ -234,6 +234,38 @@
       "en": "Download detailed metadata in JSON format",
       "fr": "Télécharger les métadonnées détaillées au format JSON"
     },
+    "download_csv_description": {
+      "en": "Download data in CSV format for spreadsheet applications",
+      "fr": "Télécharger les données au format CSV pour les tableurs"
+    },
+    "download_json_description": {
+      "en": "Download raw data in JSON format",
+      "fr": "Télécharger les données brutes au format JSON"
+    },
+    "min_year": {
+      "en": "First Year",
+      "fr": "Première année"
+    },
+    "latest_year": {
+      "en": "Latest Year",
+      "fr": "Dernière année"
+    },
+    "min_value": {
+      "en": "Minimum Value",
+      "fr": "Valeur minimale"
+    },
+    "latest_value": {
+      "en": "Latest Value",
+      "fr": "Dernière valeur"
+    },
+    "max_value": {
+      "en": "Maximum Value",
+      "fr": "Valeur maximale"
+    },
+    "trend": {
+      "en": "Trend",
+      "fr": "Tendance"
+    },
     "download_citation": {
       "en": "Citation",
       "fr": "Citation"
