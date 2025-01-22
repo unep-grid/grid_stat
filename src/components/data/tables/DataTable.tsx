@@ -265,17 +265,16 @@ export function DataTable({ data, language }: DataTableProps) {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="border rounded-md h-full flex flex-col">
-        <Table>
-          <TableHeader className="bg-background">
-            <TableRow className="border-b">
+    <div className="h-full flex flex-col border rounded-md">
+      <Table className="h-full min-w-full border-collapse">
+          <TableHeader className="sticky top-0 bg-background z-10">
+            <TableRow className="border-b shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]">
               {table.getFlatHeaders().map(header => {
                 const isNumeric = header.id !== 'geo_entity' && header.id !== 'historicalValues';
                 return (
                   <TableHead
                     key={header.id}
-                    className={`sticky top-0 bg-background z-10 ${
+                    className={`${
                       header.column.getCanSort() ? 'cursor-pointer hover:bg-gray-50' : ''
                     } border-r`}
                     style={{ 
@@ -294,37 +293,32 @@ export function DataTable({ data, language }: DataTableProps) {
               })}
             </TableRow>
           </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map(row => (
+              <TableRow key={row.id} className="border-b">
+                {row.getVisibleCells().map(cell => {
+                  const isNumeric = cell.column.id !== 'geo_entity' && cell.column.id !== 'historicalValues';
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className={`border-r ${
+                        cell.column.id === 'latestValue' ? 'font-medium' : ''
+                      } ${isNumeric ? 'text-right' : 'text-left'}`}
+                      title={isNumeric && cell.column.id !== 'minYear' && cell.column.id !== 'latestYear' ? cell.row.original.source_detail : undefined}
+                      style={{ 
+                        width: cell.column.getSize(),
+                        minWidth: cell.column.getSize(),
+                        maxWidth: cell.column.getSize()
+                      }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
-        <div className="flex-1 overflow-auto">
-          <Table>
-            <TableBody>
-              {table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} className="border-b">
-                  {row.getVisibleCells().map(cell => {
-                    const isNumeric = cell.column.id !== 'geo_entity' && cell.column.id !== 'historicalValues';
-                    return (
-                      <TableCell
-                        key={cell.id}
-                        className={`border-r ${
-                          cell.column.id === 'latestValue' ? 'font-medium' : ''
-                        } ${isNumeric ? 'text-right' : 'text-left'}`}
-                        title={isNumeric && cell.column.id !== 'minYear' && cell.column.id !== 'latestYear' ? cell.row.original.source_detail : undefined}
-                        style={{ 
-                          width: cell.column.getSize(),
-                          minWidth: cell.column.getSize(),
-                          maxWidth: cell.column.getSize()
-                        }}
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
     </div>
   );
 }

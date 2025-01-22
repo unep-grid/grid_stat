@@ -12,7 +12,7 @@ interface APIError extends Error {
 }
 
 const API_BASE_URL = 'https://api.unepgrid.ch:443/stats/v2';
-const BATCH_SIZE = 1000;  // Adjust based on API limits
+const BATCH_SIZE = 200;  // Adjust based on API limits
 
 async function validateIndicator(indicatorId: number): Promise<IndicatorMetadata> {
   const response = await fetch(
