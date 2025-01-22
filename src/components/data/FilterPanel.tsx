@@ -78,8 +78,8 @@ export function FilterPanel({
     filters.keywords.length > 0;
 
   return (
-    <div className="flex h-full flex-col border-r bg-background">
-      <div className="border-b p-4">
+    <div className="h-full flex flex-col overflow-hidden">
+      <div className="p-4 border-b flex-none">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -105,12 +105,12 @@ export function FilterPanel({
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="space-y-4 p-4">
+        <div className="p-4 space-y-6">
           <div>
             <h3 className="mb-2 text-sm font-medium">
               {t("dv.metadata_topics", language)}
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {topics.map((topic) => {
                 const count = topicCount[topic] || 0;
                 const isDisabled =
@@ -139,13 +139,13 @@ export function FilterPanel({
             </div>
           </div>
 
-          <Separator />
+          <Separator className="my-4" />
 
           <div>
             <h3 className="mb-2 text-sm font-medium">
               {t("dv.metadata_sources", language)}
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {sources.map((source) => {
                 const count = sourceCount[source] || 0;
                 const isDisabled =
@@ -174,13 +174,13 @@ export function FilterPanel({
             </div>
           </div>
 
-          <Separator />
+          <Separator className="my-4" />
 
           <div>
             <h3 className="mb-2 text-sm font-medium">
               {t("dv.keywords", language)}
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {keywords.map((keyword) => {
                 const count = keywordCount[keyword] || 0;
                 const isDisabled =
