@@ -64,7 +64,7 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
             value="table" 
             className="absolute inset-0 m-0 data-[state=active]:block overflow-hidden"
           >
-            <DataTable data={data} language={language} />
+            <DataTable indicator={indicator} data={data} language={language} />
           </TabsContent>
 
           <TabsContent 

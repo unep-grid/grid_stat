@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import type { IndicatorData } from "@/lib/types";
+import type { Indicator, IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
 import {
@@ -23,6 +23,7 @@ import {
 interface DataTableProps {
   data: IndicatorData[];
   language: Language;
+  indicator?: Indicator;
 }
 
 interface ProcessedData {
@@ -101,7 +102,20 @@ const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
   );
 };
 
-export function DataTable({ data, language }: DataTableProps) {
+const IndicatorInfo: React.FC<{ title?: string; unit: string }> = ({ title, unit }) => {
+  return (
+    <div className="mb-4 p-3">
+      <div className="flex flex-col gap-1">
+        {title && <h3 className="text-sm font-medium">{title}</h3>}
+        <p className="text-sm">
+          Unit: <span className="font-medium">{unit}</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export function DataTable({ data, language, indicator }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: 'latestValue', desc: true }
   ]);
@@ -213,7 +227,7 @@ export function DataTable({ data, language }: DataTableProps) {
         header: info => t('dv.min_value', language),
         cell: info => (
           <div title={info.row.original.source_detail}>
-            {info.getValue().toLocaleString()} {info.row.original.unit}
+            {info.getValue().toLocaleString()}
           </div>
         ),
         size: 120,
@@ -222,7 +236,7 @@ export function DataTable({ data, language }: DataTableProps) {
         header: () => t('dv.latest_value', language),
         cell: info => (
           <div title={info.row.original.source_detail}>
-            {info.getValue().toLocaleString()} {info.row.original.unit}
+            {info.getValue().toLocaleString()}
           </div>
         ),
         size: 120,
@@ -231,7 +245,7 @@ export function DataTable({ data, language }: DataTableProps) {
         header: () => t('dv.max_value', language),
         cell: info => (
           <div title={info.row.original.source_detail}>
-            {info.getValue().toLocaleString()} {info.row.original.unit}
+            {info.getValue().toLocaleString()}
           </div>
         ),
         size: 120,
@@ -264,8 +278,13 @@ export function DataTable({ data, language }: DataTableProps) {
       : <ChevronDown className="h-4 w-4" />;
   };
 
+  // Get the unit from the first data item (should be consistent across all items)
+  const unit = data[0]?.unit || '';
+  const title = indicator?.name;
   return (
-    <div className="h-full flex flex-col border rounded-md">
+    <div className="h-full flex flex-col">
+      <IndicatorInfo title={title} unit={unit} />
+      <div className="border rounded-md">
       <Table className="h-full min-w-full border-collapse">
           <TableHeader className="sticky top-0 bg-background z-10">
             <TableRow className="border-b shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]">
@@ -319,6 +338,7 @@ export function DataTable({ data, language }: DataTableProps) {
             ))}
           </TableBody>
         </Table>
+      </div>
     </div>
   );
 }
