@@ -135,18 +135,9 @@ function RegionPanel({
   }, [allRegions, data, searchQuery, showSelected, selectedRegions]);
 
   return (
-    <div className="bg-background h-full p-4 w-[320px]">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="font-medium">{t("dv.regions", language)}</div>
-            <div className="text-sm text-muted-foreground">
-              {selectedRegions.length} / {allRegions.length}
-            </div>
-          </div>
-          <Separator />
-        </div>
-        <div className="space-y-2">
+    <div className="bg-background h-full w-[320px] flex flex-col">
+      <div className="h-full p-4 flex flex-col">
+        <div className="space-y-4 flex-none">
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -196,7 +187,8 @@ function RegionPanel({
           </div>
         </div>
 
-        <ScrollArea className="h-[calc(100vh-200px)] -mx-1 px-1">
+        <div className="flex-1 min-h-0 -mx-1 px-1 mt-4">
+          <ScrollArea className="h-full mt-4">
           <div className="space-y-1">
             {filteredRegions.map((regionId, index) => {
               const regionName = data.find(
@@ -232,7 +224,8 @@ function RegionPanel({
               );
             })}
           </div>
-        </ScrollArea>
+          </ScrollArea>
+        </div>
       </div>
     </div>
   );
@@ -316,128 +309,130 @@ export function DataChart({ data, language }: DataChartProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Toolbar */}
-      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="px-4 py-2 flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsPanelVisible(!isPanelVisible)}
-            title={t("dv.toggle_panel", language)}
-          >
-            {isPanelVisible ? (
-              <BarChart2 className="h-4 w-4 mr-2" />
-            ) : (
-              <BarChart2 className="h-4 w-4 mr-2 rotate-180" />
-            )}
-            {t("dv.regions", language)} ({selectedRegions.length})
-          </Button>
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+        <div className="p-4 flex items-center gap-2">
           <div className="flex-1" />
-          <Button
-            variant="outline"
-            size="sm"
-            title={t("dv.download", language)}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            {t("dv.download", language)}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              title={t("dv.download", language)}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              {t("dv.download", language)}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsPanelVisible(!isPanelVisible)}
+              title={t("dv.toggle_panel", language)}
+            >
+              {isPanelVisible ? (
+                <BarChart2 className="h-4 w-4 mr-2" />
+              ) : (
+                <BarChart2 className="h-4 w-4 mr-2 rotate-180" />
+              )}
+              {t("dv.regions", language)} ({selectedRegions.length}/{allRegions.length})
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Content area */}
-      <div className="flex flex-1 min-h-0">
-        {/* Left panel */}
+      <div className="flex flex-1 min-h-0 gap-4">
+        {/* Chart area */}
+        <div className="flex-1 min-h-0 relative px-4">
+          {tooltip.visible && (
+            <div
+              className="absolute bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 py-2 rounded-lg border shadow-sm pointer-events-none"
+              style={{
+                left: tooltip.x,
+                top: tooltip.y - DOT_SIZE - 10,
+                transform: "translate(-50%, -100%)",
+                zIndex: 50
+              }}
+            >
+              <div className="font-medium" style={{ color: tooltip.color }}>
+                {tooltip.country}
+              </div>
+              <div className="text-sm text-muted-foreground">{tooltip.year}</div>
+              <div className="text-sm">
+                {tooltip.value.toLocaleString()}
+                {unit ? ` ${unit}` : ""}
+              </div>
+            </div>
+          )}
+          <div className="w-full h-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="year"
+                  type="number"
+                  domain={["auto", "auto"]}
+                  tick={{ fontSize: 12 }}
+                  allowDecimals={false}
+                />
+                <YAxis
+                  width={60}
+                  tick={{ fontSize: 12 }}
+                  tickFormatter={(value) =>
+                    `${value.toLocaleString()}${unit ? ` ${unit}` : ""}`
+                  }
+                />
+                {selectedRegions.map((regionId, index) => {
+                  const regionName = data.find(
+                    (d) => d.geo_entity_id === regionId
+                  )?.geo_entity;
+                  if (!regionName) return null;
+                  return (
+                    <Line
+                      key={regionId}
+                      type="monotone"
+                      name={regionName}
+                      dataKey={regionName}
+                      stroke={colorPalette[index % colorPalette.length]}
+                      dot={(props) => (
+                        <CustomDot
+                          {...props}
+                          onHover={setTooltip}
+                          onLeave={() => setTooltip(prev => ({ ...prev, visible: false }))}
+                        />
+                      )}
+                    />
+                  );
+                })}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Right panel */}
         <div
-          className={`h-full transition-all duration-300 ease-in-out border-r bg-muted/10 ${
-            isPanelVisible ? "w-[320px] opacity-100 mr-4" : "w-0 opacity-0 overflow-hidden"
+          className={`h-full transition-all duration-300 ease-in-out border-l bg-muted/10 ${
+            isPanelVisible ? "w-[320px] opacity-100" : "w-0 opacity-0 overflow-hidden"
           }`}
         >
-        <RegionPanel
-          allRegions={allRegions}
-          selectedRegions={selectedRegions}
-          onRegionToggle={(regionId) => {
-            setSelectedRegions((prev) =>
-              prev.includes(regionId)
-                ? prev.filter((id) => id !== regionId)
-                : [...prev, regionId]
-            );
-          }}
-          onSelectAll={selectAll}
-          onSelectDefault={selectDefault}
-          data={data}
-          colorPalette={colorPalette}
-          language={language}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          showSelected={showSelected}
-          onShowSelectedChange={setShowSelected}
-        />
-      </div>
-
-        {/* Chart area */}
-        <div className="flex-1 min-h-0 relative pl-4 pr-8">
-        {tooltip.visible && (
-          <div
-            className="absolute bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 py-2 rounded-lg border shadow-sm pointer-events-none"
-            style={{
-              left: tooltip.x,
-              top: tooltip.y - DOT_SIZE - 10,
-              transform: "translate(-50%, -100%)",
-              zIndex: 50
-            }}
-          >
-            <div className="font-medium" style={{ color: tooltip.color }}>
-              {tooltip.country}
-            </div>
-            <div className="text-sm text-muted-foreground">{tooltip.year}</div>
-            <div className="text-sm">
-              {tooltip.value.toLocaleString()}
-              {unit ? ` ${unit}` : ""}
-            </div>
-          </div>
-        )}
-        <div className="w-full h-full">
-          <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="year"
-              type="number"
-              domain={["auto", "auto"]}
-              tick={{ fontSize: 12 }}
-              allowDecimals={false}
-            />
-            <YAxis
-              width={60}
-              tick={{ fontSize: 12 }}
-              tickFormatter={(value) =>
-                `${value.toLocaleString()}${unit ? ` ${unit}` : ""}`
-              }
-            />
-            {selectedRegions.map((regionId, index) => {
-              const regionName = data.find(
-                (d) => d.geo_entity_id === regionId
-              )?.geo_entity;
-              if (!regionName) return null;
-              return (
-                <Line
-                  key={regionId}
-                  type="monotone"
-                  name={regionName}
-                  dataKey={regionName}
-                  stroke={colorPalette[index % colorPalette.length]}
-                  dot={(props) => (
-                    <CustomDot
-                      {...props}
-                      onHover={setTooltip}
-                      onLeave={() => setTooltip(prev => ({ ...prev, visible: false }))}
-                    />
-                  )}
-                />
+          <RegionPanel
+            allRegions={allRegions}
+            selectedRegions={selectedRegions}
+            onRegionToggle={(regionId) => {
+              setSelectedRegions((prev) =>
+                prev.includes(regionId)
+                  ? prev.filter((id) => id !== regionId)
+                  : [...prev, regionId]
               );
-            })}
-          </LineChart>
-          </ResponsiveContainer>
-        </div>
+            }}
+            onSelectAll={selectAll}
+            onSelectDefault={selectDefault}
+            data={data}
+            colorPalette={colorPalette}
+            language={language}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            showSelected={showSelected}
+            onShowSelectedChange={setShowSelected}
+          />
         </div>
       </div>
     </div>
