@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { RegionSelector } from './RegionSelector';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import type { IndicatorData } from '@/lib/types';
 import type { Language } from '@/lib/utils/translations';
 import { t } from '@/lib/utils/translations';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Filter, CheckSquare, Square } from 'lucide-react';
+import { BarChart2, Search, X, CheckSquare, Square, Filter } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 const colorPalette = [
   'hsl(var(--chart-1))',
@@ -16,15 +18,178 @@ const colorPalette = [
   'hsl(var(--chart-5))',
 ];
 
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+  unit?: string;
+}
+
+function CustomTooltip({ active, payload, label, unit }: CustomTooltipProps) {
+  if (!active || !payload || !payload[0]) return null;
+
+  const data = payload[0];
+  return (
+    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 py-2 rounded-lg border shadow-sm">
+      <div className="font-medium" style={{ color: data.stroke }}>
+        {data.name}
+      </div>
+      <div className="text-sm text-muted-foreground">
+        {label}
+      </div>
+      <div className="text-sm">
+        {data.value.toLocaleString()}{unit ? ` ${unit}` : ''}
+      </div>
+    </div>
+  );
+}
+
 interface DataChartProps {
   data: IndicatorData[];
   language: Language;
 }
 
+interface RegionPanelProps {
+  allRegions: number[];
+  selectedRegions: number[];
+  onRegionToggle: (regionId: number) => void;
+  onSelectAll: () => void;
+  onSelectDefault: () => void;
+  data: IndicatorData[];
+  colorPalette: string[];
+  language: Language;
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+  showSelected: boolean;
+  onShowSelectedChange: (value: boolean) => void;
+}
+
+function RegionPanel({ 
+  allRegions, 
+  selectedRegions, 
+  onRegionToggle, 
+  onSelectAll,
+  onSelectDefault,
+  data, 
+  colorPalette,
+  language,
+  searchQuery,
+  onSearchChange,
+  showSelected,
+  onShowSelectedChange
+}: RegionPanelProps) {
+  const filteredRegions = useMemo(() => {
+    return allRegions.filter(regionId => {
+      const regionName = data.find(d => d.geo_entity_id === regionId)?.geo_entity || '';
+      const matchesSearch = regionName.toLowerCase().includes(searchQuery.toLowerCase());
+      return showSelected ? matchesSearch && selectedRegions.includes(regionId) : matchesSearch;
+    });
+  }, [allRegions, data, searchQuery, showSelected, selectedRegions]);
+
+  return (
+    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 rounded-lg border shadow-sm w-[320px]">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="font-medium">{t('dv.regions', language)}</div>
+            <div className="text-sm text-muted-foreground">
+              {selectedRegions.length} / {allRegions.length}
+            </div>
+          </div>
+          <Separator />
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder={t('dv.search_regions', language)}
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onSearchChange('')}
+                title={t('dv.clear_search', language)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onSelectAll}
+              title={t('dv.select_all_regions', language)}
+            >
+              <CheckSquare className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onSelectDefault}
+              title={t('dv.select_default', language)}
+            >
+              <Square className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={showSelected ? "default" : "outline"}
+              size="icon"
+              onClick={() => onShowSelectedChange(!showSelected)}
+              title={t('dv.show_selected', language)}
+            >
+              <Filter className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <ScrollArea className="h-[calc(100vh-300px)] min-h-[300px] max-h-[600px] -mx-1 px-1">
+          <div className="space-y-1">
+            {filteredRegions.map((regionId, index) => {
+              const regionName = data.find(d => d.geo_entity_id === regionId)?.geo_entity;
+              if (!regionName) return null;
+              return (
+                <div key={regionId} className="flex items-center gap-2 py-1">
+                  <Checkbox 
+                    checked={selectedRegions.includes(regionId)}
+                    onCheckedChange={() => onRegionToggle(regionId)}
+                    id={`region-${regionId}`}
+                  />
+                  <div 
+                    className="w-3 h-3 rounded-full flex-shrink-0" 
+                    style={{ 
+                      backgroundColor: selectedRegions.includes(regionId) 
+                        ? colorPalette[selectedRegions.indexOf(regionId) % colorPalette.length]
+                        : 'transparent',
+                      border: '1px solid var(--border)'
+                    }}
+                  />
+                  <label 
+                    htmlFor={`region-${regionId}`}
+                    className="text-sm flex-1 cursor-pointer"
+                  >
+                    {regionName}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </div>
+    </div>
+  );
+}
+
 export function DataChart({ data, language }: DataChartProps) {
   const [selectedRegions, setSelectedRegions] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [open, setOpen] = useState(false);
+  const [isPanelVisible, setIsPanelVisible] = useState(true);
+  const [showSelected, setShowSelected] = useState(false);
 
   // Get unique regions and sort them by name
   const allRegions = useMemo(() => {
@@ -70,12 +235,12 @@ export function DataChart({ data, language }: DataChartProps) {
 
   const selectAll = () => {
     setSelectedRegions([...allRegions]);
-    setOpen(false);
   };
 
-  const selectNone = () => {
-    setSelectedRegions([]);
-    setOpen(false);
+  const selectDefault = () => {
+    if (allRegions.length > 0) {
+      setSelectedRegions([allRegions[0]]);
+    }
   };
 
   if (!data.length) {
@@ -88,48 +253,19 @@ export function DataChart({ data, language }: DataChartProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2 mb-4">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
-              {t('dv.filter_regions', language)}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[280px] p-0" align="start" side="bottom" sideOffset={4}>
-            <RegionSelector
-              language={language}
-              allRegions={allRegions}
-              selectedRegions={selectedRegions}
-              setSelectedRegions={setSelectedRegions}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              onClose={() => setOpen(false)}
-              data={data}
-            />
-          </PopoverContent>
-        </Popover>
+      <div className="flex justify-end mb-4 relative z-20">
         <Button 
           variant="outline" 
           size="sm"
-          onClick={selectAll}
-          title={t('dv.select_all_regions', language)}
+          onClick={() => setIsPanelVisible(!isPanelVisible)}
+          title={t('dv.toggle_panel', language)}
         >
-          <CheckSquare className="h-4 w-4 mr-2" />
-          {t('dv.select_all', language)}
-        </Button>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={selectNone}
-          title={t('dv.clear_selection', language)}
-        >
-          <Square className="h-4 w-4 mr-2" />
-          {t('dv.clear', language)}
+          <BarChart2 className="h-4 w-4 mr-2" />
+          {t('dv.regions', language)} ({selectedRegions.length})
         </Button>
       </div>
 
-      <div className="flex-1 min-h-0">
+      <div className="flex-1 min-h-0 relative">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -145,29 +281,7 @@ export function DataChart({ data, language }: DataChartProps) {
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => `${value.toLocaleString()}${unit ? ` ${unit}` : ''}`}
             />
-            <Tooltip
-              contentStyle={{ 
-                backgroundColor: 'var(--background)', 
-                borderRadius: '8px', 
-                border: '1px solid var(--border)' 
-              }}
-              labelStyle={{ color: 'var(--foreground)' }}
-              formatter={(value: number, name: string) => {
-                const itemData = data.find(d => d.geo_entity === name && d.value === value);
-                return [
-                  `${value.toLocaleString()}${unit ? ` ${unit}` : ''}`,
-                  <>
-                    <div>{name}</div>
-                    {itemData?.attributes?.source_detail && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {itemData.attributes.source_detail}
-                      </div>
-                    )}
-                  </>
-                ];
-              }}
-            />
-            <Legend />
+            <CustomTooltip unit={unit} />
             {selectedRegions.map((regionId, index) => {
               const regionName = data.find(d => d.geo_entity_id === regionId)?.geo_entity;
               if (!regionName) return null;
@@ -177,14 +291,40 @@ export function DataChart({ data, language }: DataChartProps) {
                   type="monotone"
                   dataKey={regionName}
                   stroke={colorPalette[index % colorPalette.length]}
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
+                  activeDot={{ r: 4 }}
                 />
               );
             })}
           </LineChart>
         </ResponsiveContainer>
+        <div 
+          className={`absolute right-4 top-0 z-10 transition-all duration-200 origin-top-right ${
+            isPanelVisible 
+              ? 'opacity-100 scale-100' 
+              : 'opacity-0 scale-95 pointer-events-none'
+          }`}
+        >
+          <RegionPanel
+            allRegions={allRegions}
+            selectedRegions={selectedRegions}
+            onRegionToggle={(regionId) => {
+              setSelectedRegions(prev => 
+                prev.includes(regionId)
+                  ? prev.filter(id => id !== regionId)
+                  : [...prev, regionId]
+              );
+            }}
+            onSelectAll={selectAll}
+            onSelectDefault={selectDefault}
+            data={data}
+            colorPalette={colorPalette}
+            language={language}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            showSelected={showSelected}
+            onShowSelectedChange={setShowSelected}
+          />
+        </div>
       </div>
     </div>
   );
