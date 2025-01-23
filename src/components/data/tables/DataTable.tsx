@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import type { Indicator, IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
+import { IndicatorInfo } from "../IndicatorInfo";
 import {
   Table,
   TableBody,
@@ -99,19 +100,6 @@ const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
         strokeWidth="1"
       />
     </svg>
-  );
-};
-
-const IndicatorInfo: React.FC<{ title?: string; unit: string }> = ({ title, unit }) => {
-  return (
-    <div className="mb-4 p-3">
-      <div className="flex flex-col gap-1">
-        {title && <h3 className="text-sm font-medium">{title}</h3>}
-        <p className="text-sm">
-          Unit: <span className="font-medium">{unit}</span>
-        </p>
-      </div>
-    </div>
   );
 };
 
@@ -283,7 +271,9 @@ export function DataTable({ data, language, indicator }: DataTableProps) {
   const title = indicator?.name;
   return (
     <div className="h-full flex flex-col">
-      <IndicatorInfo title={title} unit={unit} />
+      <div className="mb-4 p-3">
+        <IndicatorInfo title={title} unit={unit} />
+      </div>
       <div className="border rounded-md">
       <Table className="h-full min-w-full border-collapse">
           <TableHeader className="sticky top-0 bg-background z-10">

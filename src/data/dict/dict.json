@@ -269,6 +269,22 @@
     "download_citation": {
       "en": "Citation",
       "fr": "Citation"
+    },
+    "toggle_panel": {
+      "en": "Toggle Panel",
+      "fr": "Basculer le panneau"
+    },
+    "regions": {
+      "en": "Countries",
+      "fr": "Pays"
+    },
+    "select_default": {
+      "en": "Select Default",
+      "fr": "Sélection par défaut"
+    },
+    "show_selected": {
+      "en": "Show Selected",
+      "fr": "Afficher la sélection"
     }
   }
 }

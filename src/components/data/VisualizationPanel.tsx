@@ -57,7 +57,7 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
             value="chart" 
             className="absolute inset-0 m-0 data-[state=active]:block"
           >
-            <DataChart data={data} language={language} />
+            <DataChart indicator={indicator} data={data} language={language} />
           </TabsContent>
           
           <TabsContent 

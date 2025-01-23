@@ -7,9 +7,10 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-import type { IndicatorData } from "@/lib/types";
+import type { Indicator, IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
+import { IndicatorInfo } from "../IndicatorInfo";
 import { Button } from "@/components/ui/button";
 import {
   BarChart2,
@@ -23,7 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 
 const colorPalette = [
   "hsl(var(--chart-1))",
@@ -59,9 +59,18 @@ interface DotProps {
   onLeave: () => void;
 }
 
-const CustomDot = ({ cx, cy, payload, dataKey, stroke, value, onHover, onLeave }: DotProps) => {
+const CustomDot = ({
+  cx,
+  cy,
+  payload,
+  dataKey,
+  stroke,
+  value,
+  onHover,
+  onLeave,
+}: DotProps) => {
   if (!cx || !cy) return null;
-  
+
   return (
     <circle
       cx={cx}
@@ -70,7 +79,7 @@ const CustomDot = ({ cx, cy, payload, dataKey, stroke, value, onHover, onLeave }
       fill="white"
       stroke={stroke}
       strokeWidth={2}
-      onMouseEnter={() => 
+      onMouseEnter={() =>
         onHover({
           visible: true,
           x: cx,
@@ -78,7 +87,7 @@ const CustomDot = ({ cx, cy, payload, dataKey, stroke, value, onHover, onLeave }
           country: dataKey,
           value: value,
           year: payload.year.toString(),
-          color: stroke
+          color: stroke,
         })
       }
       onMouseLeave={onLeave}
@@ -86,10 +95,10 @@ const CustomDot = ({ cx, cy, payload, dataKey, stroke, value, onHover, onLeave }
   );
 };
 
-
 interface DataChartProps {
   data: IndicatorData[];
   language: Language;
+  indicator?: Indicator;
 }
 
 interface RegionPanelProps {
@@ -189,41 +198,41 @@ function RegionPanel({
 
         <div className="flex-1 min-h-0 -mx-1 px-1 mt-4">
           <ScrollArea className="h-full mt-4">
-          <div className="space-y-1">
-            {filteredRegions.map((regionId, index) => {
-              const regionName = data.find(
-                (d) => d.geo_entity_id === regionId
-              )?.geo_entity;
-              if (!regionName) return null;
-              return (
-                <div key={regionId} className="flex items-center gap-2 py-1">
-                  <Checkbox
-                    checked={selectedRegions.includes(regionId)}
-                    onCheckedChange={() => onRegionToggle(regionId)}
-                    id={`region-${regionId}`}
-                  />
-                  <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{
-                      backgroundColor: selectedRegions.includes(regionId)
-                        ? colorPalette[
-                            selectedRegions.indexOf(regionId) %
-                              colorPalette.length
-                          ]
-                        : "transparent",
-                      border: "1px solid var(--border)",
-                    }}
-                  />
-                  <label
-                    htmlFor={`region-${regionId}`}
-                    className="text-sm flex-1 cursor-pointer"
-                  >
-                    {regionName}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
+            <div className="space-y-1">
+              {filteredRegions.map((regionId, index) => {
+                const regionName = data.find(
+                  (d) => d.geo_entity_id === regionId
+                )?.geo_entity;
+                if (!regionName) return null;
+                return (
+                  <div key={regionId} className="flex items-center gap-2 py-1">
+                    <Checkbox
+                      checked={selectedRegions.includes(regionId)}
+                      onCheckedChange={() => onRegionToggle(regionId)}
+                      id={`region-${regionId}`}
+                    />
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{
+                        backgroundColor: selectedRegions.includes(regionId)
+                          ? colorPalette[
+                              selectedRegions.indexOf(regionId) %
+                                colorPalette.length
+                            ]
+                          : "transparent",
+                        border: "1px solid var(--border)",
+                      }}
+                    />
+                    <label
+                      htmlFor={`region-${regionId}`}
+                      className="text-sm flex-1 cursor-pointer"
+                    >
+                      {regionName}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
           </ScrollArea>
         </div>
       </div>
@@ -231,7 +240,7 @@ function RegionPanel({
   );
 }
 
-export function DataChart({ data, language }: DataChartProps) {
+export function DataChart({ data, language, indicator }: DataChartProps) {
   const [selectedRegions, setSelectedRegions] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isPanelVisible, setIsPanelVisible] = useState(true);
@@ -243,7 +252,7 @@ export function DataChart({ data, language }: DataChartProps) {
     country: "",
     value: 0,
     year: "",
-    color: ""
+    color: "",
   });
 
   // Get unique regions and sort them by name
@@ -264,9 +273,8 @@ export function DataChart({ data, language }: DataChartProps) {
   }, [allRegions, selectedRegions.length]);
 
   // Get unit from data
-  const unit = useMemo(() => {
-    return data[0]?.unit || "";
-  }, [data]);
+  const unit = data[0]?.unit || "";
+  const title = indicator?.name;
 
   // Transform data for the chart
   const chartData = useMemo(() => {
@@ -310,8 +318,10 @@ export function DataChart({ data, language }: DataChartProps) {
     <div className="flex flex-col h-full">
       {/* Toolbar */}
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-        <div className="p-4 flex items-center gap-2">
-          <div className="flex-1" />
+        <div className="p-4 flex items-center gap-4">
+          <div className="flex-1">
+            <IndicatorInfo title={title} unit={unit} />
+          </div>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -332,7 +342,8 @@ export function DataChart({ data, language }: DataChartProps) {
               ) : (
                 <BarChart2 className="h-4 w-4 mr-2 rotate-180" />
               )}
-              {t("dv.regions", language)} ({selectedRegions.length}/{allRegions.length})
+              {t("dv.regions", language)} ({selectedRegions.length}/
+              {allRegions.length})
             </Button>
           </div>
         </div>
@@ -349,13 +360,15 @@ export function DataChart({ data, language }: DataChartProps) {
                 left: tooltip.x,
                 top: tooltip.y - DOT_SIZE - 10,
                 transform: "translate(-50%, -100%)",
-                zIndex: 50
+                zIndex: 50,
               }}
             >
               <div className="font-medium" style={{ color: tooltip.color }}>
                 {tooltip.country}
               </div>
-              <div className="text-sm text-muted-foreground">{tooltip.year}</div>
+              <div className="text-sm text-muted-foreground">
+                {tooltip.year}
+              </div>
               <div className="text-sm">
                 {tooltip.value.toLocaleString()}
                 {unit ? ` ${unit}` : ""}
@@ -396,7 +409,9 @@ export function DataChart({ data, language }: DataChartProps) {
                         <CustomDot
                           {...props}
                           onHover={setTooltip}
-                          onLeave={() => setTooltip(prev => ({ ...prev, visible: false }))}
+                          onLeave={() =>
+                            setTooltip((prev) => ({ ...prev, visible: false }))
+                          }
                         />
                       )}
                     />
@@ -410,7 +425,9 @@ export function DataChart({ data, language }: DataChartProps) {
         {/* Right panel */}
         <div
           className={`h-full transition-all duration-300 ease-in-out border-l bg-muted/10 ${
-            isPanelVisible ? "w-[320px] opacity-100" : "w-0 opacity-0 overflow-hidden"
+            isPanelVisible
+              ? "w-[320px] opacity-100"
+              : "w-0 opacity-0 overflow-hidden"
           }`}
         >
           <RegionPanel
