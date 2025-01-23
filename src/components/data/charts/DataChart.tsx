@@ -18,6 +18,7 @@ import {
   CheckSquare,
   Square,
   Filter,
+  Download,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -134,7 +135,7 @@ function RegionPanel({
   }, [allRegions, data, searchQuery, showSelected, selectedRegions]);
 
   return (
-    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 rounded-lg border shadow-sm w-[320px]">
+    <div className="bg-background h-full p-4 w-[320px]">
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -195,7 +196,7 @@ function RegionPanel({
           </div>
         </div>
 
-        <ScrollArea className="h-[calc(100vh-300px)] min-h-[300px] max-h-[600px] -mx-1 px-1">
+        <ScrollArea className="h-[calc(100vh-200px)] -mx-1 px-1">
           <div className="space-y-1">
             {filteredRegions.map((regionId, index) => {
               const regionName = data.find(
@@ -314,19 +315,66 @@ export function DataChart({ data, language }: DataChartProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-end mb-4 relative z-20">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsPanelVisible(!isPanelVisible)}
-          title={t("dv.toggle_panel", language)}
-        >
-          <BarChart2 className="h-4 w-4 mr-2" />
-          {t("dv.regions", language)} ({selectedRegions.length})
-        </Button>
+      {/* Toolbar */}
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="px-4 py-2 flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsPanelVisible(!isPanelVisible)}
+            title={t("dv.toggle_panel", language)}
+          >
+            {isPanelVisible ? (
+              <BarChart2 className="h-4 w-4 mr-2" />
+            ) : (
+              <BarChart2 className="h-4 w-4 mr-2 rotate-180" />
+            )}
+            {t("dv.regions", language)} ({selectedRegions.length})
+          </Button>
+          <div className="flex-1" />
+          <Button
+            variant="outline"
+            size="sm"
+            title={t("dv.download", language)}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            {t("dv.download", language)}
+          </Button>
+        </div>
       </div>
 
-      <div className="flex-1 min-h-0 relative">
+      {/* Content area */}
+      <div className="flex flex-1 min-h-0">
+        {/* Left panel */}
+        <div
+          className={`h-full transition-all duration-300 ease-in-out border-r bg-muted/10 ${
+            isPanelVisible ? "w-[320px] opacity-100 mr-4" : "w-0 opacity-0 overflow-hidden"
+          }`}
+        >
+        <RegionPanel
+          allRegions={allRegions}
+          selectedRegions={selectedRegions}
+          onRegionToggle={(regionId) => {
+            setSelectedRegions((prev) =>
+              prev.includes(regionId)
+                ? prev.filter((id) => id !== regionId)
+                : [...prev, regionId]
+            );
+          }}
+          onSelectAll={selectAll}
+          onSelectDefault={selectDefault}
+          data={data}
+          colorPalette={colorPalette}
+          language={language}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          showSelected={showSelected}
+          onShowSelectedChange={setShowSelected}
+        />
+      </div>
+
+        {/* Chart area */}
+        <div className="flex-1 min-h-0 relative pl-4 pr-8">
         {tooltip.visible && (
           <div
             className="absolute bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 py-2 rounded-lg border shadow-sm pointer-events-none"
@@ -347,7 +395,8 @@ export function DataChart({ data, language }: DataChartProps) {
             </div>
           </div>
         )}
-        <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full h-full">
+          <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -387,34 +436,8 @@ export function DataChart({ data, language }: DataChartProps) {
               );
             })}
           </LineChart>
-        </ResponsiveContainer>
-        <div
-          className={`absolute right-4 top-0 z-10 transition-all duration-200 origin-top-right ${
-            isPanelVisible
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
-          }`}
-        >
-          <RegionPanel
-            allRegions={allRegions}
-            selectedRegions={selectedRegions}
-            onRegionToggle={(regionId) => {
-              setSelectedRegions((prev) =>
-                prev.includes(regionId)
-                  ? prev.filter((id) => id !== regionId)
-                  : [...prev, regionId]
-              );
-            }}
-            onSelectAll={selectAll}
-            onSelectDefault={selectDefault}
-            data={data}
-            colorPalette={colorPalette}
-            language={language}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            showSelected={showSelected}
-            onShowSelectedChange={setShowSelected}
-          />
+          </ResponsiveContainer>
+        </div>
         </div>
       </div>
     </div>
