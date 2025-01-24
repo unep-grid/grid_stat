@@ -405,15 +405,20 @@ export function DataChart({ data, language, indicator }: DataChartProps) {
                       name={regionName}
                       dataKey={regionName}
                       stroke={colorPalette[index % colorPalette.length]}
-                      dot={(props) => (
-                        <CustomDot
-                          {...props}
-                          onHover={setTooltip}
-                          onLeave={() =>
-                            setTooltip((prev) => ({ ...prev, visible: false }))
-                          }
-                        />
-                      )}
+                      dot={(dotProps) => {
+                        const { key, payload, ...restProps } = dotProps;
+                        return (
+                          <CustomDot
+                            key={`dot-${regionName}-${payload.year}`}
+                            payload={payload}
+                            {...restProps}
+                            onHover={setTooltip}
+                            onLeave={() =>
+                              setTooltip((prev) => ({ ...prev, visible: false }))
+                            }
+                          />
+                        );
+                      }}
                     />
                   );
                 })}
