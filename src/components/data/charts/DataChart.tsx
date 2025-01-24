@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -10,6 +10,7 @@ import {
 import type { Indicator, IndicatorData } from "@/lib/types";
 import type { Language } from "@/lib/utils/translations";
 import { t } from "@/lib/utils/translations";
+import { getTopRegions } from "@/lib/utils/region_scoring";
 import { IndicatorInfo } from "../IndicatorInfo";
 import { Button } from "@/components/ui/button";
 import {
@@ -268,7 +269,7 @@ export function DataChart({ data, language, indicator }: DataChartProps) {
   // Select initial regions
   useEffect(() => {
     if (allRegions.length > 0 && selectedRegions.length === 0) {
-      setSelectedRegions(allRegions.slice(0, Math.min(4, allRegions.length)));
+      selectDefault();
     }
   }, [allRegions, selectedRegions.length]);
 
@@ -300,11 +301,18 @@ export function DataChart({ data, language, indicator }: DataChartProps) {
     setSelectedRegions([...allRegions]);
   };
 
-  const selectDefault = () => {
-    if (allRegions.length > 0) {
-      setSelectedRegions([allRegions[0]]);
+  const selectDefault = useCallback(() => {
+    try {
+      const topRegions = getTopRegions(data, 10);
+      setSelectedRegions(topRegions.map((r) => r.geoEntityId));
+    } catch (error) {
+      console.error("Error selecting default regions:", error);
+      // Fallback to first region if there's an error
+      if (allRegions.length > 0) {
+        setSelectedRegions([allRegions[0]]);
+      }
     }
-  };
+  }, [data, allRegions]);
 
   if (!data.length) {
     return (
