@@ -17,6 +17,7 @@ import {
   createSizeScale,
   computeRegionCentroids,
   transformPoint,
+  wrapText,
   type CentroidData,
 } from "./utils";
 import type {
@@ -489,19 +490,27 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       // Force an update
       scheduleUpdate();
 
-      // Add title with background
+      // Add title with background and text wrapping
       const titleGroup = svg.append("g")
         .attr("class", "map-title")
         .attr("transform", `translate(${width/2}, 40)`);
 
-      // Add semi-transparent background for better readability
+      const maxWidth = Math.min(width * 0.8, 600); // Limit title width
+      const lines = wrapText(indicator.name, maxWidth, "bold 18px -apple-system, system-ui, sans-serif");
+
+      // Add text with multiple lines
       const titleText = titleGroup.append("text")
         .attr("text-anchor", "middle")
         .attr("font-size", "18px")
         .attr("font-weight", "bold")
-        .attr("fill", colors.foreground)
-        .attr("dy", "0.35em")
-        .text(indicator.name);
+        .attr("fill", colors.foreground);
+
+      lines.forEach((line, i) => {
+        titleText.append("tspan")
+          .attr("x", 0)
+          .attr("dy", i === 0 ? "0.35em" : "1.2em")
+          .text(line);
+      });
 
       // Get text dimensions for background
       const titleBBox = (titleText.node() as SVGTextElement).getBBox();

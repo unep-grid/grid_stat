@@ -23,6 +23,41 @@ export interface CentroidData {
 }
 
 /**
+ * Helper function to wrap SVG text
+ * @param text Text to wrap
+ * @param maxWidth Maximum width in pixels
+ * @param font Font string for text measurement
+ * @returns Array of lines after wrapping
+ */
+export function wrapText(text: string, maxWidth: number, font: string): string[] {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let currentLine = words[0];
+
+  // Create canvas for text measurement
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) return [text];
+  context.font = font;
+
+  // Process each word
+  for (let i = 1; i < words.length; i++) {
+    const testLine = currentLine + " " + words[i];
+    const testWidth = context.measureText(testLine).width;
+    
+    if (testWidth > maxWidth) {
+      lines.push(currentLine);
+      currentLine = words[i];
+    } else {
+      currentLine = testLine;
+    }
+  }
+  lines.push(currentLine);
+
+  return lines;
+}
+
+/**
  * Pre-compute centroids for all regions in the topology
  */
 export function computeRegionCentroids(
@@ -222,7 +257,6 @@ export function shouldUseChoropleth(data: IndicatorData[]): boolean {
 export const createSizeScale = (extent: [number, number]) => {
   return d3.scaleSqrt().domain(extent).range([3, 15]); // Reduced maximum size for better visibility
 };
-
 
 /**
  * Transform point coordinates using projection
