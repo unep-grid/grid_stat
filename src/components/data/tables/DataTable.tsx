@@ -220,15 +220,6 @@ export function DataTable({ data, language, indicator }: DataTableProps) {
         ),
         size: 120,
       }),
-      columnHelper.accessor('latestValue', {
-        header: () => t('dv.latest_value', language),
-        cell: info => (
-          <div title={info.row.original.source_detail}>
-            {info.getValue().toLocaleString()}
-          </div>
-        ),
-        size: 120,
-      }),
       columnHelper.accessor('maxValue', {
         header: () => t('dv.max_value', language),
         cell: info => (
@@ -238,6 +229,16 @@ export function DataTable({ data, language, indicator }: DataTableProps) {
         ),
         size: 120,
       }),
+      columnHelper.accessor('latestValue', {
+        header: () => t('dv.latest_value', language),
+        cell: info => (
+          <div title={info.row.original.source_detail}>
+            {info.getValue().toLocaleString()}
+          </div>
+        ),
+        size: 120,
+      }),
+
       columnHelper.accessor('historicalValues', {
         header: () => t('dv.trend', language),
         cell: info => <Sparkline data={info.getValue()} />,

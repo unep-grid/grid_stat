@@ -72,7 +72,7 @@ export function VisualizationPanel({ indicator, data, language }: VisualizationP
             className="absolute inset-0 m-0 data-[state=active]:block"
           >
             <ThemeProvider>
-              <MapPanel data={data} language={language} />
+              <MapPanel data={data} language={language} indicator={indicator} />
             </ThemeProvider>
           </TabsContent>
 

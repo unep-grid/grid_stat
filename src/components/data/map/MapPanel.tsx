@@ -48,7 +48,7 @@ interface ProjectionState {
   rotation: [number, number, number];
 }
 
-export function MapPanel({ data, language }: MapPanelProps) {
+export function MapPanel({ data, language, indicator }: MapPanelProps) {
   // All refs
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
@@ -272,20 +272,17 @@ export function MapPanel({ data, language }: MapPanelProps) {
       d3.select(svgRef.current)
         .select<SVGPathElement, GeoPermissibleObjects>("path.graticule")
         .transition(transition)
-        .attrTween(
-          "d",
-          function (this: SVGPathElement, d: GeoPermissibleObjects) {
-            return (t: number) => {
-              projection.alpha(t);
-              return d3.geoPath(projection)(d) || "";
-            };
-          }
-        );
+        .attrTween("d", function(d) {
+          return (t: number) => {
+            projection.alpha(t);
+            return d3.geoPath(projection)(d) || "";
+          };
+        });
 
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
         .transition(transition)
-        .attrTween("d", function (this: SVGPathElement, d: Feature<Geometry>) {
+        .attrTween("d", function(d) {
           return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(d as GeoPermissibleObjects) || "";
@@ -295,22 +292,19 @@ export function MapPanel({ data, language }: MapPanelProps) {
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
         .transition(transition)
-        .attrTween(
-          "transform",
-          function (this: SVGPathElement, d: Feature<Geometry>) {
-            return (t: number) => {
-              projection.alpha(t);
-              const centroidData = centroidsRef.current.get(String(d.id));
-              if (!centroidData) return "translate(0,0)";
-              return transformPoint(centroidData.coordinates, projection);
-            };
-          }
-        );
+        .attrTween("transform", function(d) {
+          return (t: number) => {
+            projection.alpha(t);
+            const centroidData = centroidsRef.current.get(String(d.id));
+            if (!centroidData) return "translate(0,0)";
+            return transformPoint(centroidData.coordinates, projection);
+          };
+        });
 
       d3.select(svgRef.current)
-        .select("path.world-bounds")
+        .select<SVGPathElement, GeoPermissibleObjects>("path.world-bounds")
         .transition(transition)
-        .attrTween("d", () => {
+        .attrTween("d", function() {
           return (t: number) => {
             projection.alpha(t);
             return (
@@ -495,6 +489,66 @@ export function MapPanel({ data, language }: MapPanelProps) {
       // Force an update
       scheduleUpdate();
 
+      // Add title with background
+      const titleGroup = svg.append("g")
+        .attr("class", "map-title")
+        .attr("transform", `translate(${width/2}, 40)`);
+
+      // Add semi-transparent background for better readability
+      const titleText = titleGroup.append("text")
+        .attr("text-anchor", "middle")
+        .attr("font-size", "18px")
+        .attr("font-weight", "bold")
+        .attr("fill", colors.foreground)
+        .attr("dy", "0.35em")
+        .text(indicator.name);
+
+      // Get text dimensions for background
+      const titleBBox = (titleText.node() as SVGTextElement).getBBox();
+      
+      titleGroup.insert("rect", "text")
+        .attr("x", titleBBox.x - 10)
+        .attr("y", titleBBox.y - 5)
+        .attr("width", titleBBox.width + 20)
+        .attr("height", titleBBox.height + 10)
+        .attr("fill", colors.background)
+        .attr("fill-opacity", 0.8)
+        .attr("rx", 4)
+        .attr("ry", 4);
+
+      // Add attribution with background
+      if (indicator.sources && indicator.sources.length > 0) {
+        const source = indicator.sources[0];
+        const attributionGroup = svg.append("g")
+          .attr("class", "attribution")
+          .attr("transform", `translate(${width/2}, ${height - 15})`);
+
+        const attributionText = attributionGroup.append("a")
+          .attr("href", source.url)
+          .attr("target", "_blank")
+          .attr("rel", "noopener noreferrer")
+          .append("text")
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .attr("fill", colors.foreground)
+          .attr("opacity", 0.8)
+          .attr("dy", "0.35em")
+          .text(`Source: ${source.name}`);
+
+        // Get text dimensions for background
+        const attrBBox = (attributionText.node() as SVGTextElement).getBBox();
+        
+        attributionGroup.insert("rect", "a")
+          .attr("x", attrBBox.x - 5)
+          .attr("y", attrBBox.y - 3)
+          .attr("width", attrBBox.width + 10)
+          .attr("height", attrBBox.height + 6)
+          .attr("fill", colors.background)
+          .attr("fill-opacity", 0.8)
+          .attr("rx", 3)
+          .attr("ry", 3);
+      }
+
       const mapGroup = svg.append("g");
 
       // Add sphere outline first
@@ -639,6 +693,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
     colors.background,
     useChoropleth,
     scheduleUpdate,
+    indicator,
   ]);
 
   // Effect to update visualization
@@ -727,7 +782,7 @@ export function MapPanel({ data, language }: MapPanelProps) {
           globalExtent[0] !== undefined &&
           globalExtent[1] !== undefined &&
           data.length > 0 && (
-            <div className="absolute top-4 left-4 z-10 p-2">
+            <div className="absolute bottom-4 left-4 z-10 p-2">
               {useChoropleth ? (
                 <Legend
                   globalExtent={globalExtent}

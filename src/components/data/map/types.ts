@@ -1,12 +1,13 @@
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Feature, Geometry } from "geojson";
-import type { IndicatorData } from "../../../lib/types";
+import type { IndicatorData, Indicator } from "../../../lib/types";
 import type { Language } from "../../../lib/utils/translations";
 import { projections as projectionsList } from "./projections";
 
 export interface MapPanelProps {
   data: IndicatorData[];
   language: Language;
+  indicator: Indicator;
 }
 
 export interface CountryGeometry {
