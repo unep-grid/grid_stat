@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>d3-geo-zoom Controls Example</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+      }
+      .sphere {
+        fill: #1a1f35;
+      }
+      .land {
+        fill: #2a1b3d;
+        stroke: #ff69b4;
+        stroke-width: 0.5;
+        filter: url(#glow);
+      }
+      .land:hover {
+        fill: #3d2656;
+      }
+      #map-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+      .controls {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: grid;
+        gap: 10px;
+      }
+      .zoom-controls {
+        display: grid;
+        gap: 5px;
+      }
+      .direction-controls {
+        display: grid;
+        grid-template-areas:
+          ".    up    ."
+          "left .    right"
+          ".    down  .";
+        gap: 5px;
+      }
+      .options-controls {
+        display: grid;
+        gap: 5px;
+      }
+      button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+        min-width: 40px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      button.active {
+        background: #28a745;
+      }
+      button.active:hover {
+        background: #218838;
+      }
+      #moveUp {
+        grid-area: up;
+      }
+      #moveDown {
+        grid-area: down;
+      }
+      #moveLeft {
+        grid-area: left;
+      }
+      #moveRight {
+        grid-area: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-container">
+      <div class="controls">
+        <div class="zoom-controls">
+          <button id="zoomIn">Zoom In</button>
+          <button id="zoomOut">Zoom Out</button>
+        </div>
+        <div class="direction-controls">
+          <button data-dir="up" id="moveUp">↑</button>
+          <button data-dir="left" id="moveLeft">←</button>
+          <button data-dir="right" id="moveRight">→</button>
+          <button data-dir="down" id="moveDown">↓</button>
+        </div>
+        <div class="options-controls">
+          <button class="active" id="toggleNorth">North Up</button>
+          <button id="toggleProjection">Toggle Projection</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+      import { geoZoom } from "../../dist/@fxi/d3-geo-zoom.esm.js";
+      import { feature } from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
+
+      let northUp = true;
+      const toggleNorthBtn = document.getElementById("toggleNorth");
+
+      const MARGIN = 5;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      const svg = d3
+        .select("#map-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      // Add glow filter
+      const defs = svg.append("defs");
+      const filter = defs.append("filter").attr("id", "glow");
+
+      filter
+        .append("feGaussianBlur")
+        .attr("stdDeviation", "2")
+        .attr("result", "coloredBlur");
+
+      const feMerge = filter.append("feMerge");
+      feMerge.append("feMergeNode").attr("in", "coloredBlur");
+      feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+      // Create both projections
+      const projections = {
+        orthographic: d3
+          .geoOrthographic()
+          .scale(Math.min(width, height) / 2 - MARGIN)
+          .translate([width / 2, height / 2]),
+        mercator: d3
+          .geoTransverseMercator()
+          .scale(Math.min(width, height) / 2)
+          .translate([width / 2, height / 2]),
+      };
+
+      let currentProjection = projections.orthographic;
+      const path = d3.geoPath().projection(currentProjection);
+
+      let zoomInstance = geoZoom().projection(currentProjection).onMove(render);
+
+      // Apply to SVG element
+      zoomInstance(svg.node());
+
+      // Add sphere and land paths
+      svg.append("path").attr("class", "sphere").datum({ type: "Sphere" });
+
+      const world = svg.append("path").attr("class", "land");
+
+      // Load world map data
+      fetch("https://unpkg.com/world-atlas@1/world/110m.json")
+        .then((response) => response.json())
+        .then((data) => {
+          world.datum(feature(data, data.objects.land));
+          render();
+        });
+
+      // Immediate render without transition (for direct interactions)
+      function render() {
+        svg.selectAll("path").attr("d", path);
+      }
+
+      // Smooth render with transition (for button clicks)
+      function renderWithTransition() {
+        svg.selectAll("path").transition().duration(750).attr("d", path);
+      }
+
+      function angleTransition(from, to) {
+        const i = d3.interpolateArray(from, to);
+        svg
+          .selectAll("path")
+          .transition()
+          .duration(750)
+          .tween("tween", function () {
+            return function (t) {
+              currentProjection.rotate(i(t));
+              render();
+            };
+          });
+      }
+
+      function directionTransition(direction) {
+        const startRotation = currentProjection.rotate();
+        const targetRotation = zoomInstance.moveDirection(direction);
+        return angleTransition(startRotation, targetRotation);
+      }
+
+      // Control buttons functionality
+      document.getElementById("zoomIn").onclick = () => {
+        const scale = currentProjection.scale();
+        currentProjection.scale(scale * 1.5);
+        renderWithTransition();
+      };
+
+      document.getElementById("zoomOut").onclick = () => {
+        const scale = currentProjection.scale();
+        currentProjection.scale(scale / 1.5);
+        renderWithTransition();
+      };
+
+      // Direction controls with proper transition
+      ["up", "down", "left", "right"].forEach((direction) => {
+        const btnDirection = document.querySelector(
+          `[data-dir=${direction}]`
+        );
+        btnDirection.onclick = () => {
+          directionTransition(direction);
+        };
+      });
+
+      // Keyboard controls with proper transition
+      document.addEventListener("keydown", (event) => {
+        const directionMap = {
+          ArrowUp: "up",
+          ArrowDown: "down",
+          ArrowLeft: "left",
+          ArrowRight: "right",
+        };
+        const direction = directionMap[event.key];
+        if (direction) {
+          directionTransition(direction);
+          event.preventDefault();
+        }
+      });
+
+      toggleNorthBtn.onclick = () => {
+        northUp = !northUp;
+        zoomInstance.northUp(northUp);
+        toggleNorthBtn.classList.toggle("active", northUp);
+
+        if (northUp) {
+          // When enabling north up, smoothly transition to keep current x,y but set z to 0
+          const startRotation = currentProjection.rotate();
+          const targetRotation = zoomInstance.rotateTo([
+            startRotation[0],
+            startRotation[1],
+            0,
+          ]);
+          angleTransition(startRotation, targetRotation);
+        }
+      };
+
+      let isOrthographic = true;
+      document.getElementById("toggleProjection").onclick = () => {
+        const oldProjection = currentProjection;
+        const [oldX, oldY, oldZ] = oldProjection.rotate();
+
+        isOrthographic = !isOrthographic;
+        currentProjection = isOrthographic
+          ? projections.orthographic
+          : projections.mercator;
+
+        // Update path generator with new projection
+        path.projection(currentProjection);
+
+        // Keep the rotation state when possible
+        if (currentProjection.rotate) {
+          currentProjection.rotate([oldX, oldY, oldZ]);
+        }
+
+        // Update zoom instance with new projection
+        zoomInstance = geoZoom()
+          .projection(currentProjection)
+          .onMove(render)
+          .northUp(northUp);
+
+        // Apply to SVG element
+        zoomInstance(svg.node());
+
+        renderWithTransition(); // Use transition for projection toggle
+      };
+    </script>
+  </body>
+</html>
