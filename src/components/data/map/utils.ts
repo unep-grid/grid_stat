@@ -97,11 +97,6 @@ const geoEntitiesMap = new Map(
     .map((e) => [e.id, e.iso3])
 );
 
-// Log the mapping for debugging
-console.log(
-  "Geo entities mapping loaded:",
-  `${geoEntitiesMap.size} entities with ISO3 codes`
-);
 
 // Process data for visualization
 // Currently only country with iso3 are supported, skipping other region level
@@ -216,6 +211,22 @@ export function createColorScale(
     (data[0]?.measure_scale as MeasureScale) || "ratio_index";
   const values = data.map((d) => d.value as number).filter((v) => v != null);
   const colorInterpolator = getColorInterpolator(measureScale, globalExtent);
+
+  // Check if data needs log transformation
+  const needsLogScale = values.some(v => v > 0) && 
+    (globalExtent[1] / Math.max(globalExtent[0], 0.1) > 1000);
+
+  if (needsLogScale && measureScale !== "nominal" && measureScale !== "ordinal") {
+    // Create log scale for values > 0
+    const logExtent: [number, number] = [
+      Math.max(globalExtent[0], 0.1), // Avoid log(0) or negative values
+      globalExtent[1]
+    ];
+    
+    return d3.scaleSequential()
+      .domain(logExtent)
+      .interpolator((t) => colorInterpolator(Math.log10(d3.interpolate(logExtent[0], logExtent[1])(t)) / Math.log10(logExtent[1])));
+  }
 
   // For nominal data, use ordinal scale
   if (measureScale === "nominal") {

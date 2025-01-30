@@ -55,9 +55,10 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
-  const pathGeneratorRef = useRef<d3.GeoPath<any, GeoPermissibleObjects> | null>(
-    null
-  );
+  const pathGeneratorRef = useRef<d3.GeoPath<
+    any,
+    GeoPermissibleObjects
+  > | null>(null);
   const centroidsRef = useRef<Map<string, CentroidData>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
@@ -86,8 +87,10 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
-  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
-  const [northUp, setNorthUp] = useState(false);
+  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(
+    null
+  );
+  const [northUp, setNorthUp] = useState(true);
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -190,10 +193,11 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
   // Effect to initialize GeoZoom instance
   useEffect(() => {
     if (!svgRef.current || geoZoomRef.current) return;
-    
+
     geoZoomRef.current = new GeoZoom(svgRef.current);
     geoZoomRef.current.setNorthUp(true);
     setNorthUp(true);
+    debugger;
   }, []); // Empty deps array as we want this to run only once
 
   // Handle projection change with improved transition
@@ -252,9 +256,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
       // Update GeoZoom instance with new projection
       if (geoZoomRef.current) {
-        geoZoomRef.current
-          .setProjection(projection)
-          .setNorthUp(newProjection === "Orthographic");
+        geoZoomRef.current.setProjection(projection);
       }
 
       // Transition with proper state handling
@@ -269,7 +271,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
         d3.select(svgRef.current)
           .select<SVGPathElement>("path.graticule")
           .transition(transition)
-          .attrTween("d", function() {
+          .attrTween("d", function () {
             return (t: number) => {
               projection.alpha(t);
               return d3.geoPath(projection)(graticuleData) || "";
@@ -280,7 +282,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
         .transition(transition)
-        .attrTween("d", function(d) {
+        .attrTween("d", function (d) {
           return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(d as GeoPermissibleObjects) || "";
@@ -290,7 +292,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region-point")
         .transition(transition)
-        .attrTween("transform", function(d) {
+        .attrTween("transform", function (d) {
           return (t: number) => {
             projection.alpha(t);
             const centroidData = centroidsRef.current.get(String(d.id));
@@ -303,7 +305,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       d3.select(svgRef.current)
         .select<SVGPathElement>("path.world-bounds")
         .transition(transition)
-        .attrTween("d", function() {
+        .attrTween("d", function () {
           return (t: number) => {
             projection.alpha(t);
             return d3.geoPath(projection)(sphere) || "";
@@ -457,18 +459,15 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
         // Update GeoZoom instance with new projection
         if (geoZoomRef.current) {
-          geoZoomRef.current
-            .setProjection(projection)
-            .onMove(() => {
-              if (projectionRef.current) {
-                projectionStateRef.current = {
-                  scale: projectionRef.current.scale(),
-                  rotation: projectionRef.current.rotate(),
-                };
-                scheduleUpdate();
-              }
-            })
-            .setNorthUp(currentProjection === "Orthographic");
+          geoZoomRef.current.setProjection(projection).onMove(() => {
+            if (projectionRef.current) {
+              projectionStateRef.current = {
+                scale: projectionRef.current.scale(),
+                rotation: projectionRef.current.rotate(),
+              };
+              scheduleUpdate();
+            }
+          });
         }
 
         shouldRecreateProjectionRef.current = false;
@@ -478,22 +477,29 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       scheduleUpdate();
 
       // Add title with background and text wrapping
-      const titleGroup = svg.append("g")
+      const titleGroup = svg
+        .append("g")
         .attr("class", "map-title")
-        .attr("transform", `translate(${width/2}, 40)`);
+        .attr("transform", `translate(${width / 2}, 40)`);
 
       const maxWidth = Math.min(width * 0.8, 600); // Limit title width
-      const lines = wrapText(indicator.name, maxWidth, "bold 18px -apple-system, system-ui, sans-serif");
+      const lines = wrapText(
+        indicator.name,
+        maxWidth,
+        "bold 18px -apple-system, system-ui, sans-serif"
+      );
 
       // Add text with multiple lines
-      const titleText = titleGroup.append("text")
+      const titleText = titleGroup
+        .append("text")
         .attr("text-anchor", "middle")
         .attr("font-size", "18px")
         .attr("font-weight", "bold")
         .attr("fill", colors.foreground);
 
       lines.forEach((line, i) => {
-        titleText.append("tspan")
+        titleText
+          .append("tspan")
           .attr("x", 0)
           .attr("dy", i === 0 ? "0.35em" : "1.2em")
           .text(line);
@@ -501,8 +507,9 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
       // Get text dimensions for background
       const titleBBox = (titleText.node() as SVGTextElement).getBBox();
-      
-      titleGroup.insert("rect", "text")
+
+      titleGroup
+        .insert("rect", "text")
         .attr("x", titleBBox.x - 10)
         .attr("y", titleBBox.y - 5)
         .attr("width", titleBBox.width + 20)
@@ -515,11 +522,13 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       // Add attribution with background
       if (indicator.sources && indicator.sources.length > 0) {
         const source = indicator.sources[0];
-        const attributionGroup = svg.append("g")
+        const attributionGroup = svg
+          .append("g")
           .attr("class", "attribution")
-          .attr("transform", `translate(${width/2}, ${height - 15})`);
+          .attr("transform", `translate(${width / 2}, ${height - 15})`);
 
-        const attributionText = attributionGroup.append("a")
+        const attributionText = attributionGroup
+          .append("a")
           .attr("href", source.url)
           .attr("target", "_blank")
           .attr("rel", "noopener noreferrer")
@@ -533,8 +542,9 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
         // Get text dimensions for background
         const attrBBox = (attributionText.node() as SVGTextElement).getBBox();
-        
-        attributionGroup.insert("rect", "a")
+
+        attributionGroup
+          .insert("rect", "a")
           .attr("x", attrBBox.x - 5)
           .attr("y", attrBBox.y - 3)
           .attr("width", attrBBox.width + 10)
@@ -801,7 +811,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
             </div>
           )}
 
-        <MapControls 
+        <MapControls
           geoZoom={geoZoomRef.current}
           svg={svgRef.current}
           northUp={northUp}

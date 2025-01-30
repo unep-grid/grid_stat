@@ -41,9 +41,23 @@ interface LegendProps {
   language?: Language;
 }
 
+// Helper function to check if data needs log scale
+const needsLogScale = (extent: [number, number]): boolean => {
+  return extent[1] / Math.max(extent[0], 0.1) > 1000;
+};
+
 // Helper function to format values based on measure scale
-const formatValue = (value: number, measureScale?: MeasureScale): string => {
+const formatValue = (value: number, measureScale?: MeasureScale, extent?: [number, number]): string => {
   if (!measureScale) return value.toFixed(2);
+
+  // Check if we should use log scale formatting
+  const useLogScale = extent && needsLogScale(extent) && 
+    measureScale !== 'ordinal' && measureScale !== 'nominal';
+
+  if (useLogScale) {
+    // For log-transformed values, use scientific notation
+    return d3.format(".1e")(value);
+  }
 
   switch (measureScale) {
     case 'ratio_count':
@@ -71,7 +85,7 @@ export function Legend({
 }: LegendProps) {
   const { colors } = useTheme();
 
-  // Generate legend steps based on scale type
+  // Generate legend steps based on scale type and transformation
   const legendSteps = React.useMemo(() => {
     if (isD3Scale(colorScale)) {
       if (measureScale === 'ordinal' || measureScale === 'nominal') {
@@ -81,6 +95,19 @@ export function Legend({
       if (isQuantileScale(colorScale)) {
         return colorScale.quantiles();
       }
+    }
+
+    const useLogScale = needsLogScale(globalExtent) && 
+      measureScale !== 'ordinal' && measureScale !== 'nominal';
+
+    if (useLogScale) {
+      // Generate steps in log space
+      const logMin = Math.log10(Math.max(globalExtent[0], 0.1));
+      const logMax = Math.log10(globalExtent[1]);
+      return Array.from(
+        { length: steps },
+        (_, i) => Math.pow(10, logMin + (logMax - logMin) * (i / (steps - 1)))
+      );
     }
 
     // Default linear steps
@@ -97,13 +124,23 @@ export function Legend({
       {/* Color legend */}
       <div className="flex flex-col space-y-2">
         {[...legendSteps].reverse().map((step: number, index: number) => {
+          // Get color using the same transformation as the map
+          const useLogScale = needsLogScale(globalExtent) && 
+            measureScale !== 'ordinal' && measureScale !== 'nominal';
+          
           let color: string;
-          if (isD3Scale(colorScale)) {
+          if (useLogScale && !isD3Scale(colorScale)) {
+            // Apply same log transformation as in utils.ts createColorScale
+            const logMin = Math.log10(Math.max(globalExtent[0], 0.1));
+            const logMax = Math.log10(globalExtent[1]);
+            const normalizedValue = (Math.log10(step) - logMin) / (logMax - logMin);
+            color = colorScale(normalizedValue);
+          } else if (isD3Scale(colorScale)) {
             color = colorScale(step);
           } else {
             color = colorScale(step);
           }
-          const label = formatValue(step, measureScale);
+          const label = formatValue(step, measureScale, globalExtent);
           
           return (
             <div key={index} className="flex items-center space-x-2">
