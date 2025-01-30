@@ -1,13 +1,13 @@
 declare module '@fxi/d3-geo-zoom' {
-  import { GeoProjection, GeoPermissibleObjects } from 'd3';
+  import { GeoProjection } from 'd3';
 
-  interface GeoZoom {
-    (selection: SVGSVGElement | null): void;
-    projection(projection: GeoProjection): GeoZoom;
-    scaleExtent(extent: [number, number]): GeoZoom;
-    onMove(callback: () => void): GeoZoom;
-    northUp(enabled: boolean): GeoZoom;
+  export class GeoZoom {
+    constructor(element: SVGSVGElement);
+    setProjection(projection: GeoProjection): this;
+    onMove(callback: () => void): this;
+    setNorthUp(enabled: boolean): this;
+    getZoom(): any;
+    move(direction: string): void;
+    reset(): void;
   }
-
-  export function geoZoom(): GeoZoom;
 }

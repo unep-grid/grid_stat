@@ -27,7 +27,7 @@ import type {
   CountryGeometry,
 } from "./types";
 import { projections } from "./projections";
-import { geoZoom } from "@fxi/d3-geo-zoom";
+import { GeoZoom } from "@fxi/d3-geo-zoom";
 
 // Define the GeoSphere type
 type GeoSphere = {
@@ -61,7 +61,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
   const shouldRecreateProjectionRef = useRef(true);
-  const geoZoomRef = useRef<any>(null);
+  const geoZoomRef = useRef<GeoZoom | null>(null);
 
   // Add projection state ref
   const projectionStateRef = useRef<ProjectionState>({
@@ -185,6 +185,15 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
     });
   }, [updateRegionPaths]);
 
+  // Effect to initialize GeoZoom instance
+  useEffect(() => {
+    if (!svgRef.current || geoZoomRef.current) return;
+    
+    geoZoomRef.current = new GeoZoom(svgRef.current);
+    
+    // Initial configuration will be done when projection is set
+  }, []); // Empty deps array as we want this to run only once
+
   // Handle projection change with improved transition
   const handleProjectionChange = useCallback(
     (newProjection: ProjectionType) => {
@@ -239,29 +248,12 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
         rotation: currentRotation,
       };
 
-      // Remove existing zoom behavior
+      // Update GeoZoom instance with new projection
       if (geoZoomRef.current) {
-        d3.select(svgRef.current).on(".zoom", null);
+        geoZoomRef.current
+          .setProjection(projection)
+          .setNorthUp(newProjection === "Orthographic");
       }
-
-      // Initialize new zoom behavior with preserved scale
-      const zoom = geoZoom()
-        .projection(projection)
-        .scaleExtent([0.5, 8])
-        .onMove(() => {
-          if (projectionRef.current) {
-            projectionStateRef.current = {
-              scale: projectionRef.current.scale(),
-              rotation: projectionRef.current.rotate(),
-            };
-            scheduleUpdate();
-          }
-        })
-        .northUp(currentProjection === "Orthographic");
-
-      // Apply zoom behavior to SVG
-      zoom(svgRef.current);
-      geoZoomRef.current = zoom;
 
       // Transition with proper state handling
       const transition = d3.transition().duration(1000);
@@ -461,30 +453,23 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
         projectionRef.current = projection;
         pathGeneratorRef.current = d3.geoPath(projection);
 
-        // Initialize d3-geo-zoom with preserved state
-        const zoom = geoZoom()
-          .projection(projection)
-          .scaleExtent([0.5, 8])
-          .onMove(() => {
-            if (projectionRef.current) {
-              projectionStateRef.current = {
-                scale: projectionRef.current.scale(),
-                rotation: projectionRef.current.rotate(),
-              };
-              scheduleUpdate();
-            }
-          })
-          .northUp(currentProjection === "Orthographic");
-
-        // Apply zoom behavior to SVG
-        zoom(svg.node());
-        geoZoomRef.current = zoom;
+        // Update GeoZoom instance with new projection
+        if (geoZoomRef.current) {
+          geoZoomRef.current
+            .setProjection(projection)
+            .onMove(() => {
+              if (projectionRef.current) {
+                projectionStateRef.current = {
+                  scale: projectionRef.current.scale(),
+                  rotation: projectionRef.current.rotate(),
+                };
+                scheduleUpdate();
+              }
+            })
+            .setNorthUp(currentProjection === "Orthographic");
+        }
 
         shouldRecreateProjectionRef.current = false;
-      }
-      // Apply zoom behavior to SVG
-      if (geoZoomRef.current) {
-        geoZoomRef.current(svgRef.current);
       }
 
       // Force an update
