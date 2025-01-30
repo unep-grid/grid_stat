@@ -54,7 +54,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const worldDataRef = useRef<WorldTopology | null>(null);
   const projectionRef = useRef<d3.GeoProjection | null>(null);
-  const pathGeneratorRef = useRef<GeoPath<any, GeoPermissibleObjects> | null>(
+  const pathGeneratorRef = useRef<d3.GeoPath<any, GeoPermissibleObjects> | null>(
     null
   );
   const centroidsRef = useRef<Map<string, CentroidData>>(new Map());
@@ -150,9 +150,11 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
     // Update graticule with current projection
     const graticuleData = graticuleRef.current();
-    d3.select(svgRef.current)
-      .select("path.graticule")
-      .attr("d", pathGeneratorRef.current(graticuleData) || "");
+    if (graticuleData) {
+      d3.select(svgRef.current)
+        .select("path.graticule")
+        .attr("d", pathGeneratorRef.current(graticuleData) || "");
+    }
 
     // Update regions
     d3.select(svgRef.current)
@@ -262,15 +264,18 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       projection.scale(currentScale);
 
       // Update all elements
-      d3.select(svgRef.current)
-        .select<SVGPathElement, GeoPermissibleObjects>("path.graticule")
-        .transition(transition)
-        .attrTween("d", function(d) {
-          return (t: number) => {
-            projection.alpha(t);
-            return d3.geoPath(projection)(d) || "";
-          };
-        });
+      const graticuleData = graticuleRef.current();
+      if (graticuleData) {
+        d3.select(svgRef.current)
+          .select<SVGPathElement>("path.graticule")
+          .transition(transition)
+          .attrTween("d", function() {
+            return (t: number) => {
+              projection.alpha(t);
+              return d3.geoPath(projection)(graticuleData) || "";
+            };
+          });
+      }
 
       d3.select(svgRef.current)
         .selectAll<SVGPathElement, Feature<Geometry>>("path.region")
@@ -294,17 +299,14 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
           };
         });
 
+      const sphere = { type: "Sphere" } as GeoPermissibleObjects;
       d3.select(svgRef.current)
-        .select<SVGPathElement, GeoPermissibleObjects>("path.world-bounds")
+        .select<SVGPathElement>("path.world-bounds")
         .transition(transition)
         .attrTween("d", function() {
           return (t: number) => {
             projection.alpha(t);
-            return (
-              d3.geoPath(projection)({
-                type: "Sphere",
-              } as GeoPermissibleObjects) || ""
-            );
+            return d3.geoPath(projection)(sphere) || "";
           };
         })
         .on("end", () => {
@@ -546,15 +548,16 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       const mapGroup = svg.append("g");
 
       // Add sphere outline first
+      const sphere = { type: "Sphere" } as GeoPermissibleObjects;
       mapGroup
         .append("path")
         .attr("class", "world-bounds")
-        .datum({ type: "Sphere" } as GeoPermissibleObjects)
+        .datum(sphere)
         .attr("fill", "none")
         .attr("stroke", colors.foreground)
         .attr("stroke-width", 0.5)
         .attr("stroke-opacity", 1)
-        .attr("d", pathGeneratorRef.current as any);
+        .attr("d", pathGeneratorRef.current?.(sphere) || "");
 
       const regions = feature(
         worldDataRef.current,
@@ -664,15 +667,17 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
 
       // Add graticule with proper projection
       const graticuleData = graticuleRef.current();
-      mapGroup
-        .append("path")
-        .datum(graticuleData)
-        .attr("class", "graticule")
-        .attr("d", pathGeneratorRef.current?.(graticuleData) || "")
-        .attr("fill", "none")
-        .attr("stroke", colors.foreground)
-        .attr("stroke-width", 0.2)
-        .attr("stroke-opacity", 0.3);
+      if (graticuleData) {
+        mapGroup
+          .append("path")
+          .datum(graticuleData)
+          .attr("class", "graticule")
+          .attr("d", pathGeneratorRef.current?.(graticuleData) || "")
+          .attr("fill", "none")
+          .attr("stroke", colors.foreground)
+          .attr("stroke-width", 0.2)
+          .attr("stroke-opacity", 0.3);
+      }
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
