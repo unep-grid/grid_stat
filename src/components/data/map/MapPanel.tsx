@@ -192,8 +192,8 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
     if (!svgRef.current || geoZoomRef.current) return;
     
     geoZoomRef.current = new GeoZoom(svgRef.current);
-    
-    // Initial configuration will be done when projection is set
+    geoZoomRef.current.setNorthUp(true);
+    setNorthUp(true);
   }, []); // Empty deps array as we want this to run only once
 
   // Handle projection change with improved transition
