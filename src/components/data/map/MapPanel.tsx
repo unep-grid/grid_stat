@@ -7,6 +7,7 @@ import { interpolateProjection } from "@/lib/utils/projection";
 import { Legend, ProportionalSymbolLegend } from "./Legend";
 import { MapToolbar } from "./MapToolbar";
 import { MapTooltip } from "./MapTooltip";
+import { MapControls } from "./MapControls";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { t } from "@/lib/utils/translations";
 import {
@@ -85,9 +86,8 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
     useState<ProjectionType>("Mollweide");
   const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
-  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(
-    null
-  );
+  const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(null);
+  const [northUp, setNorthUp] = useState(false);
 
   // Use theme context for colors
   const { colors } = useTheme();
@@ -800,6 +800,13 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
               )}
             </div>
           )}
+
+        <MapControls 
+          geoZoom={geoZoomRef.current}
+          svg={svgRef.current}
+          northUp={northUp}
+          onNorthUpChange={setNorthUp}
+        />
       </div>
     </div>
   );
