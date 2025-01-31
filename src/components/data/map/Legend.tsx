@@ -218,25 +218,24 @@ export const ProportionalSymbolLegend: React.FC<ProportionalSymbolLegendProps> =
           const cy = margin.top + i * verticalSpacing;
           return (
             <g key={i}>
-              <circle
-                cx={centerX}
-                cy={cy}
-                r={radius}
+              <path
+                d={d3.symbol<d3.SymbolType>().type(d3.symbolCircle).size(Math.PI * radius * radius)() || ""}
+                transform={`translate(${centerX},${cy})`}
                 fill={colors.foreground}
                 stroke={colors.background}
                 strokeWidth={1}
               />
               <line
-                x1={centerX}
+                x1={centerX + radius}
                 y1={cy}
-                x2={centerX + radius + 5}
+                x2={centerX + radius + 10}
                 y2={cy}
                 stroke={colors.foreground}
                 strokeWidth={1}
               />
               <text
-                x={centerX + radius + 8}
-                y={cy + 4}
+                x={centerX + radius + 15}
+                y={cy}
                 className="text-xs"
                 fill={colors.foreground}
               >
