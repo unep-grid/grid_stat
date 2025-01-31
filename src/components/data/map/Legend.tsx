@@ -39,6 +39,8 @@ interface LegendProps {
   title?: string;
   unit?: string;
   language?: Language;
+  x?: number;
+  y?: number;
 }
 
 // Helper function to check if data needs log scale
@@ -74,15 +76,18 @@ const formatValue = (value: number, measureScale?: MeasureScale, extent?: [numbe
   }
 };
 
-export function Legend({
-  globalExtent,
-  colorScale,
-  measureScale,
-  steps = 5,
-  title = "Legend",
-  unit,
-  language = DEFAULT_LANGUAGE,
-}: LegendProps) {
+export function Legend(props: LegendProps) {
+  const {
+    globalExtent,
+    colorScale,
+    measureScale,
+    steps = 5,
+    title = "Legend",
+    unit,
+    language = DEFAULT_LANGUAGE,
+    x = 0,
+    y = 0
+  } = props;
   const { colors } = useTheme();
 
   // Generate legend steps based on scale type and transformation
@@ -117,60 +122,91 @@ export function Legend({
     );
   }, [globalExtent, colorScale, steps, measureScale]);
 
+  const boxWidth = 160;
+  const boxHeight = (legendSteps.length + 2) * 20 + 30; // +2 for title and missing values
+  const itemHeight = 16;
+  const swatchSize = 12;
+
   return (
-    <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 space-y-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">{title}</div>
+    <g transform={`translate(${x},${y})`}>
+      {/* Background */}
+      <rect
+        x="0"
+        y="0"
+        width={boxWidth}
+        height={boxHeight}
+        fill={colors.background}
+        fillOpacity="0.8"
+        rx="6"
+        ry="6"
+      />
 
-      {/* Color legend */}
-      <div className="flex flex-col space-y-2">
-        {[...legendSteps].reverse().map((step: number, index: number) => {
-          // Get color using the same transformation as the map
-          const useLogScale = needsLogScale(globalExtent) && 
-            measureScale !== 'ordinal' && measureScale !== 'nominal';
-          
-          let color: string;
-          if (useLogScale && !isD3Scale(colorScale)) {
-            // Apply same log transformation as in utils.ts createColorScale
-            const logMin = Math.log10(Math.max(globalExtent[0], 0.1));
-            const logMax = Math.log10(globalExtent[1]);
-            const normalizedValue = (Math.log10(step) - logMin) / (logMax - logMin);
-            color = colorScale(normalizedValue);
-          } else if (isD3Scale(colorScale)) {
-            color = colorScale(step);
-          } else {
-            color = colorScale(step);
-          }
-          const label = formatValue(step, measureScale, globalExtent);
-          
-          return (
-            <div key={index} className="flex items-center space-x-2">
-              <div
-                className="w-4 h-4 flex-shrink-0"
-                style={{ backgroundColor: color }}
-              />
-              <span className="text-xs whitespace-nowrap">
-                {label}{unit ? ` ${unit}` : ''}
-              </span>
-            </div>
-          );
-        })}
+      {/* Title */}
+      <text
+        x="10"
+        y="20"
+        fontSize="12"
+        fontWeight="600"
+        fill={colors.foreground}
+      >
+        {title}
+      </text>
 
-        {/* Missing values legend item */}
-        <div className="flex items-center space-x-2">
-          <div
-            className="w-4 h-4 bg-background"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2' stroke='" +
-                encodeURIComponent(colors.foreground) +
-                "' stroke-width='0.5' stroke-opacity='0.5' /%3E%3C/svg%3E\")",
-              backgroundRepeat: "repeat",
-            }}
-          />
-          <span className="text-xs">{t("dv.missing_values", language)}</span>
-        </div>
-      </div>
-    </div>
+      {/* Color legend items */}
+      {[...legendSteps].reverse().map((step: number, index: number) => {
+        const useLogScale = needsLogScale(globalExtent) && 
+          measureScale !== 'ordinal' && measureScale !== 'nominal';
+        
+        let color: string;
+        if (useLogScale && !isD3Scale(colorScale)) {
+          const logMin = Math.log10(Math.max(globalExtent[0], 0.1));
+          const logMax = Math.log10(globalExtent[1]);
+          const normalizedValue = (Math.log10(step) - logMin) / (logMax - logMin);
+          color = colorScale(normalizedValue);
+        } else if (isD3Scale(colorScale)) {
+          color = colorScale(step);
+        } else {
+          color = colorScale(step);
+        }
+        const label = formatValue(step, measureScale, globalExtent);
+        const yPos = 35 + (index * itemHeight);
+        
+        return (
+          <g key={index} transform={`translate(10,${yPos})`}>
+            <rect
+              width={swatchSize}
+              height={swatchSize}
+              fill={color}
+            />
+            <text
+              x={swatchSize + 8}
+              y={swatchSize - 3}
+              fontSize="11"
+              fill={colors.foreground}
+            >
+              {label}{unit ? ` ${unit}` : ''}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Missing values legend item */}
+      <g transform={`translate(10,${35 + (legendSteps.length * itemHeight)})`}>
+        <rect
+          width={swatchSize}
+          height={swatchSize}
+          fill={`url(#hatch)`}
+        />
+        <text
+          x={swatchSize + 8}
+          y={swatchSize - 3}
+          fontSize="11"
+          fill={colors.foreground}
+        >
+          {t("dv.missing_values", language)}
+        </text>
+      </g>
+    </g>
   );
 }
 
@@ -179,6 +215,8 @@ interface ProportionalSymbolLegendProps {
   colors: { foreground: string; background: string };
   title: string;
   unit?: string;
+  x?: number;
+  y?: number;
 }
 
 // Custom Legend for proportional symbols
@@ -209,42 +247,66 @@ export const ProportionalSymbolLegend: React.FC<ProportionalSymbolLegendProps> =
   const verticalSpacing =
     (height - margin.top - margin.bottom) / (steps.length - 1);
  
+  const x = props.x || 0;
+  const y = props.y || 0;
+
   return (
-    <div className="bg-background/80 backdrop-blur-sm rounded-md p-2 shadow-md">
-      <div className="text-sm font-semibold mb-1">{title}</div>
-      <svg width={width} height={height} className="overflow-visible">
+    <g transform={`translate(${x},${y})`}>
+      {/* Background */}
+      <rect
+        x="0"
+        y="0"
+        width={width}
+        height={height}
+        fill={colors.background}
+        fillOpacity="0.8"
+        rx="6"
+        ry="6"
+      />
+      
+      {/* Title */}
+      <text
+        x="10"
+        y="15"
+        fontSize="12"
+        fontWeight="600"
+        fill={colors.foreground}
+      >
+        {title}
+      </text>
+
         {steps.map((value, i) => {
           const radius = sizeScale(value);
           const cy = margin.top + i * verticalSpacing;
           return (
-            <g key={i}>
+            <g key={i} transform={`translate(0,${cy})`}>
               <path
                 d={d3.symbol<d3.SymbolType>().type(d3.symbolCircle).size(Math.PI * radius * radius)() || ""}
-                transform={`translate(${centerX},${cy})`}
+                transform={`translate(${centerX},0)`}
                 fill={colors.foreground}
                 stroke={colors.background}
                 strokeWidth={1}
               />
               <line
                 x1={centerX + radius}
-                y1={cy}
+                y1={0}
                 x2={centerX + radius + 10}
-                y2={cy}
+                y2={0}
                 stroke={colors.foreground}
                 strokeWidth={1}
               />
               <text
                 x={centerX + radius + 15}
-                y={cy}
-                className="text-xs"
+                y={0}
+                fontSize="11"
                 fill={colors.foreground}
+                dominantBaseline="middle"
               >
                 {format(value)}{unit ? ` ${unit}` : ''}
               </text>
             </g>
           );
         })}
-      </svg>
-    </div>
+    </g>
   );
 }

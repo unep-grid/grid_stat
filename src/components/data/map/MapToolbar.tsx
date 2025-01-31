@@ -22,8 +22,6 @@ import { primaryProjections, additionalProjections } from "./projections";
 interface MapToolbarProps {
   currentProjection: ProjectionType;
   onProjectionChange: (value: ProjectionType) => void;
-  isLegendVisible: boolean;
-  onLegendToggle: () => void;
   onExportSVG: () => void;
   years: number[];
   selectedYear: number;
@@ -34,8 +32,6 @@ interface MapToolbarProps {
 export function MapToolbar({
   currentProjection,
   onProjectionChange,
-  isLegendVisible,
-  onLegendToggle,
   onExportSVG,
   years,
   selectedYear,
@@ -83,25 +79,6 @@ export function MapToolbar({
             ))}
           </SelectContent>
         </Select>
-
-        {/* Legend Toggle */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant={isLegendVisible ? "default" : "outline"}
-                size="icon"
-                onClick={onLegendToggle}
-              >
-                <LayoutList className="h-4 w-4" />
-                <span className="sr-only">Toggle Legend</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{isLegendVisible ? "Hide" : "Show"} Legend</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
 
         {/* Export SVG */}
         <TooltipProvider>

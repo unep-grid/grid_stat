@@ -85,7 +85,6 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
   const [error, setError] = useState<string | null>(null);
   const [currentProjection, setCurrentProjection] =
     useState<ProjectionType>("Mollweide");
-  const [isLegendVisible, setIsLegendVisible] = useState(true);
   const [isLatestMode, setIsLatestMode] = useState(false);
   const [hoveredRegion, setHoveredRegion] = useState<HoveredRegion | null>(
     null
@@ -658,7 +657,7 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
           .attr("stroke-width", 1)
           .style("cursor", "pointer")
           .on("mouseover", function (event, d) {
-            d3.select(this).attr("stroke-width", 2);
+            d3.select(this).attr("stroke-width", 1.5);
             baseMap
               .filter((region) => region.id === d.id)
               .attr("stroke-width", 1.5);
@@ -687,6 +686,114 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
           .attr("stroke-width", 0.2)
           .attr("stroke-opacity", 0.3);
       }
+
+      // Add legend if data is available
+      if (globalExtent[0] !== undefined && globalExtent[1] !== undefined && data.length > 0) {
+        const legendGroup = svg.append("g")
+          .attr("class", "legend")
+          .attr("transform", `translate(20,${height - 40 - (useChoropleth ? 136 : 190)})`);
+
+        // Calculate legend height based on content
+        const legendHeight = useChoropleth
+          ? (5 + 1) * 16 + 40 // 5 color steps + missing values, 16px each, plus padding
+          : 5 * 30 + 50; // 5 symbol steps, 30px each, plus padding for larger symbols
+
+        // Add background rect for legend
+        legendGroup.append("rect")
+          .attr("width", 160)
+          .attr("height", legendHeight)
+          .attr("fill", colors.background)
+          .attr("fill-opacity", 0.8)
+          .attr("rx", 6)
+          .attr("ry", 6);
+
+        // Add legend title
+        legendGroup.append("text")
+          .attr("x", 10)
+          .attr("y", 20)
+          .attr("font-size", "12")
+          .attr("font-weight", "600")
+          .attr("fill", colors.foreground)
+          .text(legendTitle);
+
+        if (useChoropleth) {
+          // Add color scale legend
+          const steps = 5;
+          const stepHeight = 16;
+          const swatchSize = 12;
+
+          const values = Array.from({ length: steps }, (_, i) => 
+            globalExtent[0] + (globalExtent[1] - globalExtent[0]) * (i / (steps - 1))
+          ).reverse();
+
+          values.forEach((value, i) => {
+            const g = legendGroup.append("g")
+              .attr("transform", `translate(10,${35 + i * stepHeight})`);
+
+            g.append("rect")
+              .attr("width", swatchSize)
+              .attr("height", swatchSize)
+              .attr("fill", colorScale(value));
+
+            g.append("text")
+              .attr("x", swatchSize + 8)
+              .attr("y", swatchSize - 3)
+              .attr("font-size", "11")
+              .attr("fill", colors.foreground)
+              .text(`${value.toFixed(1)}${data[0]?.unit ? ` ${data[0].unit}` : ''}`);
+          });
+
+          // Add missing values legend item
+          const missingGroup = legendGroup.append("g")
+            .attr("transform", `translate(10,${35 + steps * stepHeight})`);
+
+          missingGroup.append("rect")
+            .attr("width", swatchSize)
+            .attr("height", swatchSize)
+            .attr("fill", "url(#hatch)");
+
+          missingGroup.append("text")
+            .attr("x", swatchSize + 8)
+            .attr("y", swatchSize - 3)
+            .attr("font-size", "11")
+            .attr("fill", colors.foreground)
+            .text(t("dv.missing_values", language));
+        } else {
+          // Add proportional symbol legend
+          const symbolGenerator = d3.symbol().type(d3.symbolCircle);
+          const sizeScale = createSizeScale(globalExtent);
+          const steps = [
+            globalExtent[0],
+            globalExtent[0] + (globalExtent[1] - globalExtent[0]) * 0.25,
+            globalExtent[0] + (globalExtent[1] - globalExtent[0]) * 0.5,
+            globalExtent[0] + (globalExtent[1] - globalExtent[0]) * 0.75,
+            globalExtent[1],
+          ];
+          const stepHeight = 30;
+          const centerX = 30;
+
+          steps.forEach((value, i) => {
+            const g = legendGroup.append("g")
+              .attr("transform", `translate(${centerX},${40 + i * stepHeight})`);
+
+            const radius = sizeScale(value);
+            g.append("path")
+              .attr("d", symbolGenerator.size(Math.PI * radius * radius)())
+              .attr("fill", colors.foreground)
+              .attr("stroke", colors.background)
+              .attr("stroke-width", 1);
+
+            g.append("text")
+              .attr("x", radius + 15)
+              .attr("y", 0)
+              .attr("font-size", "11")
+              .attr("fill", colors.foreground)
+              .attr("dominant-baseline", "middle")
+              .text(`${value.toFixed(1)}${data[0]?.unit ? ` ${data[0].unit}` : ''}`);
+          });
+        }
+      }
+
     } catch (err) {
       console.error("Error during visualization update:", err);
       setError(err instanceof Error ? err.message : "Failed to load map");
@@ -702,6 +809,8 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
     useChoropleth,
     scheduleUpdate,
     indicator,
+    legendTitle,
+    language,
   ]);
 
   // Effect to update visualization
@@ -758,8 +867,6 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
       <MapToolbar
         currentProjection={currentProjection}
         onProjectionChange={handleProjectionChange}
-        isLegendVisible={isLegendVisible}
-        onLegendToggle={() => setIsLegendVisible(!isLegendVisible)}
         onExportSVG={handleExportSVG}
         years={years}
         selectedYear={selectedYear}
@@ -785,30 +892,6 @@ export function MapPanel({ data, language, indicator }: MapPanelProps) {
           visible={!!hoveredRegion}
           language={language}
         />
-
-        {isLegendVisible &&
-          globalExtent[0] !== undefined &&
-          globalExtent[1] !== undefined &&
-          data.length > 0 && (
-            <div className="absolute bottom-4 left-4 z-10 p-2">
-              {useChoropleth ? (
-                <Legend
-                  globalExtent={globalExtent}
-                  colorScale={colorScale}
-                  title={legendTitle}
-                  unit={data[0]?.unit}
-                  language={language}
-                />
-              ) : (
-                <ProportionalSymbolLegend
-                  globalExtent={globalExtent}
-                  colors={colors}
-                  title={legendTitle}
-                  unit={data[0]?.unit}
-                />
-              )}
-            </div>
-          )}
 
         <MapControls
           geoZoom={geoZoomRef.current}
