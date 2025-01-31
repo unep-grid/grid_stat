@@ -1,97 +1,51 @@
-# HT Portal Project
-
-## Context
-
-Part of a large refactor migrating from V1 api to V2 and custom meilisearch end point. The user select an indicator and the various visualisation update accordingly after the values fetch from the api
+# GRID Stat Portal Project
 
 ### Project Overview
-The GHG Portal is a web application for visualizing greenhouse gas emissions data through interactive maps, charts, and data tables.
+This is a web application for visualizing thousands of statistical indicators through interactive maps, charts, and data tables. Features include instant search, up-to-date values, and data downloads.
 
 ### Technical Stack
 - Framework: Astro.js + React
 - UI: Tailwind + shadcn/ui
 - Data Visualization: D3.js
 - Maps: 
-  - D3-geo for projections and path generation
-  - D3-geo-zoom for interactive map navigation
-  - Projection considerations:
-    * Each projection type affects symbol visibility differently
-    * Orthographic requires special handling for point visibility
-    * Symbol scaling needs to account for projection distortion
+  - d3-geo for projections and path generation
+  - @fxi/d3-geo-zoom for interactive map navigation
 - Search: Meilisearch
 - Testing: Vitest
 
 ### Data Structure
 - Indicators contain metadata and time series data. Example in ./sample/indicator_example.json
-- Geographic entities mapping:
-  - The topojson world map uses ISO3 codes as feature IDs (d.id, not d.properties.id)
+- Geographic Entities Mapping:
+  - The TopoJSON world map uses ISO3 codes as feature IDs (d.id, not d.properties.id)
   - API returns geo_entity_id which is mapped to ISO3 using src/lib/utils/geo_entities.json
   - The geo_entities.json file contains a comprehensive mapping of all available codes
-- Data includes measure_scale property for visualization type. Allowed measure scales are listed in ./sample/measure_scales.json 
-- Temporal data spans multiple years
-
-### Recent Fixes and Known Issues
-#### Fixed
-- Corrected topology ID mapping (using d.id instead of d.properties.id)
-- Updated geo_entities.json with comprehensive code mapping
-- Improved measure scale based visualization selection
-
-#### Known Issues
-1. Proportional Symbol Issues:
-   - Legend symbols don't match actual sizes on map
-   - Points need proper visibility culling:
-     * Points should be hidden when outside any projection's valid area
-     * For Orthographic: also hide points behind the globe
-     * For other projections: hide points beyond projection boundaries
-     * Use D3's projection methods to determine point visibility
-
-2. Future Improvements:
-   - Implement proper symbol scaling across different projections
-   - Add visibility checks for points based on projection angle
-   - Consider alternative symbol placement strategies for dense data areas
+- Data includes measure_scale property for visualization type. Allowed measure scales are defined in src/lib/utils/visualization_scales.ts
+- Temporal data spans multiple years. Tables aggregate data by geographic entities and display the oldest and most recent values
 
 ### API Information
 1. Meilisearch:
    - Endpoint: https://api-search.unepgrid.ch
    - Index format: statistical_{language}
    - Facets: collections.name, keywords
+   - Sample: sample/meilisearch_value_example.json
 
 2. V2 API:
    - Endpoint: https://api.unepgrid.ch/stats/v2
    - Data endpoint: /indicators/{id}/data
+   - Sample: ./sample/indicator_example.json
 
-## Tasks
 
 ### Development Principles
 
 #### Code Quality Standards
 - Leverage existing D3 methods and functionality where available
-- Use established statistical libraries (e.g., SimpleStatistics) for complex calculations
 - Follow functional programming principles for data transformations
 - Ensure proper type safety and error handling
 - Write comprehensive documentation for complex logic
 - Use meaningful variable names and clear function signatures
 - Implement proper unit tests for statistical functions
 
-### Current Focus: Map Visualization Enhancement
 
-#### 1. Color Scale and Visualization Type Refactor
-- [ ] Implement smart color scale selection based on measure_scale
-  - Leverage D3's built-in scale systems (d3.scaleQuantile, d3.scaleQuantize, etc.)
-  - Use appropriate D3 color schemes (d3.interpolateRdBu, d3.schemePaired, etc.)
-  - Handle different data types with proper scale types
-- [ ] Implement statistical methods for binning
-  - Use d3.scaleQuantile for quantile-based binning
-  - Leverage SimpleStatistics for advanced statistical analysis
-  - Select method based on data distribution using D3's statistical methods
-- [ ] Implement diverging/sequential color palette selection
-  - Use D3's built-in color interpolators
-  - Handle positive/negative value ranges with appropriate diverging scales
-  - Use colorblind-friendly schemes from D3's color modules
-
-#### 2. Map Visualization Types
-- [ ] Fix proportional symbol visualization
-  - Implement consistent symbol sizing between map and legend
-  - Add proper point visibility handling for different projections
-  - Use D3's projection.clipAngle() for point culling
-  - Consider symbol overlap handling for dense data areas
+#### Known Issues
+1. Proportional Symbol Issues:
+   - Legend symbols do not match actual sizes on map
