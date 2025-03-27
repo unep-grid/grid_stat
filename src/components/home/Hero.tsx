@@ -19,18 +19,20 @@ export function Hero() {
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <Button asChild size="lg" className="px-8">
-                  <a href={import.meta.env.BASE_URL + '/data'}>
-                    Explore Data
+                  <a href={import.meta.env.BASE_URL + '/'}>
+                    Explore Grid Stat
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
                 <Button
                   asChild
-                  variant="outline"
+
                   size="lg"
                   className="mt-3 px-8 sm:mt-0 sm:ml-3"
                 >
-                  <a href={import.meta.env.BASE_URL + '/about'}>Learn More</a>
+                  <a href={'https://data.unepgrid.ch'}>UNEPGrid Geneva Data Platform
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
                 </Button>
               </div>
             </div>
