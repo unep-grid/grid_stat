@@ -12,8 +12,9 @@ import { Logo } from "./Logo";
 import { useTheme } from "./ThemeProvider";
 
 const navItems = [
-  { name: "Home", href: import.meta.env.BASE_URL + "/" },
-  { name: "Data", href: import.meta.env.BASE_URL + "/data" },
+
+  { name: "Data", href: "https://data.unepgrid.ch/" },
+  { name: "Grid Stat", href: import.meta.env.BASE_URL + "/" },
   { name: "About", href: import.meta.env.BASE_URL + "/about" },
 ];
 
@@ -42,14 +43,14 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky py-6 top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 w-full">
         <div className="mr-4 flex items-center logo">
           <a
-            href={import.meta.env.BASE_URL + "/"}
+             href={"https://www.unepgrid.ch"}
             className="flex items-center"
           >
-            <Logo className="logo h-8 top-0" />
+            <Logo className="logo h-16 top-0" />
           </a>
         </div>
 
@@ -63,9 +64,10 @@ export function Navbar() {
                   <NavigationMenuItem key={item.name}>
                     <NavigationMenuLink
                       href={active ? undefined : item.href}
-                      className={`group inline-flex h-9 w-max items-center justify-center  bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 ${
+                      className={`group inline-flex h-9 w-max items-center justify-center  bg-background px-4 py-2 text-sm font-semibold transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50
+                      ${
                         active
-                          ? "border-b-2 border-primary pointer-events-none"
+                          ? "border-b-4 border-third pointer-events-none text-third"
                           : ""
                       }`}
                     >
